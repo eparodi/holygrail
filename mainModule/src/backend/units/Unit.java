@@ -1,27 +1,23 @@
 package backend.units;
 
-import backend.Armor;
-import backend.Attack;
-import backend.Item;
-import backend.terrains.Terrain;
+import backend.*;
 
 import java.util.Collection;
 
-/**
- * Created by Julian Benitez on 10/13/2015.
- */
 public abstract class Unit {
     private String name;
     private Terrain preferedTerrain;
+    private Location location;
+
     private Attack baseAttack;
     private Armor armor;
+    private Item item;
+
     private Integer health;
     private Integer maxHealth;
     private Integer actionPoints;
     private Integer maxActionPoints;
     private Integer range;
-
-    private Collection<Item> items;
 
     public Unit(String name, Attack baseAttack,Armor armor ,Integer maxHealth, Integer maxActionPoints, Integer range,
                 Terrain preferedTerrain){
@@ -67,8 +63,8 @@ public abstract class Unit {
         System.out.println("attackerTerrain = " + attackerTerrain);
         System.out.println("baseAttack = " + baseAttack);
         System.out.println("baseAttack.getModifiedAttack(calcTerrainMod(attackerTerrain)) = " +
-                            baseAttack.getModifiedAttack(calcTerrainMod(attackerTerrain)));
-        return baseAttack.getModifiedAttack(calcTerrainMod(attackerTerrain));
+                            baseAttack.getModifiedAttack(calcTerrainMod(attackerTerrain),null));
+        return baseAttack.getModifiedAttack(calcTerrainMod(attackerTerrain),null);
     }
     public Integer getHealth() {
         return health;

@@ -1,8 +1,7 @@
 package backend;
 
-/**
- * Created by Julian Benitez on 10/13/2015.
- */
+import java.util.Collection;
+
 public class Attack{
     Integer slashDamage, piercingDamage, bluntDamage;
 
@@ -12,12 +11,15 @@ public class Attack{
         this.piercingDamage = piercingDamage;
     }
 
-    public Attack getModifiedAttack(Double mod){
+    public Attack getModifiedAttack(Double terrainMod,Rune rune){
         Attack modifiedAttack;
-
-        modifiedAttack = new Attack((int) Math.round(slashDamage*mod),
-                                    (int) Math.round(piercingDamage*mod),
-                                    (int) Math.round( bluntDamage*mod));
+        //TODO make item factory
+        if(rune == null){
+            rune = new Rune("Rune default",1,1,1);
+        }
+        modifiedAttack = new Attack((int) Math.round((slashDamage+rune.getSlashBonus())*terrainMod),
+                                    (int) Math.round((piercingDamage+rune.getPiercingBonus())*terrainMod),
+                                    (int) Math.round(( bluntDamage+rune.getBluntBonus())*terrainMod));
         return modifiedAttack;
     }
 

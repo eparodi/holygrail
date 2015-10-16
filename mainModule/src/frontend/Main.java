@@ -1,8 +1,8 @@
 package frontend;
 
 import backend.Attack;
+import backend.Terrain;
 import backend.units.Archer;
-import backend.terrains.Mountain;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -10,9 +10,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 
-/**
- * Created by Julian Benitez on 10/12/2015.
- */
 public class Main extends Application{
 
     static public int SCREEN_HEIGHT = 600;
@@ -21,7 +18,7 @@ public class Main extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception{
         //Removed the graphics
-
+        //TODO ask if we have to generate hashcodes and equal for every class
         Group root = new Group();
 
         Canvas canvas = new Canvas(SCREEN_WIDTH,SCREEN_HEIGHT);
@@ -30,8 +27,8 @@ public class Main extends Application{
         Archer archer = new Archer(1);
         Archer target = new Archer(1);
 
-        Attack attack = archer.getAttack(new Mountain());
-        target.recieveDamage(attack,new Mountain());
+        Attack attack = archer.getAttack(Terrain.MOUNTAIN);
+        target.recieveDamage(attack,Terrain.MOUNTAIN);
 
         root.getChildren().add(canvas);
 
