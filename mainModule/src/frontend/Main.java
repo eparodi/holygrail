@@ -1,7 +1,7 @@
 package frontend;
 
 import backend.Attack;
-import backend.Terrain;
+import backend.worldBuilding.Terrain;
 import backend.units.Archer;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -9,10 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
-
-/**
- * Created by Julian Benitez on 10/12/2015.
- */
 
 /**
  * 

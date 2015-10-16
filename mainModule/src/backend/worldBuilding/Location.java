@@ -1,8 +1,6 @@
-package backend;
+package backend.worldBuilding;
 
-/**
- * Created by Julian Benitez on 10/12/2015.
- */
+
 public class Location {
     private Integer x;
     private Integer y;
@@ -37,8 +35,7 @@ public class Location {
 
         Location location = (Location) o;
 
-        if (x != null ? !x.equals(location.x) : location.x != null) return false;
-        return !(y != null ? !y.equals(location.y) : location.y != null);
+        return getX().equals(location.getX()) && getY().equals(location.getY());
 
     }
 

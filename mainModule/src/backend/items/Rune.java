@@ -1,4 +1,4 @@
-package backend;
+package backend.items;
 
 public class Rune {
     private String name;

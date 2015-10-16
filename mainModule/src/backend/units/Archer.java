@@ -1,8 +1,8 @@
 package backend.units;
 
-import backend.Armor;
+import backend.items.Armor;
 import backend.Attack;
-import backend.Terrain;
+import backend.worldBuilding.Terrain;
 
 public class Archer extends Unit {
 

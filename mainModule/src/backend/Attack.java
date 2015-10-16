@@ -1,6 +1,6 @@
 package backend;
 
-import java.util.Collection;
+import backend.items.Rune;
 
 public class Attack{
     Integer slashDamage, piercingDamage, bluntDamage;

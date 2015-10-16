@@ -1,8 +1,5 @@
-package backend;
+package backend.items;
 
-/**
- * Created by Julian Benitez on 10/13/2015.
- */
 public class Item {
     String name="Default";
 

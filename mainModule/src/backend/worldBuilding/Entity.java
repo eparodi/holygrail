@@ -1,8 +1,7 @@
-package backend;
+package backend.worldBuilding;
 
-/**
- * Created by Julian Benitez on 10/12/2015.
- */
+import backend.worldBuilding.Location;
+
 public abstract class Entity {
     private Location gridLocation;
 

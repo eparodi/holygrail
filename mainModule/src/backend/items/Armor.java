@@ -1,8 +1,7 @@
-package backend;
+package backend.items;
 
-/**
- * Created by Julian Benitez on 10/13/2015.
- */
+import backend.Attack;
+
 public class Armor{
     Integer slashResist, piercingResist, bluntResist;
 

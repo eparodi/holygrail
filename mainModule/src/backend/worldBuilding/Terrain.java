@@ -1,4 +1,4 @@
-package backend;
+package backend.worldBuilding;
 
 import java.util.Objects;
 

@@ -1,8 +1,10 @@
 package backend.units;
 
 import backend.*;
-
-import java.util.Collection;
+import backend.items.Armor;
+import backend.items.Item;
+import backend.worldBuilding.Location;
+import backend.worldBuilding.Terrain;
 
 public abstract class Unit {
     private String name;
