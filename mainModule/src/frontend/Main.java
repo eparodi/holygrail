@@ -10,6 +10,15 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 
+/**
+ * Created by Julian Benitez on 10/12/2015.
+ */
+
+/**
+ * 
+ * Probando commitear desde el Eclipse
+ *
+ */
 public class Main extends Application{
 
     static public int SCREEN_HEIGHT = 600;
