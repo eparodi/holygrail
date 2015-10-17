@@ -2,6 +2,7 @@ package backend.items;
 
 public class Extra extends Item {
     Integer maxAPBonus, maxHealthBonus;
+    int lala;
 
     public Extra(String name, Integer maxAPBonus, Integer maxHealthBonus){
         super(name);
