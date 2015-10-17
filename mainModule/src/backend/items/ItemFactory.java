@@ -3,7 +3,7 @@ package backend.items;
 public class ItemFactory {
 
     //Constructor: name, maxHealthBonus, maxAPBonus
-    public Extra buildExtra(String name){
+    public static Extra buildExtra(String name){
        if(name == null){
            return null;
        }
@@ -14,7 +14,7 @@ public class ItemFactory {
     }
 
     //Constructor: name, slashResist, piercingResist, bluntResist
-    public Armor buildArmor(String name){
+    public static Armor buildArmor(String name){
         if(name == null){
             return null;
         }
@@ -25,7 +25,7 @@ public class ItemFactory {
     }
 
     //Constructor: name, slashBonus, piercingBonus, bluntBonus
-    public Rune buildRune(String name){
+    public static Rune buildRune(String name){
         if(name == null){
             return null;
         }

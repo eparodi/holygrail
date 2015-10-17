@@ -48,7 +48,7 @@ public class Unit {
         this.owner = owner;
     }
 
-    public void recieveDamage(Attack attack) {
+    public void receiveDamage(Attack attack) {
         System.out.println("calcTerrainMod(defendersTerrain) = " + calcTerrainMod(currentTerrain));
         Integer damageDealt = armor.getDamageDealt(attack, calcTerrainMod(currentTerrain));
         health -= damageDealt;
@@ -103,13 +103,12 @@ public class Unit {
         }
     }
 
-    //
     public void updateStatus() {
         Integer newHealth = health + extra.getMaxHealthBonus();
-        health = newHealth < maxHealth ? newHealth : maxHealth;
+        health = newHealth < getMaxHealth() ? newHealth : getMaxHealth();
 
         Integer newAP = actionPoints + extra.getMaxAPBonus();
-        actionPoints = newAP < maxActionPoints ? newAP : maxActionPoints;
+        actionPoints = newAP < getMaxActionPoints() ? newAP : getMaxActionPoints();
     }
 
     public Item dropItem(Item item) {
@@ -138,16 +137,19 @@ public class Unit {
         return maxActionPoints;
     }
 
-	public void setLocation(Location location){
-		if(location == null) throw new NullLocationException(this.toString() + " recieved a null location");
-		this.location = location;
-	}
-	public void setCurrentTerrain(Terrain terrain){
-		this.currentTerrain = terrain;
-	}
-	public void refillAP(){
-		this.actionPoints = this.maxActionPoints;
-	}
+    public void setLocation(Location location) {
+        if (location == null) throw new NullLocationException(this.toString() + " recieved a null location");
+        this.location = location;
+    }
+
+    public void setCurrentTerrain(Terrain terrain) {
+        this.currentTerrain = terrain;
+    }
+
+    public void refillAP() {
+        this.actionPoints = this.maxActionPoints;
+    }
+
     public Integer getRange() {
         return range;
     }

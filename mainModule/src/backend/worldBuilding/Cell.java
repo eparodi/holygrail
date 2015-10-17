@@ -10,11 +10,16 @@ public class Cell {
     Location location;
     Unit localUnit;
     Building building;
+
     Terrain terrain;
 
     public Cell(Location location, Terrain terrain) {
         this.terrain = terrain;
         this.location = location;
+    }
+
+    public Terrain getTerrain() {
+        return terrain;
     }
 
     public Unit getUnit() {
@@ -25,7 +30,7 @@ public class Cell {
         return location;
     }
 
-    public Building getBuilding(){
+    public Building getBuilding() {
         return building;
     }
 
@@ -43,16 +48,17 @@ public class Cell {
             throw new CellIsOccupiedException("Cell at " + location.toString() + " has a building already");
         this.building = building;
     }
-    public void removeUnit(){
-        if (!isUnitOnCell()){
+
+    public void removeUnit() {
+        if (!isUnitOnCell()) {
             throw new CellIsEmpty("Cell at " + location.toString() + " is empty");
         }
         localUnit = null;
     }
 
-    public String toString(){
-        return  "Cell at " +( (location == null)? "null location" :location.toString()) +
-                "terrain type: " + terrain + " unit: " +( (localUnit == null)? "no unit":localUnit.toString()) +
-                "building: " + ((building == null)? "no building": building.toString());
+    public String toString() {
+        return "Cell at " + ((location == null) ? "null location" : location.toString()) +
+                "terrain type: " + terrain + " unit: " + ((localUnit == null) ? "no unit" : localUnit.toString()) +
+                "building: " + ((building == null) ? "no building" : building.toString());
     }
 }

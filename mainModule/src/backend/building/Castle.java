@@ -9,11 +9,7 @@ import backend.worldBuilding.Terrain;
 public class Castle extends Building {
 
     public Castle(Player player) {
-        owner = player;
-    }
-
-    public Player getOwner() {
-        return owner;
+       owner = player;
     }
 
     public Unit buildUnit(String unitType, Terrain terrain, Location location, Player player) {

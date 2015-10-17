@@ -13,10 +13,6 @@ public class Mine extends Building{
         return income;
     }
 
-    public Player getOwner() {
-        return owner;
-    }
-
     public void captureMine(Player player){
         owner = player;
     }

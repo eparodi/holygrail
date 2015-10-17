@@ -33,7 +33,7 @@ public class Main extends Application {
 //        Archer target = new Archer(1);
 //
 //        Attack attack = archer.getAttack(Terrain.MOUNTAIN);
-//        target.recieveDamage(attack,Terrain.MOUNTAIN);
+//        target.receiveDamage(attack,Terrain.MOUNTAIN);
         World world = new World(4, 6, new Player("Gary"), new Player("Tom"));
         root.getChildren().add(canvas);
 

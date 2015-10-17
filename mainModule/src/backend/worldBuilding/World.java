@@ -6,18 +6,15 @@ import backend.building.Castle;
 import backend.exceptions.CellOutOfWorldException;
 import backend.exceptions.NullArgumentException;
 import backend.units.Unit;
-import backend.worldBuilding.Cell;
-import backend.worldBuilding.Location;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
 
 public class World {
     Collection<Cell> cells;
     Integer worldWidth, worldHeight;
 
-    //TODO Replace player1 and player2 with Collection<Player> and recieve map
+    //TODO Replace player1 and player2 with Collection<Player> and receive map
     public World(Integer worldWidth, Integer worldHeight, Player player1, Player player2) {
         this.worldHeight = worldHeight;
         this.worldWidth = worldWidth;
@@ -32,9 +29,9 @@ public class World {
         castle = new Castle(player2);
         getCellAt(player2Castle).addBuilding(castle);
 
-        for (Cell cell : cells) {
-            System.out.println(cell.toString());
-        }
+//        for (Cell cell : cells) {
+//            System.out.println(cell.toString());
+//        }
     }
 
     public void addBuilding(Building building, Location location){
@@ -83,7 +80,7 @@ public class World {
     private boolean attack(Unit attacker, Unit defender) {
         if (isInRange(attacker, defender)) {
             Attack attack = attacker.getAttack();
-            defender.recieveDamage(attack);
+            defender.receiveDamage(attack);
             return true;
         }
         return false;
@@ -116,8 +113,6 @@ public class World {
         Integer deltaX = Math.abs(x1 - x2);
         Integer deltaY = Math.abs(y1 - y2);
         Integer deltaZ = Math.abs(z1 - z2);
-
-        System.out.println("distance: " + Math.max(Math.max(deltaX, deltaY), deltaZ));
 
         return Math.max(Math.max(deltaX, deltaY), deltaZ);
     }
