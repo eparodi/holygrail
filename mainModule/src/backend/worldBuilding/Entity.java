@@ -13,6 +13,7 @@ public abstract class Entity {
         return gridLocation;
     }
 
+    //No deberia esta aca
     public Integer distanceToLocation(Location target){
         //this assumes that both target and origin represent hexagons in a hex matrix
 

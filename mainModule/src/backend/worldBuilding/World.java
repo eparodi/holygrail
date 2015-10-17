@@ -118,8 +118,6 @@ public class World {
         Integer deltaY = Math.abs(y1 - y2);
         Integer deltaZ = Math.abs(z1 - z2);
 
-        System.out.println("distance: " + Math.max(Math.max(deltaX, deltaY), deltaZ));
-
         return Math.max(Math.max(deltaX, deltaY), deltaZ);
     }
 
