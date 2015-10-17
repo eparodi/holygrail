@@ -1,17 +1,17 @@
 package backend.items;
 
 public class Item {
-    String name="Default";
+	String name = "Default";
 
+	public Item(String name) {
+		this.name = name;
+	}
 
-    public Item(String name){
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getName(){
-        return name;
-    }
-    public boolean isHolyGrail(){
-        return name.equals("Holy Grail");
-    }
+	public boolean isHolyGrail() {
+		return name.equals("Holy Grail");
+	}
 }
