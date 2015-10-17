@@ -16,6 +16,7 @@ public class Unit {
 	private Integer id;
 	private String name;
 	private Terrain preferredTerrain;
+
 	private Terrain currentTerrain;
 	private Location location;
 
@@ -46,9 +47,9 @@ public class Unit {
 		this.owner = owner;
 	}
 
-	public boolean recieveDamage(Attack attack, Terrain defendersTerrain) {
-		System.out.println("calcTerrainMod(defendersTerrain) = " + calcTerrainMod(defendersTerrain));
-		Integer damageDealt = armor.getDamageDealt(attack, calcTerrainMod(defendersTerrain));
+	public boolean recieveDamage(Attack attack) {
+		System.out.println("calcTerrainMod(defendersTerrain) = " + calcTerrainMod(currentTerrain));
+		Integer damageDealt = armor.getDamageDealt(attack, calcTerrainMod(currentTerrain));
 		health -= damageDealt;
 		System.out.println("damageDealt = " + damageDealt);
 		System.out.println("health = " + health);
@@ -66,15 +67,15 @@ public class Unit {
 		return mod;
 	}
 
-	public Attack getAttack(Terrain attackerTerrain) {
+	public Attack getAttack() {
 		// returns the base attack with the terrain bonus the attacking unit is
 		// on
 		System.out.println(name + "is attacking");
-		System.out.println("attackerTerrain = " + attackerTerrain);
+		System.out.println("attackerTerrain = " + currentTerrain);
 		System.out.println("baseAttack = " + baseAttack);
 		System.out.println("baseAttack.getModifiedAttack(calcTerrainMod(attackerTerrain)) = "
-				+ baseAttack.getModifiedAttack(calcTerrainMod(attackerTerrain), rune));
-		return baseAttack.getModifiedAttack(calcTerrainMod(attackerTerrain), rune);
+				+ baseAttack.getModifiedAttack(calcTerrainMod(currentTerrain), rune));
+		return baseAttack.getModifiedAttack(calcTerrainMod(currentTerrain), rune);
 	}
 
 //	//TODO preguntar si está bien o no este metodo
@@ -116,7 +117,7 @@ public class Unit {
 //	}
 
 	public Integer getHealth() {
-		return health;
+		return health < 0 ? 0 : health;
 	}
 
 	public Integer getMaxHealth() {
@@ -152,4 +153,15 @@ public class Unit {
 		return owner;
 	}
 
+	public Terrain getCurrentTerrain() {
+		return currentTerrain;
+	}
+
+	public boolean isDed(){
+		return getHealth() == 0;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
 }
