@@ -12,17 +12,16 @@ public class Cell {
     Building building;
     Terrain terrain;
 
-    public Cell(Location location, Terrain terrain)
-    {
+    public Cell(Location location, Terrain terrain) {
         this.terrain = terrain;
         this.location = location;
     }
 
-    public Unit getUnit(){
+    public Unit getUnit() {
         return localUnit;
     }
 
-    public Location getLocation(){
+    public Location getLocation() {
         return location;
     }
 
@@ -30,15 +29,18 @@ public class Cell {
         return building;
     }
     public boolean isUnitOnCell(){
+    public boolean isUnitOnCell() {
         return !(localUnit == null);
     }
 
-    public void addUnit(Unit unit){
-        if(isUnitOnCell()) throw new CellIsOccupiedException("Cell at " + location.toString() + " has a unit already");
+    public void addUnit(Unit unit) {
+        if (isUnitOnCell()) throw new CellIsOccupiedException("Cell at " + location.toString() + " has a unit already");
         localUnit = unit;
     }
-    public void addBuilding(Building building){
-        if(!(this.building == null))throw new CellIsOccupiedException("Cell at " + location.toString() + " has a building already");
+
+    public void addBuilding(Building building) {
+        if (!(this.building == null))
+            throw new CellIsOccupiedException("Cell at " + location.toString() + " has a building already");
         this.building = building;
     }
     public void removeUnit(){

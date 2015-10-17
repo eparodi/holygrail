@@ -18,21 +18,21 @@ public class World {
     Integer worldWidth, worldHeight;
 
     //TODO Replace player1 and player2 with Collection<Player> and recieve map
-    public World(Integer worldWidth, Integer worldHeight, Player player1, Player player2){
+    public World(Integer worldWidth, Integer worldHeight, Player player1, Player player2) {
         this.worldHeight = worldHeight;
         this.worldWidth = worldWidth;
 
         cells = generateCellCollection();
 
-        Location player1Castle = new Location(1, Math.round(worldHeight/2));
-        Location player2Castle = new Location(worldWidth-1, Math.round(worldHeight/2));
+        Location player1Castle = new Location(1, Math.round(worldHeight / 2));
+        Location player2Castle = new Location(worldWidth - 1, Math.round(worldHeight / 2));
 
         Castle castle = new Castle(player1);
         getCellAt(player1Castle).addBuilding(castle);
         castle = new Castle(player2);
         getCellAt(player2Castle).addBuilding(castle);
 
-        for (Cell cell: cells){
+        for (Cell cell : cells) {
             System.out.println(cell.toString());
         }
     }
@@ -50,7 +50,8 @@ public class World {
     public void removeUnit(Location location){
         getCellAt(location).removeUnit();
     }
-    public void removeUnit(Unit unit){
+
+    public void removeUnit(Unit unit) {
         getCellAt(unit.getLocation()).removeUnit();
     }
 
@@ -62,7 +63,7 @@ public class World {
         }
     }
 
-    public void moveUnit(Location initialLocation, Location finalLocation){
+    public void moveUnit(Location initialLocation, Location finalLocation) {
         Unit auxUnit = getCellAt(initialLocation).getUnit();
 
         auxUnit.setCurrentTerrain(getTerrainAt(finalLocation));
@@ -79,27 +80,31 @@ public class World {
         getCellAt(buildingLocation).getBuilding().setOwner(unit.getOwner());
     }
 
-    public void attack(Unit attacker, Unit defender){
-        isInRange(attacker, defender);
-        Attack attack = attacker.getAttack();
-        defender.recieveDamage(attack);
-    }
-    public void skirmish(Unit attacker, Unit defender){
-        attack(attacker, defender);
-        if (!defender.isDed()){
-            attack(defender, attacker);
+    private boolean attack(Unit attacker, Unit defender) {
+        if (isInRange(attacker, defender)) {
+            Attack attack = attacker.getAttack();
+            defender.recieveDamage(attack);
+            return true;
         }
-        else removeUnit(defender);
+        return false;
+    }
 
-        if(attacker.isDed()) removeUnit(attacker);
-        if(defender.isDed()) removeUnit(defender);
+    public void skirmish(Unit attacker, Unit defender) {
+        attack(attacker, defender);
+        if (!defender.isDed()) {
+            attack(defender, attacker);
+        } else removeUnit(defender);
+
+        if (attacker.isDed()) removeUnit(attacker);
+        if (defender.isDed()) removeUnit(defender);
     }
 
     private boolean isInRange(Unit attacker, Unit defender) {
         Integer range = attacker.getRange();
-        return distance(attacker.getLocation(), defender.getLocation()) < range;
+        return distance(attacker.getLocation(), defender.getLocation()) <= range;
     }
-    private static Integer distance(Location l1, Location l2) {
+
+    private Integer distance(Location l1, Location l2) {
         // Cálculos raros para adaptar la matriz a la matriz de 3 ejes:
         Integer x1 = -l1.getY();
         Integer x2 = -l2.getY();
@@ -112,54 +117,59 @@ public class World {
         Integer deltaY = Math.abs(y1 - y2);
         Integer deltaZ = Math.abs(z1 - z2);
 
+        System.out.println("distance: " + Math.max(Math.max(deltaX, deltaY), deltaZ));
+
         return Math.max(Math.max(deltaX, deltaY), deltaZ);
     }
 
-    public  Cell getCellAt(Location location){
-        for (Cell cell: cells){
+    public Cell getCellAt(Location location) {
+        for (Cell cell : cells) {
             if (cell.getLocation().equals(location)) return cell;
         }
         throw new CellOutOfWorldException("No cell exists at " + location.toString());
     }
 
-    public  Collection<Unit> getUnits(){
+    public Collection<Unit> getUnits() {
         Collection<Unit> units = new ArrayList<Unit>();
         Unit unit;
 
-        for(Cell cell:cells){
+        for (Cell cell : cells) {
             unit = cell.getUnit();
-            if(!(unit == null)) units.add(unit);
+            if (!(unit == null)) units.add(unit);
         }
         return units;
     }
-    public Collection<Unit> getUnits(Player player){
+
+    public Collection<Unit> getUnits(Player player) {
         Collection<Unit> units = new ArrayList<Unit>();
         Unit unit;
 
-        for(Cell cell:cells){
+        for (Cell cell : cells) {
             unit = cell.getUnit();
-            if((!(unit == null)) && unit.getOwner().equals(player)) units.add(unit);
+            if ((!(unit == null)) && unit.getOwner().equals(player)) units.add(unit);
         }
 
         return units;
     }
 
-    public Terrain getTerrainAt(Location location){
+    public Terrain getTerrainAt(Location location) {
         return getCellAt(location).terrain;
     }
-    public Terrain loadTerrain(Location location){
+
+    public Terrain loadTerrain(Location location) {
         return Terrain.GRASS;
     }
-    private Collection<Cell> generateCellCollection(){
+
+    private Collection<Cell> generateCellCollection() {
 
         Collection<Cell> cellCollection = new ArrayList<Cell>();
         Cell cell;
         Location cellLocation;
 
-        for (int i=0 ; i < worldWidth ; i++){
-            for (int j=0 ; j < worldHeight ; j++) {
-                
-                cellLocation = new Location(i,j);
+        for (int i = 0; i < worldWidth; i++) {
+            for (int j = 0; j < worldHeight; j++) {
+
+                cellLocation = new Location(i, j);
                 cell = new Cell(cellLocation, loadTerrain(cellLocation));
 
                 cellCollection.add(cell);
