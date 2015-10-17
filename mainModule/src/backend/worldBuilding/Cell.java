@@ -26,6 +26,9 @@ public class Cell {
         return location;
     }
 
+    public Building getBuilding(){
+        return building;
+    }
     public boolean isUnitOnCell(){
         return !(localUnit == null);
     }

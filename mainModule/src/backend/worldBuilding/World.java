@@ -1,8 +1,10 @@
 package backend.worldBuilding;
 
 import backend.Attack;
+import backend.building.Building;
 import backend.building.Castle;
 import backend.exceptions.CellOutOfWorldException;
+import backend.exceptions.NullArgumentException;
 import backend.units.Unit;
 import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
@@ -35,8 +37,12 @@ public class World {
         }
     }
 
+    public void addBuilding(Building building, Location location){
+        if(building == null) throw new NullArgumentException("null building parameter");
+        if(location == null) throw new NullArgumentException("null location parameter");
 
-
+        getCellAt(location).addBuilding(building);
+    }
 
     public void addUnit(Unit unit, Location location){
         getCellAt(location).addUnit(unit);
@@ -48,6 +54,13 @@ public class World {
         getCellAt(unit.getLocation()).removeUnit();
     }
 
+    public void refillUnitsAP(Player player){
+        Unit unit;
+        for(Cell cell:cells){
+            unit = cell.getUnit();
+            if((unit != null)&&(unit.getOwner().equals(player)) )unit.refillAP();
+        }
+    }
 
     public void moveUnit(Location initialLocation, Location finalLocation){
         Unit auxUnit = getCellAt(initialLocation).getUnit();
@@ -57,6 +70,13 @@ public class World {
 
         getCellAt(initialLocation).removeUnit();
         getCellAt(finalLocation).addUnit(auxUnit);
+    }
+    public void captureBuilding(Unit unit, Location buildingLocation){
+        if(unit == null) throw new NullArgumentException("null unit parameter");
+        if(buildingLocation == null) throw new NullArgumentException("null location parameter");
+
+        moveUnit(unit.getLocation(),buildingLocation);
+        getCellAt(buildingLocation).getBuilding().setOwner(unit.getOwner());
     }
 
     public void attack(Unit attacker, Unit defender){

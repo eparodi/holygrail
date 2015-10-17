@@ -165,6 +165,9 @@ public class Unit {
 	public void setCurrentTerrain(Terrain terrain){
 		this.currentTerrain = terrain;
 	}
+	public void refillAP(){
+		this.actionPoints = this.maxActionPoints;
+	}
 
 	public boolean isDed(){
 		return getHealth() == 0;
