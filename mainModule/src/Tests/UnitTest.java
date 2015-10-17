@@ -31,7 +31,7 @@ public class UnitTest {
     @Test
     //Sees if a Unit can Move
     public void MoveTest() {
-        world.addUnit(archer, archer.getLocation());
+        world.addUnit(archer);
         world.moveUnit(archer.getLocation(), new Location(3, 3));
 
         assertTrue(archer.getLocation().equals(new Location(3, 3)));
@@ -43,7 +43,7 @@ public class UnitTest {
     public void CaptureCastleTest() {
         Castle castle = new Castle(p2);
 
-        world.addUnit(archer, archer.getLocation());
+        world.addUnit(archer);
         world.addBuilding(castle, new Location(1, 1));
 
         world.captureBuilding(archer, new Location(1, 1));
@@ -56,8 +56,8 @@ public class UnitTest {
     public void BattleTest() {
         Unit lancer = UnitFactory.buildUnit("lancer", Terrain.GRASS, new Location(3, 1), p1);
 
-        world.addUnit(archer, archer.getLocation());
-        world.addUnit(lancer, lancer.getLocation());
+        world.addUnit(archer);
+        world.addUnit(lancer);
 
         Integer lancerHealthIni = lancer.getHealth();
         Integer archerHealthIni = archer.getHealth();

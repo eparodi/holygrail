@@ -7,13 +7,10 @@ public class Mine extends Building{
 
     public Mine(Integer gold){
         income = gold;
+        buildingType = "Mine";
     }
 
     public Integer getIncome(){
         return income;
-    }
-
-    public void captureMine(Player player){
-        owner = player;
     }
 }

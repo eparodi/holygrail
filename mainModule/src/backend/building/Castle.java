@@ -9,17 +9,12 @@ import backend.worldBuilding.Terrain;
 public class Castle extends Building {
 
     public Castle(Player player) {
-       owner = player;
+        owner = player;
+        buildingType = "Castle";
     }
 
     public Unit buildUnit(String unitType, Terrain terrain, Location location, Player player) {
-        UnitFactory unitFactory = new UnitFactory();
-
-        return unitFactory.buildUnit(unitType, terrain, location, player);
+        return UnitFactory.buildUnit(unitType, terrain, location, player);
     }
 
-    @Override
-    public String toString() {
-        return "Castle from " + owner + " ";
-    }
 }

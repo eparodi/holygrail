@@ -176,4 +176,9 @@ public class Unit {
     public Location getLocation() {
         return location;
     }
+
+    public void spendAP(Integer actionPointsSpent){
+        actionPoints -= actionPointsSpent;
+        if(actionPoints < 0) throw new IllegalStateException(this + " is using more AP than it has");
+    }
 }

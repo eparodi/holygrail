@@ -4,17 +4,23 @@ import backend.Attack;
 import backend.building.Building;
 import backend.building.Castle;
 import backend.exceptions.CellOutOfWorldException;
+import backend.exceptions.InvalidTerrainException;
 import backend.exceptions.NullArgumentException;
+import backend.exceptions.NullLocationException;
 import backend.units.Unit;
+import backend.worldBuilding.Cell;
+import backend.worldBuilding.Location;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
 public class World {
     Collection<Cell> cells;
     Integer worldWidth, worldHeight;
 
-    //TODO Replace player1 and player2 with Collection<Player> and receive map
+
+    //TODO Replace player1 and player2 with Collection<Player> and recieve map
     public World(Integer worldWidth, Integer worldHeight, Player player1, Player player2) {
         this.worldHeight = worldHeight;
         this.worldWidth = worldWidth;
@@ -41,8 +47,10 @@ public class World {
         getCellAt(location).addBuilding(building);
     }
 
-    public void addUnit(Unit unit, Location location){
-        getCellAt(location).addUnit(unit);
+    public void addUnit(Unit unit){
+        if(unit == null)throw new NullArgumentException("null unit argument");
+        if(unit.getLocation() == null) throw new NullLocationException("unit has no location");
+        getCellAt(unit.getLocation()).addUnit(unit);
     }
     public void removeUnit(Location location){
         getCellAt(location).removeUnit();
@@ -101,7 +109,7 @@ public class World {
         return distance(attacker.getLocation(), defender.getLocation()) <= range;
     }
 
-    private Integer distance(Location l1, Location l2) {
+    public static Integer distance(Location l1, Location l2) {
         // Cálculos raros para adaptar la matriz a la matriz de 3 ejes:
         Integer x1 = -l1.getY();
         Integer x2 = -l2.getY();
@@ -114,7 +122,23 @@ public class World {
         Integer deltaY = Math.abs(y1 - y2);
         Integer deltaZ = Math.abs(z1 - z2);
 
+        System.out.println("distance: " + Math.max(Math.max(deltaX, deltaY), deltaZ));
+
         return Math.max(Math.max(deltaX, deltaY), deltaZ);
+    }
+
+    public Integer getTerrainAPCost(Terrain terrain){
+        switch (terrain){
+            case GRASS:
+                return 1;
+            case MOUNTAIN:
+                return 3;
+            case FOREST:
+                return 2;
+            case WATER:
+                return 20;
+        }
+        throw new InvalidTerrainException(terrain + " does not have a cost");
     }
 
     public Cell getCellAt(Location location) {
@@ -145,6 +169,27 @@ public class World {
         }
 
         return units;
+    }
+
+    public Location getBuildingLocation(Building building){
+        Location location;
+        if(building == null) throw new NullArgumentException("building is null");
+        for(Cell cell:cells){
+            if(building.equals(cell.getBuilding()))return cell.getLocation();
+        }
+        //No such building exists if execution reached this point
+        return null;
+    }
+
+    public Castle getPlayerCastle(Player player) {
+        for (Cell cell : cells) {
+            if (cell.getBuilding() != null) {
+                if (cell.getBuilding().getOwner().equals(player)) {
+                    if (cell.getBuilding().getBuildingType().equals("Castle")) return (Castle) cell.getBuilding();
+                }
+            }
+        }
+        return null;
     }
 
     public Terrain getTerrainAt(Location location) {

@@ -38,6 +38,10 @@ public class Cell {
         return !(localUnit == null);
     }
 
+    public boolean isBuildingOnCell(){
+        return !(building == null);
+    }
+
     public void addUnit(Unit unit) {
         if (isUnitOnCell()) throw new CellIsOccupiedException("Cell at " + location.toString() + " has a unit already");
         localUnit = unit;
