@@ -4,8 +4,11 @@ import java.util.Objects;
 
 public class Player {
     private String name;
+    private Integer gold;
+
     public Player(String name){
         this.name = name;
+        gold = 100;
     }
 
     @Override

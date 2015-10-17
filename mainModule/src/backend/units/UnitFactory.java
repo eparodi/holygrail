@@ -13,7 +13,7 @@ public class UnitFactory {
 
     }
 
-    public Unit buildUnit(String unitName, Terrain currentTerrain, Location location, Player player){
+    public static Unit buildUnit(String unitName, Terrain currentTerrain, Location location, Player player){
 
         Unit unit = null;
         if(unitName == null) throw new NullNameException("Null unit name");

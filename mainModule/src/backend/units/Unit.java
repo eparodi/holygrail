@@ -157,6 +157,11 @@ public class Unit {
 		return currentTerrain;
 	}
 
+	public void setLocation(Location location){
+		//if(location == null) throw new Ex
+		this.location = location;
+	}
+
 	public boolean isDed(){
 		return getHealth() == 0;
 	}

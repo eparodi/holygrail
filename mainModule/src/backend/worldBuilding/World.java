@@ -1,5 +1,7 @@
 package backend.worldBuilding;
 
+import backend.Attack;
+import backend.building.Castle;
 import backend.exceptions.CellOutOfWorldException;
 import backend.units.Unit;
 import backend.worldBuilding.Cell;
@@ -33,12 +35,22 @@ public class World {
         }
     }
 
+
+
+
+    public void addUnit(Unit unit, Location location){
+        getCellAt(location).addUnit(unit);
+    }
     public void removeUnit(Location location){
         getCellAt(location).removeUnit();
+    }
+    public void removeUnit(Unit unit){
+        getCellAt(unit.getLocation()).removeUnit();
     }
 
     public void moveUnit(Location initialLocation, Location finalLocation){
         Unit auxUnit = getCellAt(initialLocation).getUnit();
+        //auxUnit.
         getCellAt(initialLocation).removeUnit();
         getCellAt(finalLocation).addUnit(auxUnit);
     }
@@ -48,19 +60,21 @@ public class World {
         Attack attack = attacker.getAttack();
         defender.recieveDamage(attack);
     }
-
     public void skirmish(Unit attacker, Unit defender){
         attack(attacker, defender);
         if (!defender.isDed()){
             attack(defender, attacker);
         }
+        else removeUnit(defender);
+
+        if(attacker.isDed()) removeUnit(attacker);
+        if(defender.isDed()) removeUnit(defender);
     }
 
     private boolean isInRange(Unit attacker, Unit defender) {
         Integer range = attacker.getRange();
         return distance(attacker.getLocation(), defender.getLocation()) < range;
     }
-
     private static Integer distance(Location l1, Location l2) {
         // Cálculos raros para adaptar la matriz a la matriz de 3 ejes:
         Integer x1 = -l1.getY();
@@ -94,7 +108,6 @@ public class World {
         }
         return units;
     }
-
     public Collection<Unit> getUnits(Player player){
         Collection<Unit> units = new ArrayList<Unit>();
         Unit unit;
@@ -110,7 +123,6 @@ public class World {
     public Terrain loadTerrain(Location location){
         return Terrain.GRASS;
     }
-
     private Collection<Cell> generateCellCollection(){
 
         Collection<Cell> cellCollection = new ArrayList<Cell>();
