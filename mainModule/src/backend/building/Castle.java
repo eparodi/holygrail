@@ -6,9 +6,9 @@ import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.worldBuilding.Terrain;
 
-public class Castle extends Building{
+public class Castle extends Building {
 
-    public Castle(Player player){
+    public Castle(Player player) {
         owner = player;
     }
 
@@ -16,13 +16,14 @@ public class Castle extends Building{
         return owner;
     }
 
-    public Unit buildUnit(String unitType, Terrain terrain, Location location, Player player){
-        Unit unit = UnitFactory.buildUnit(unitType, terrain,location,player);
-        return unit;
+    public Unit buildUnit(String unitType, Terrain terrain, Location location, Player player) {
+        UnitFactory unitFactory = new UnitFactory();
+
+        return unitFactory.buildUnit(unitType, terrain, location, player);;
     }
 
     @Override
-    public String toString(){
-        return "Castle from " + owner +" " ;
+    public String toString() {
+        return "Castle from " + owner + " ";
     }
 }

@@ -13,22 +13,20 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 
 /**
- * 
  * Probando commitear desde el Eclipse
- *
  */
-public class Main extends Application{
+public class Main extends Application {
 
     static public int SCREEN_HEIGHT = 600;
     static public int SCREEN_WIDTH = 600;
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         //Removed the graphics
         //TODO ask if we have to generate hashcodes and equal for every class
         Group root = new Group();
 
-        Canvas canvas = new Canvas(SCREEN_WIDTH,SCREEN_HEIGHT);
+        Canvas canvas = new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
         GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
 
 //        Archer archer = new Archer(1);
@@ -36,11 +34,11 @@ public class Main extends Application{
 //
 //        Attack attack = archer.getAttack(Terrain.MOUNTAIN);
 //        target.recieveDamage(attack,Terrain.MOUNTAIN);
-        World world = new World(4,6,new Player("Gary"), new Player("Tom"));
+        World world = new World(4, 6, new Player("Gary"), new Player("Tom"));
         root.getChildren().add(canvas);
 
         primaryStage.setTitle("El Santo Grial");
-        primaryStage.setScene(new Scene(root   , SCREEN_WIDTH, SCREEN_HEIGHT));
+        primaryStage.setScene(new Scene(root, SCREEN_WIDTH, SCREEN_HEIGHT));
         primaryStage.show();
     }
 
