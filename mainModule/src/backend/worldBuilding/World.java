@@ -48,9 +48,13 @@ public class World {
         getCellAt(unit.getLocation()).removeUnit();
     }
 
+
     public void moveUnit(Location initialLocation, Location finalLocation){
         Unit auxUnit = getCellAt(initialLocation).getUnit();
-        //auxUnit.
+
+        auxUnit.setCurrentTerrain(getTerrainAt(finalLocation));
+        auxUnit.setLocation(finalLocation);
+
         getCellAt(initialLocation).removeUnit();
         getCellAt(finalLocation).addUnit(auxUnit);
     }
@@ -120,6 +124,9 @@ public class World {
         return units;
     }
 
+    public Terrain getTerrainAt(Location location){
+        return getCellAt(location).terrain;
+    }
     public Terrain loadTerrain(Location location){
         return Terrain.GRASS;
     }

@@ -1,6 +1,7 @@
 package backend.units;
 
 import backend.*;
+import backend.exceptions.NullLocationException;
 import backend.items.Armor;
 import backend.items.Extra;
 import backend.items.Item;
@@ -158,8 +159,11 @@ public class Unit {
 	}
 
 	public void setLocation(Location location){
-		//if(location == null) throw new Ex
+		if(location == null) throw new NullLocationException(this.toString() + " recieved a null location");
 		this.location = location;
+	}
+	public void setCurrentTerrain(Terrain terrain){
+		this.currentTerrain = terrain;
 	}
 
 	public boolean isDed(){
