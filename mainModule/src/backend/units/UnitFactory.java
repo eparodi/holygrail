@@ -1,6 +1,7 @@
 package backend.units;
 
 import backend.Attack;
+import backend.exceptions.NoSuchUnitType;
 import backend.exceptions.NullNameException;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Terrain;
@@ -11,13 +12,22 @@ public class UnitFactory {
 
     }
 
-    public Unit buildUnit(String unitName){
-        Unit unit= new Unit("as",new Attack(1,2,2),2,4,6, Terrain.FOREST,new Location(2,23));
+    public Unit buildUnit(String unitName, Terrain currentTerrain, Location location){
+
+        Unit unit = null;
         if(unitName == null) throw new NullNameException("Null unit name");
 
-        if(unitName.equalsIgnoreCase(""))
+        if(unitName.equalsIgnoreCase("Archer")){
+            unit = new Unit("Archer",new Attack(1,4,1),7,7,2, Terrain.FOREST,currentTerrain,location);
+//            unit.pickItem(ItemFactory.make)
+        }
 
-        return unit;
+        if(unitName.equalsIgnoreCase("Lancer")){
+            unit = new Unit("Lancer",new Attack(2,2,7),20,10,1, Terrain.GRASS,currentTerrain,location);
+
+        }
+
+        if(unit == null) throw new NoSuchUnitType("No unit type called '" + unitName +"'");
         return unit;
     }
 }

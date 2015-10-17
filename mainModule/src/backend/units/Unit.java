@@ -13,6 +13,7 @@ public class Unit {
 	private Integer id;
 	private String name;
 	private Terrain preferredTerrain;
+	private Terrain currentTerrain;
 	private Location location;
 
 	private Attack baseAttack = null;
@@ -27,12 +28,13 @@ public class Unit {
 	private Integer range;
 
 	public Unit(String name, Attack baseAttack, Integer maxHealth, Integer maxActionPoints, Integer range,
-				Terrain preferredTerrain, Location location) {
+				Terrain currentTerrain, Terrain preferredTerrain, Location location) {
 		this.name = name;
 		this.baseAttack = baseAttack;
 		this.maxHealth = maxHealth;
 		this.maxActionPoints = maxActionPoints;
 		this.range = range;
+		this.currentTerrain = currentTerrain;
 		this.preferredTerrain = preferredTerrain;
 		this.health = maxHealth;
 		this.actionPoints = maxActionPoints;
