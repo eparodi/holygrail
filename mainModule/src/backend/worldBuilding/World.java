@@ -81,7 +81,7 @@ public class World {
         if(unit == null) throw new NullArgumentException("null unit parameter");
         if(buildingLocation == null) throw new NullArgumentException("null location parameter");
 
-        moveUnit(unit.getLocation(),buildingLocation);
+        moveUnit(unit.getLocation(), buildingLocation);
         getCellAt(buildingLocation).getBuilding().setOwner(unit.getOwner());
     }
 
@@ -109,23 +109,7 @@ public class World {
         return distance(attacker.getLocation(), defender.getLocation()) <= range;
     }
 
-    public static Integer distance(Location l1, Location l2) {
-        // Cálculos raros para adaptar la matriz a la matriz de 3 ejes:
-        Integer x1 = -l1.getY();
-        Integer x2 = -l2.getY();
-        Integer y1 = l1.getY() % 2 == 0 ? l1.getX() + l1.getY() / 2 : l1.getX() + (l1.getY() + 1) / 2;
-        Integer y2 = l2.getY() % 2 == 0 ? l2.getX() + l2.getY() / 2 : l2.getX() + (l2.getY() + 1) / 2;
-        Integer z1 = -x1 - y1;
-        Integer z2 = -x2 - y2;
 
-        Integer deltaX = Math.abs(x1 - x2);
-        Integer deltaY = Math.abs(y1 - y2);
-        Integer deltaZ = Math.abs(z1 - z2);
-
-        System.out.println("distance: " + Math.max(Math.max(deltaX, deltaY), deltaZ));
-
-        return Math.max(Math.max(deltaX, deltaY), deltaZ);
-    }
 
     public Integer getTerrainAPCost(Terrain terrain){
         switch (terrain){
@@ -218,7 +202,7 @@ public class World {
         return cellCollection;
     }
 
-    private static Integer distance(Location l1, Location l2) {
+    public static Integer distance(Location l1, Location l2) {
         // Cálculos raros para adaptar la matriz a la matriz de 3 ejes:
         Integer x1 = -l1.getY();
         Integer x2 = -l2.getY();
@@ -230,6 +214,8 @@ public class World {
         Integer deltaX = Math.abs(x1 - x2);
         Integer deltaY = Math.abs(y1 - y2);
         Integer deltaZ = Math.abs(z1 - z2);
+
+        System.out.println("distance: " + Math.max(Math.max(deltaX, deltaY), deltaZ));
 
         return Math.max(Math.max(deltaX, deltaY), deltaZ);
     }
