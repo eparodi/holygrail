@@ -13,17 +13,6 @@ public class ItemFactory {
         return null;
     }
 
-    //Constructor: name, slashResist, piercingResist, bluntResist
-    public static Armor buildArmor(String name){
-        if(name == null){
-            return null;
-        }
-        if (name.equalsIgnoreCase("Shining Armor")){
-            return new Armor(name, 3, 2, 1);
-        }
-        return null;
-    }
-
     //Constructor: name, slashBonus, piercingBonus, bluntBonus
     public static Rune buildRune(String name){
         if(name == null){

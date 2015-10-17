@@ -40,19 +40,20 @@ public class World {
 //        }
     }
 
-    public void addBuilding(Building building, Location location){
-        if(building == null) throw new NullArgumentException("null building parameter");
-        if(location == null) throw new NullArgumentException("null location parameter");
+    public void addBuilding(Building building, Location location) {
+        if (building == null) throw new NullArgumentException("null building parameter");
+        if (location == null) throw new NullArgumentException("null location parameter");
 
         getCellAt(location).addBuilding(building);
     }
 
-    public void addUnit(Unit unit){
-        if(unit == null)throw new NullArgumentException("null unit argument");
-        if(unit.getLocation() == null) throw new NullLocationException("unit has no location");
+    public void addUnit(Unit unit) {
+        if (unit == null) throw new NullArgumentException("null unit argument");
+        if (unit.getLocation() == null) throw new NullLocationException("unit has no location");
         getCellAt(unit.getLocation()).addUnit(unit);
     }
-    public void removeUnit(Location location){
+
+    public void removeUnit(Location location) {
         getCellAt(location).removeUnit();
     }
 
@@ -60,11 +61,11 @@ public class World {
         getCellAt(unit.getLocation()).removeUnit();
     }
 
-    public void refillUnitsAP(Player player){
+    public void refillUnitsAP(Player player) {
         Unit unit;
-        for(Cell cell:cells){
+        for (Cell cell : cells) {
             unit = cell.getUnit();
-            if((unit != null)&&(unit.getOwner().equals(player)) )unit.refillAP();
+            if ((unit != null) && (unit.getOwner().equals(player))) unit.refillAP();
         }
     }
 
@@ -77,49 +78,63 @@ public class World {
         getCellAt(initialLocation).removeUnit();
         getCellAt(finalLocation).addUnit(auxUnit);
     }
-    public void captureBuilding(Unit unit, Location buildingLocation){
-        if(unit == null) throw new NullArgumentException("null unit parameter");
-        if(buildingLocation == null) throw new NullArgumentException("null location parameter");
+
+    public void captureBuilding(Unit unit, Location buildingLocation) {
+        if (unit == null) throw new NullArgumentException("null unit parameter");
+        if (buildingLocation == null) throw new NullArgumentException("null location parameter");
 
         moveUnit(unit.getLocation(), buildingLocation);
         getCellAt(buildingLocation).getBuilding().setOwner(unit.getOwner());
     }
 
-    private boolean attack(Unit attacker, Unit defender) {
-        if (isInRange(attacker, defender)) {
+    private void attack(Unit attacker, Unit defender) {
             Attack attack = attacker.getAttack();
             defender.receiveDamage(attack);
-            return true;
-        }
-        return false;
     }
 
     public void skirmish(Unit attacker, Unit defender) {
         attack(attacker, defender);
-        if (!defender.isDed()) {
-            attack(defender, attacker);
-        } else removeUnit(defender);
+        attack(defender, attacker);
 
         if (attacker.isDed()) removeUnit(attacker);
         if (defender.isDed()) removeUnit(defender);
     }
 
-    private boolean isInRange(Unit attacker, Unit defender) {
+    public boolean isInRange(Unit attacker, Unit defender) {
         Integer range = attacker.getRange();
         return distance(attacker.getLocation(), defender.getLocation()) <= range;
     }
 
+    public static Integer distance(Location l1, Location l2) {
+        // Cálculos raros para adaptar la matriz a la matriz de 3 ejes:
+        Integer x1 = -l1.getY();
+        Integer x2 = -l2.getY();
+        Integer y1 = l1.getY() % 2 == 0 ? l1.getX() + l1.getY() / 2 : l1.getX() + (l1.getY() + 1) / 2;
+        Integer y2 = l2.getY() % 2 == 0 ? l2.getX() + l2.getY() / 2 : l2.getX() + (l2.getY() + 1) / 2;
+        Integer z1 = -x1 - y1;
+        Integer z2 = -x2 - y2;
 
+        Integer deltaX = Math.abs(x1 - x2);
+        Integer deltaY = Math.abs(y1 - y2);
+        Integer deltaZ = Math.abs(z1 - z2);
 
-    public Integer getTerrainAPCost(Terrain terrain){
-        switch (terrain){
+        System.out.println("distance: " + Math.max(Math.max(deltaX, deltaY), deltaZ));
+
+        return Math.max(Math.max(deltaX, deltaY), deltaZ);
+    }
+
+    public Integer getTerrainAPCost(Terrain terrain) {
+        switch (terrain) {
             case GRASS:
                 return 1;
-            case MOUNTAIN:
+            case HILL:
                 return 3;
             case FOREST:
                 return 2;
+            //TODO (ToAsk) esta bien si water tiene costo alto o hacemos celdas no pisables?
             case WATER:
+                return 20;
+            case MOUNTAIN:
                 return 20;
         }
         throw new InvalidTerrainException(terrain + " does not have a cost");
@@ -155,11 +170,11 @@ public class World {
         return units;
     }
 
-    public Location getBuildingLocation(Building building){
+    public Location getBuildingLocation(Building building) {
         Location location;
-        if(building == null) throw new NullArgumentException("building is null");
-        for(Cell cell:cells){
-            if(building.equals(cell.getBuilding()))return cell.getLocation();
+        if (building == null) throw new NullArgumentException("building is null");
+        for (Cell cell : cells) {
+            if (building.equals(cell.getBuilding())) return cell.getLocation();
         }
         //No such building exists if execution reached this point
         return null;
@@ -200,23 +215,5 @@ public class World {
             }
         }
         return cellCollection;
-    }
-
-    public static Integer distance(Location l1, Location l2) {
-        // Cálculos raros para adaptar la matriz a la matriz de 3 ejes:
-        Integer x1 = -l1.getY();
-        Integer x2 = -l2.getY();
-        Integer y1 = l1.getY() % 2 == 0 ? l1.getX() + l1.getY() / 2 : l1.getX() + (l1.getY() + 1) / 2;
-        Integer y2 = l2.getY() % 2 == 0 ? l2.getX() + l2.getY() / 2 : l2.getX() + (l2.getY() + 1) / 2;
-        Integer z1 = -x1 - y1;
-        Integer z2 = -x2 - y2;
-
-        Integer deltaX = Math.abs(x1 - x2);
-        Integer deltaY = Math.abs(y1 - y2);
-        Integer deltaZ = Math.abs(z1 - z2);
-
-        System.out.println("distance: " + Math.max(Math.max(deltaX, deltaY), deltaZ));
-
-        return Math.max(Math.max(deltaX, deltaY), deltaZ);
     }
 }

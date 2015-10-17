@@ -1,5 +1,5 @@
 package backend.worldBuilding;
 
 public enum Terrain {
-    GRASS, MOUNTAIN, FOREST, WATER
+    GRASS, HILL, FOREST, WATER, MOUNTAIN
 }
