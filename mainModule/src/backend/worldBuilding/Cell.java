@@ -16,6 +16,14 @@ public class Cell {
         this.location = location;
     }
 
+    public Unit getUnit(){
+        return localUnit;
+    }
+
+    public Location getLocation(){
+        return location;
+    }
+
     public boolean isUnitOnCell(){
         return !(localUnit == null);
     }

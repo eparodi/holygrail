@@ -6,10 +6,13 @@ import backend.items.Extra;
 import backend.items.Item;
 import backend.items.Rune;
 import backend.worldBuilding.Location;
+import backend.worldBuilding.Player;
 import backend.worldBuilding.Terrain;
 
 public class Unit {
 	static Integer nextId = 0;
+
+	Player owner;
 	private Integer id;
 	private String name;
 	private Terrain preferredTerrain;
@@ -28,7 +31,7 @@ public class Unit {
 	private Integer range;
 
 	public Unit(String name, Attack baseAttack, Integer maxHealth, Integer maxActionPoints, Integer range,
-				Terrain currentTerrain, Terrain preferredTerrain, Location location) {
+				Terrain currentTerrain, Terrain preferredTerrain, Location location, Player owner) {
 		this.name = name;
 		this.baseAttack = baseAttack;
 		this.maxHealth = maxHealth;
@@ -40,6 +43,7 @@ public class Unit {
 		this.actionPoints = maxActionPoints;
 		this.location = location;
 		this.id = getNextId();
+		this.owner = owner;
 	}
 
 	public boolean recieveDamage(Attack attack, Terrain defendersTerrain) {
@@ -144,6 +148,8 @@ public class Unit {
 		return aux;
 	}
 
-
+	public Player getOwner(){
+		return owner;
+	}
 
 }
