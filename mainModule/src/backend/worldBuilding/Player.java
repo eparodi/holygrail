@@ -6,11 +6,10 @@ import java.util.Objects;
 
 public class Player {
     private String name;
-    private Integer gold;
+    private Integer gold = 100;
 
     public Player(String name){
         this.name = name;
-        gold = 100;
     }
 
     @Override
