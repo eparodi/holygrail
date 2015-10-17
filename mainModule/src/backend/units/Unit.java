@@ -71,23 +71,42 @@ public class Unit {
 		return baseAttack.getModifiedAttack(calcTerrainMod(attackerTerrain), rune);
 	}
 
+//	//TODO preguntar si está bien o no este metodo
 //	public void pickItem(Item itemPicked) {
 //		if (itemPicked == null) {
-//			return;//make expection
+//			return; //make expection
 //		}
-//		if (this.extra != null) {
-//			dropItem(extra);
-//			item = itemPicked;
+//		if (itemPicked.getClass().equals(Extra.class)) {
+//			if (this.extra != null) {
+//				dropItem(extra);
+//			}
+//			extra = (Extra) itemPicked;
 //			updateStatus();
+//
+//		} else if (itemPicked.getClass().equals(Armor.class)){
+//			if (this.armor != null){
+//				dropItem(armor);
+//			}
+//			armor = (Armor) itemPicked;
+//
+//		} else if (itemPicked.getClass().equals(Rune.class)) {
+//			if (this.armor != null) {
+//				dropItem(rune);
+//			}
+//			rune = (Rune) itemPicked;
 //		}
 //	}
 //
 //	public void updateStatus() {
-//		//TODO implement
+//		Integer newHealth = health + extra.getMaxHealthBonus();
+//		health = newHealth < maxHealth ? newHealth : maxHealth;
+//
+//		Integer newAP = actionPoints + extra.getMaxAPBonus();
+//		actionPoints = newAP < maxActionPoints ? newAP : maxActionPoints;
 //	}
 //
-//	public void dropItem(Item item){
-//		//TODO implement
+//	public Item dropItem(Item item){
+//
 //	}
 
 	public Integer getHealth() {
@@ -122,5 +141,7 @@ public class Unit {
 		nextId++;
 		return aux;
 	}
+
+
 
 }

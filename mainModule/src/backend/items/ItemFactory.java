@@ -1,0 +1,40 @@
+package backend.items;
+
+public class ItemFactory {
+
+    //Constructor: name, maxHealthBonus, maxAPBonus
+    public Extra buildExtra(String name){
+       if(name == null){
+           return null;
+       }
+        if (name.equalsIgnoreCase("Potion")){
+            return new Extra(name, 20, 1);
+        }
+        return null;
+    }
+
+    //Constructor: name, slashResist, piercingResist, bluntResist
+    public Armor buildArmor(String name){
+        if(name == null){
+            return null;
+        }
+        if (name.equalsIgnoreCase("Shining Armor")){
+            return new Armor(name, 3, 2, 1);
+        }
+        return null;
+    }
+
+    //Constructor: name, slashBonus, piercingBonus, bluntBonus
+    public Rune buildRune(String name){
+        if(name == null){
+            return null;
+        }
+        if (name.equalsIgnoreCase("Fire Rune")){
+            return new Rune(name, 3, 3, 1);
+        }
+        return null;
+    }
+}
+
+
+
