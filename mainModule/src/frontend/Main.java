@@ -29,11 +29,11 @@ public class Main extends Application{
         Canvas canvas = new Canvas(SCREEN_WIDTH,SCREEN_HEIGHT);
         GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
 
-        Archer archer = new Archer(1);
-        Archer target = new Archer(1);
-
-        Attack attack = archer.getAttack(Terrain.MOUNTAIN);
-        target.recieveDamage(attack,Terrain.MOUNTAIN);
+//        Archer archer = new Archer(1);
+//        Archer target = new Archer(1);
+//
+//        Attack attack = archer.getAttack(Terrain.MOUNTAIN);
+//        target.recieveDamage(attack,Terrain.MOUNTAIN);
 
         root.getChildren().add(canvas);
 

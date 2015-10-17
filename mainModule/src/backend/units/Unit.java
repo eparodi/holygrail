@@ -6,14 +6,16 @@ import backend.items.Item;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Terrain;
 
-public abstract class Unit {
+public class Unit {
+    static Integer nextId=0;
+    private Integer id;
     private String name;
-    private Terrain preferedTerrain;
+    private Terrain preferredTerrain;
     private Location location;
 
-    private Attack baseAttack;
-    private Armor armor;
-    private Item item;
+    private Attack baseAttack=null;
+    private Armor armor=null;
+    private Item item=null;
 
     private Integer health;
     private Integer maxHealth;
@@ -21,24 +23,18 @@ public abstract class Unit {
     private Integer maxActionPoints;
     private Integer range;
 
-    public Unit(String name, Attack baseAttack,Armor armor ,Integer maxHealth, Integer maxActionPoints, Integer range,
-                Terrain preferedTerrain){
+    public Unit(String name, Attack baseAttack, Integer maxHealth, Integer maxActionPoints, Integer range,
+                Terrain preferredTerrain, Location location){
         this.name = name;
         this.baseAttack = baseAttack;
         this.maxHealth = maxHealth;
         this.maxActionPoints = maxActionPoints;
         this.range = range;
-        this.preferedTerrain = preferedTerrain;
-        this.armor = armor;
+        this.preferredTerrain = preferredTerrain;
         this.health = maxHealth;
         this.actionPoints = maxActionPoints;
-    }
-    public Unit(String name, Attack baseAttack,Armor armor ,Integer maxHealth, Integer health,
-                Integer maxActionPoints, Integer actionPoints,
-                Integer range, Terrain preferedTerrain){
-        this(name,baseAttack,armor,maxHealth,maxActionPoints,range,preferedTerrain);
-        this.health = health;
-        this.actionPoints = actionPoints;
+        this.location = location;
+        this.id = getNextId();
     }
 
     public boolean recieveDamage(Attack attack, Terrain defendersTerrain){
@@ -55,7 +51,7 @@ public abstract class Unit {
         //This will have to be extended to use a list of terrains?
         //Maybe a ranking of prefered terrains, with the first one getting the biggest mod & viceversa
         Double mod=1D;
-        if(targetTerrain.equals(preferedTerrain)) mod = 1.5D;
+        if(targetTerrain.equals(preferredTerrain)) mod = 1.5D;
         return mod;
     }
 
@@ -83,7 +79,11 @@ public abstract class Unit {
     public Integer getRange() {
         return range;
     }
-
+    public Integer getNextId(){
+        Integer aux = nextId;
+        nextId++;
+        return aux;
+    }
 
 
 }

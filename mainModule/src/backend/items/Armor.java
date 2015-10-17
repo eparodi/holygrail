@@ -2,10 +2,11 @@ package backend.items;
 
 import backend.Attack;
 
-public class Armor{
+public class Armor extends Item{
     Integer slashResist, piercingResist, bluntResist;
 
-    public Armor(Integer slashResist, Integer piercingResist, Integer bluntResist){
+    public Armor(String name, Integer slashResist, Integer piercingResist, Integer bluntResist){
+        super(name);
         this.slashResist = slashResist;
         this.bluntResist = bluntResist;
         this.piercingResist = piercingResist;

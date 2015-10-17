@@ -1,15 +1,10 @@
 package backend.items;
 
-public class Rune {
-    private String name;
+public class Rune extends Item{
     private Integer slashBonus, piercingBonus, bluntBonus;
-//
-//    public Rune(String name, Integer slashBonus, Integer piercingBonus, Integer bluntBonus){
-//        th
-//
 
     public Rune(String name, Integer slashBonus, Integer piercingBonus, Integer bluntBonus) {
-        this.name = name;
+        super(name);
         this.slashBonus = slashBonus;
         this.piercingBonus = piercingBonus;
         this.bluntBonus = bluntBonus;
