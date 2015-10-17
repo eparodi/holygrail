@@ -104,7 +104,7 @@ public class World {
         if (defender.isDed()) removeUnit(defender);
     }
 
-    private boolean isInRange(Unit attacker, Unit defender) {
+    public boolean isInRange(Unit attacker, Unit defender) {
         Integer range = attacker.getRange();
         return distance(attacker.getLocation(), defender.getLocation()) <= range;
     }
