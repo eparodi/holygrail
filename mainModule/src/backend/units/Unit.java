@@ -136,10 +136,7 @@ public class Unit {
             return maxActionPoints + extra.getMaxAPBonus();
         }
         return maxActionPoints;
-
-	public Terrain getCurrentTerrain() {
-		return currentTerrain;
-	}
+    }
 
 	public void setLocation(Location location){
 		if(location == null) throw new NullLocationException(this.toString() + " recieved a null location");
@@ -169,14 +166,6 @@ public class Unit {
         return currentTerrain;
     }
 
-    public void setLocation(Location location) {
-        if (location == null) throw new NullLocationException(this.toString() + " recieved a null location");
-        this.location = location;
-    }
-
-    public void setCurrentTerrain(Terrain terrain) {
-        this.currentTerrain = terrain;
-    }
 
     public boolean isDed() {
         return getHealth() == 0;

@@ -28,7 +28,7 @@ public class Cell {
     public Building getBuilding(){
         return building;
     }
-    public boolean isUnitOnCell(){
+
     public boolean isUnitOnCell() {
         return !(localUnit == null);
     }
