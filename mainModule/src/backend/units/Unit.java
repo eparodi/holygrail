@@ -2,7 +2,9 @@ package backend.units;
 
 import backend.*;
 import backend.items.Armor;
+import backend.items.Extra;
 import backend.items.Item;
+import backend.items.Rune;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Terrain;
 
@@ -15,7 +17,7 @@ public class Unit {
 
 	private Attack baseAttack = null;
 	private Armor armor = null;
-	private Extra item = null;
+	private Extra extra = null;
 	private Rune rune = null;
 
 	private Integer health;
@@ -25,7 +27,7 @@ public class Unit {
 	private Integer range;
 
 	public Unit(String name, Attack baseAttack, Integer maxHealth, Integer maxActionPoints, Integer range,
-			Terrain preferredTerrain, Location location) {
+				Terrain preferredTerrain, Location location) {
 		this.name = name;
 		this.baseAttack = baseAttack;
 		this.maxHealth = maxHealth;
@@ -69,27 +71,32 @@ public class Unit {
 		return baseAttack.getModifiedAttack(calcTerrainMod(attackerTerrain), rune);
 	}
 
-	public void pickItem(Item itemPicked) {
-		if (itemPicked == null) {
-			return;//make expection
-		}
-		if (this.item != null) {
-			dropItem(item);
-			item = itemPicked;
-			updateStatus();
-		}
-	}
-	public void updateStatus(){
-		//TODO implement
-	}
+//	public void pickItem(Item itemPicked) {
+//		if (itemPicked == null) {
+//			return;//make expection
+//		}
+//		if (this.extra != null) {
+//			dropItem(extra);
+//			item = itemPicked;
+//			updateStatus();
+//		}
+//	}
+//
+//	public void updateStatus() {
+//		//TODO implement
+//	}
+//
+//	public void dropItem(Item item){
+//		//TODO implement
+//	}
 
 	public Integer getHealth() {
 		return health;
 	}
 
 	public Integer getMaxHealth() {
-		if (item != null) {
-			return maxHealth + item.getBonusHealth();
+		if (extra != null) {
+			return maxHealth + extra.getMaxHealthBonus();
 		}
 		return maxHealth;
 	}
@@ -99,10 +106,11 @@ public class Unit {
 	}
 
 	public Integer getMaxActionPoints() {
-		if (item != null) {
-			return maxActionPoints + item.getBonusActionPoints();
+		if (extra != null) {
+			return maxActionPoints + extra.getMaxAPBonus();
 		}
-		return maxActionPoints;
+			return maxActionPoints;
+
 	}
 
 	public Integer getRange() {
