@@ -1,8 +1,10 @@
 package frontend;
 
 import backend.Attack;
+import backend.worldBuilding.Player;
 import backend.worldBuilding.Terrain;
 import backend.units.Archer;
+import backend.worldBuilding.World;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -34,7 +36,7 @@ public class Main extends Application{
 //
 //        Attack attack = archer.getAttack(Terrain.MOUNTAIN);
 //        target.recieveDamage(attack,Terrain.MOUNTAIN);
-
+        World world = new World(4,6,new Player("Gary"), new Player("Tom"));
         root.getChildren().add(canvas);
 
         primaryStage.setTitle("El Santo Grial");

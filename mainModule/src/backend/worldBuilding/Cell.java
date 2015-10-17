@@ -31,18 +31,23 @@ public class Cell {
     }
 
     public void addUnit(Unit unit){
-        if(isUnitOnCell()) throw new CellIsOccupiedException("Cell at " + location.toString() + " is occupied");
+        if(isUnitOnCell()) throw new CellIsOccupiedException("Cell at " + location.toString() + " has a unit already");
         localUnit = unit;
     }
-
+    public void addBuilding(Building building){
+        if(!(this.building == null))throw new CellIsOccupiedException("Cell at " + location.toString() + " has a building already");
+        this.building = building;
+    }
     public void removeUnit(){
-        if (isUnitOnCell() == false){
+        if (!isUnitOnCell()){
             throw new CellIsEmpty("Cell at " + location.toString() + " is empty");
         }
         localUnit = null;
     }
 
     public String toString(){
-        return "Cell at " + location.toString() + "terrain type: " +terrain+ " unit: " + localUnit.toString();
+        return  "Cell at " +( (location == null)? "null location" :location.toString()) +
+                "terrain type: " + terrain + " unit: " +( (localUnit == null)? "no unit":localUnit.toString()) +
+                "building: " + ((building == null)? "no building": building.toString());
     }
 }

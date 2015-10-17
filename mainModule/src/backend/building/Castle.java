@@ -11,4 +11,9 @@ public class Castle extends Building{
     public Player getOwner() {
         return owner;
     }
+
+    @Override
+    public String toString(){
+        return "Castle from " + owner +" " ;
+    }
 }

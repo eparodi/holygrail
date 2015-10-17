@@ -1,5 +1,6 @@
 package backend.worldBuilding;
 
+import backend.building.Castle;
 import backend.exceptions.CellOutOfWorldException;
 import backend.units.Unit;
 import backend.worldBuilding.Cell;
@@ -13,14 +14,25 @@ public class World {
     Collection<Cell> cells;
     Integer worldWidth, worldHeight;
 
+    //TODO Replace player1 and player2 with Collection<Player> and recieve map
     public World(Integer worldWidth, Integer worldHeight, Player player1, Player player2){
         this.worldHeight = worldHeight;
         this.worldWidth = worldWidth;
 
+
         cells = generateCellCollection();
 
-       // Location player1Castle = new Location()
+        Location player1Castle = new Location(1, Math.round(worldHeight/2));
+        Location player2Castle = new Location(worldWidth-1, Math.round(worldHeight/2));
 
+        Castle castle = new Castle(player1);
+        getCellAt(player1Castle).addBuilding(castle);
+        castle = new Castle(player2);
+        getCellAt(player2Castle).addBuilding(castle);
+
+        for (Cell cell: cells){
+            System.out.println(cell.toString());
+        }
     }
 
     public void removeUnit(Location location){
