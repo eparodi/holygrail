@@ -40,19 +40,20 @@ public class World {
 //        }
     }
 
-    public void addBuilding(Building building, Location location){
-        if(building == null) throw new NullArgumentException("null building parameter");
-        if(location == null) throw new NullArgumentException("null location parameter");
+    public void addBuilding(Building building, Location location) {
+        if (building == null) throw new NullArgumentException("null building parameter");
+        if (location == null) throw new NullArgumentException("null location parameter");
 
         getCellAt(location).addBuilding(building);
     }
 
-    public void addUnit(Unit unit){
-        if(unit == null)throw new NullArgumentException("null unit argument");
-        if(unit.getLocation() == null) throw new NullLocationException("unit has no location");
+    public void addUnit(Unit unit) {
+        if (unit == null) throw new NullArgumentException("null unit argument");
+        if (unit.getLocation() == null) throw new NullLocationException("unit has no location");
         getCellAt(unit.getLocation()).addUnit(unit);
     }
-    public void removeUnit(Location location){
+
+    public void removeUnit(Location location) {
         getCellAt(location).removeUnit();
     }
 
@@ -60,11 +61,11 @@ public class World {
         getCellAt(unit.getLocation()).removeUnit();
     }
 
-    public void refillUnitsAP(Player player){
+    public void refillUnitsAP(Player player) {
         Unit unit;
-        for(Cell cell:cells){
+        for (Cell cell : cells) {
             unit = cell.getUnit();
-            if((unit != null)&&(unit.getOwner().equals(player)) )unit.refillAP();
+            if ((unit != null) && (unit.getOwner().equals(player))) unit.refillAP();
         }
     }
 
@@ -77,28 +78,23 @@ public class World {
         getCellAt(initialLocation).removeUnit();
         getCellAt(finalLocation).addUnit(auxUnit);
     }
-    public void captureBuilding(Unit unit, Location buildingLocation){
-        if(unit == null) throw new NullArgumentException("null unit parameter");
-        if(buildingLocation == null) throw new NullArgumentException("null location parameter");
 
-        moveUnit(unit.getLocation(),buildingLocation);
+    public void captureBuilding(Unit unit, Location buildingLocation) {
+        if (unit == null) throw new NullArgumentException("null unit parameter");
+        if (buildingLocation == null) throw new NullArgumentException("null location parameter");
+
+        moveUnit(unit.getLocation(), buildingLocation);
         getCellAt(buildingLocation).getBuilding().setOwner(unit.getOwner());
     }
 
-    private boolean attack(Unit attacker, Unit defender) {
-        if (isInRange(attacker, defender)) {
+    private void attack(Unit attacker, Unit defender) {
             Attack attack = attacker.getAttack();
             defender.receiveDamage(attack);
-            return true;
-        }
-        return false;
     }
 
     public void skirmish(Unit attacker, Unit defender) {
         attack(attacker, defender);
-        if (!defender.isDed()) {
-            attack(defender, attacker);
-        } else removeUnit(defender);
+        attack(defender, attacker);
 
         if (attacker.isDed()) removeUnit(attacker);
         if (defender.isDed()) removeUnit(defender);
@@ -127,15 +123,18 @@ public class World {
         return Math.max(Math.max(deltaX, deltaY), deltaZ);
     }
 
-    public Integer getTerrainAPCost(Terrain terrain){
-        switch (terrain){
+    public Integer getTerrainAPCost(Terrain terrain) {
+        switch (terrain) {
             case GRASS:
                 return 1;
-            case MOUNTAIN:
+            case HILL:
                 return 3;
             case FOREST:
                 return 2;
+            //TODO (ToAsk) esta bien si water tiene costo alto o hacemos celdas no pisables?
             case WATER:
+                return 20;
+            case MOUNTAIN:
                 return 20;
         }
         throw new InvalidTerrainException(terrain + " does not have a cost");
@@ -171,11 +170,11 @@ public class World {
         return units;
     }
 
-    public Location getBuildingLocation(Building building){
+    public Location getBuildingLocation(Building building) {
         Location location;
-        if(building == null) throw new NullArgumentException("building is null");
-        for(Cell cell:cells){
-            if(building.equals(cell.getBuilding()))return cell.getLocation();
+        if (building == null) throw new NullArgumentException("building is null");
+        for (Cell cell : cells) {
+            if (building.equals(cell.getBuilding())) return cell.getLocation();
         }
         //No such building exists if execution reached this point
         return null;

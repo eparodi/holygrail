@@ -59,7 +59,8 @@ public class Game {
         logQueue.add(msg);
     }
 
-    private boolean moveAttempt(Unit unit, Cell clickedCell) {
+    //Returns if it moved
+    private boolean moveAttempt(Unit unit, Cell clickedCell){
         //TODO ask how we can display a log
         boolean hasMoved = false;
 

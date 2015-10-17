@@ -2,7 +2,7 @@ package backend.units;
 
 import backend.*;
 import backend.exceptions.NullLocationException;
-import backend.items.Armor;
+import backend.Defense;
 import backend.items.Extra;
 import backend.items.Item;
 import backend.items.Rune;
@@ -22,7 +22,7 @@ public class Unit {
     private Location location;
 
     private Attack baseAttack = null;
-    private Armor armor = null;
+    private Defense defense = null;
     private Extra extra = null;
     private Rune rune = null;
 
@@ -32,10 +32,11 @@ public class Unit {
     private Integer maxActionPoints;
     private Integer range;
 
-    public Unit(String name, Attack baseAttack, Integer maxHealth, Integer maxActionPoints, Integer range,
+    public Unit(String name, Attack baseAttack, Defense defense, Integer maxHealth, Integer maxActionPoints, Integer range,
                 Terrain currentTerrain, Terrain preferredTerrain, Location location, Player owner) {
         this.name = name;
         this.baseAttack = baseAttack;
+        this.defense = defense;
         this.maxHealth = maxHealth;
         this.maxActionPoints = maxActionPoints;
         this.range = range;
@@ -50,7 +51,7 @@ public class Unit {
 
     public void receiveDamage(Attack attack) {
         System.out.println("calcTerrainMod(defendersTerrain) = " + calcTerrainMod(currentTerrain));
-        Integer damageDealt = armor.getDamageDealt(attack, calcTerrainMod(currentTerrain));
+        Integer damageDealt = defense.getDamageDealt(attack, calcTerrainMod(currentTerrain));
         health -= damageDealt;
         System.out.println("damageDealt = " + damageDealt);
         System.out.println("health = " + health);
@@ -89,14 +90,8 @@ public class Unit {
             extra = (Extra) itemPicked;
             updateStatus();
 
-        } else if (itemPicked.getClass().equals(Armor.class)) {
-            if (this.armor != null) {
-                dropItem(armor);
-            }
-            armor = (Armor) itemPicked;
-
         } else if (itemPicked.getClass().equals(Rune.class)) {
-            if (this.armor != null) {
+            if (this.defense != null) {
                 dropItem(rune);
             }
             rune = (Rune) itemPicked;
@@ -111,6 +106,7 @@ public class Unit {
         actionPoints = newAP < getMaxActionPoints() ? newAP : getMaxActionPoints();
     }
 
+    //TODO implement drop
     public Item dropItem(Item item) {
         return null;
     }
@@ -177,8 +173,12 @@ public class Unit {
         return location;
     }
 
-    public void spendAP(Integer actionPointsSpent){
+    public String getName() {
+        return name;
+    }
+
+    public void spendAP(Integer actionPointsSpent) {
         actionPoints -= actionPointsSpent;
-        if(actionPoints < 0) throw new IllegalStateException(this + " is using more AP than it has");
+        if (actionPoints < 0) throw new IllegalStateException(this + " is using more AP than it has");
     }
 }
