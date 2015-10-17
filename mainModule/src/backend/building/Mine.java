@@ -2,8 +2,7 @@ package backend.building;
 
 import backend.worldBuilding.Player;
 
-public class Mine {
-    Player owner = null;
+public class Mine extends Building{
     Integer income;
 
     public Mine(Integer gold){
@@ -18,4 +17,7 @@ public class Mine {
         return owner;
     }
 
+    public void captureMine(Player player){
+        owner = player;
+    }
 }

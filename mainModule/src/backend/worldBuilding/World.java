@@ -17,11 +17,22 @@ public class World {
         this.worldHeight = worldHeight;
         this.worldWidth = worldWidth;
 
-        cells = generateCellCollection(worldWidth,worldHeight);
+        cells = generateCellCollection();
 
        // Location player1Castle = new Location()
 
     }
+
+    public void removeUnit(Location location){
+        getCellAt(location).removeUnit();
+    }
+
+    public void moveUnit(Location initialLocation, Location finalLocation){
+        Unit auxUnit = getCellAt(initialLocation).getUnit();
+        getCellAt(initialLocation).removeUnit();
+        getCellAt(finalLocation).addUnit(auxUnit);
+    }
+
     public  Cell getCellAt(Location location){
         for (Cell cell: cells){
             if (cell.getLocation().equals(location)) return cell;
@@ -56,7 +67,7 @@ public class World {
         return Terrain.GRASS;
     }
 
-    private Collection<Cell> generateCellCollection(Integer worldWidth, Integer worldHeight){
+    private Collection<Cell> generateCellCollection(){
 
         Collection<Cell> cellCollection = new ArrayList<Cell>();
         Cell cell;

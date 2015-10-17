@@ -2,8 +2,7 @@ package backend.building;
 
 import backend.worldBuilding.Player;
 
-public class Castle {
-    Player owner;
+public class Castle extends Building{
 
     public Castle(Player player){
         owner = player;
