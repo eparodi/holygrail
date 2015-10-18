@@ -1,5 +1,7 @@
 package backend.worldBuilding;
 
+import backend.exceptions.CantPayException;
+
 import java.util.Objects;
 
 public class Player {
@@ -26,6 +28,21 @@ public class Player {
     @Override
     public String toString(){
         return name;
+    }
+
+    public Integer getGold() {
+        return gold;
+    }
+
+    public boolean canPay(Integer amount){
+        return amount <= gold;
+    }
+
+    public void pay(Integer amount){
+        if (!canPay(amount)){
+            throw new CantPayException("Amount to pay is bigger than actual gold.");
+        }
+        gold -= amount;
     }
 
 

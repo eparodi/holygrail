@@ -35,16 +35,16 @@ public class Cell {
         return building;
     }
 
-    public boolean isUnitOnCell() {
+    public boolean hasUnit() {
         return !(localUnit == null);
     }
 
-    public boolean isBuildingOnCell(){
+    public boolean hasBuilding(){
         return !(building == null);
     }
 
     public void addUnit(Unit unit) {
-        if (isUnitOnCell()) throw new CellIsOccupiedException("Cell at " + location.toString() + " has a unit already");
+        if (hasUnit()) throw new CellIsOccupiedException("Cell at " + location.toString() + " has a unit already");
         localUnit = unit;
     }
 
@@ -55,7 +55,7 @@ public class Cell {
     }
 
     public void removeUnit() {
-        if (!isUnitOnCell()) {
+        if (!hasUnit()) {
             throw new CellIsEmpty("Cell at " + location.toString() + " is empty");
         }
         localUnit = null;
