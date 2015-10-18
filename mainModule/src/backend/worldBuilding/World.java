@@ -94,7 +94,9 @@ public class World {
 
     public void skirmish(Unit attacker, Unit defender) {
         attack(attacker, defender);
-        attack(defender, attacker);
+        if(!defender.isDed() && defender.getRange()>=distance(defender.getLocation(),attacker.getLocation())){
+            attack(defender, attacker);
+        }
 
         if (attacker.isDed()) removeUnit(attacker);
         if (defender.isDed()) removeUnit(defender);

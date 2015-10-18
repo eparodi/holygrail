@@ -16,6 +16,7 @@ public class Cell {
     public Cell(Location location, Terrain terrain) {
         this.terrain = terrain;
         this.location = location;
+        this.localUnit = null;
     }
 
     public Terrain getTerrain() {
