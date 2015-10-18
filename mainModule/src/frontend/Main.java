@@ -31,9 +31,12 @@ public class Main extends Application {
         final Player jugador2 = new Player("B");
         final World mundo = new World(5,5,jugador1,jugador2);
 
-        final Unit lancer = UnitFactory.buildUnit("archer", Terrain.GRASS, new Location(1, 1), jugador1);
+        final Unit lancer = UnitFactory.buildUnit("rider", Terrain.GRASS, new Location(1, 1), jugador1);
         Unit enemy1 = UnitFactory.buildUnit("lancer", Terrain.GRASS, new Location(3, 4), jugador2);
         Unit enemy2 = UnitFactory.buildUnit("lancer", Terrain.GRASS, new Location(3, 2), jugador2);
+        Unit enemy3 = UnitFactory.buildUnit("archer", Terrain.GRASS, new Location(3, 3), jugador2);
+        Unit enemy4 = UnitFactory.buildUnit("archer", Terrain.GRASS, new Location(3, 1), jugador2);
+        Unit enemy5 = UnitFactory.buildUnit("archer", Terrain.GRASS, new Location(3, 0), jugador2);
 
         canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
@@ -87,6 +90,9 @@ public class Main extends Application {
         mundo.addUnit(lancer);
         mundo.addUnit(enemy1);
         mundo.addUnit(enemy2);
+        mundo.addUnit(enemy3);
+        mundo.addUnit(enemy4);
+        mundo.addUnit(enemy5);
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 Image terrain = new Image("file:C:\\cellGreen.png", 100, 100, true, true);

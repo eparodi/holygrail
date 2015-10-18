@@ -11,10 +11,8 @@ import backend.worldBuilding.Player;
 import backend.worldBuilding.Terrain;
 
 public class Unit {
-    static Integer nextId = 0;
 
     Player owner;
-    private Integer id;
     private String name;
     private Terrain preferredTerrain;
 
@@ -45,7 +43,6 @@ public class Unit {
         this.health = maxHealth;
         this.actionPoints = maxActionPoints;
         this.location = location;
-        this.id = getNextId();
         this.owner = owner;
     }
 
@@ -148,12 +145,6 @@ public class Unit {
 
     public Integer getRange() {
         return range;
-    }
-
-    public Integer getNextId() {
-        Integer aux = nextId;
-        nextId++;
-        return aux;
     }
 
     public Player getOwner() {

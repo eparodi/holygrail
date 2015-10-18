@@ -31,6 +31,13 @@ public class UnitFactory {
 
             ItemFactory itemFactory = new ItemFactory();
         }
+        if (unitName.equalsIgnoreCase("Rider")) {
+            unit = new Unit("Rider", new Attack(2, 2, 7), new Defense(0,100,1), 20, 10, 10, Terrain.GRASS, currentTerrain,
+                    location, player);
+
+            ItemFactory itemFactory = new ItemFactory();
+        }
+
 
         //TODO agregar otros
 
