@@ -23,16 +23,16 @@ import javafx.stage.Stage;
 public class Main extends Application {
     int ancho=5;
     int alto=5;
-    final Player jugador1 = new Player("A");
-    final Player jugador2 = new Player("B");
-    final World mundo = new World(ancho,alto,jugador1,jugador2);
+    Player jugador1 = new Player("A");
+    Player jugador2 = new Player("B");
+    World mundo = new World(ancho,alto,jugador1,jugador2);
 
-    final Unit lancer = UnitFactory.buildUnit("lancer", Terrain.GRASS, new Location(1, 2), jugador1);
+    Unit lancer = UnitFactory.buildUnit("lancer", Terrain.GRASS, new Location(1, 2), jugador1);
     Unit enemy1 = UnitFactory.buildUnit("lancer", Terrain.GRASS, new Location(3, 4), jugador2);
     Unit enemy2 = UnitFactory.buildUnit("lancer", Terrain.GRASS, new Location(3, 2), jugador2);
-    Unit enemy3 = UnitFactory.buildUnit("archer", Terrain.GRASS, new Location(3, 3), jugador2);
-    Unit enemy4 = UnitFactory.buildUnit("archer", Terrain.GRASS, new Location(3, 1), jugador2);
-    Unit enemy5 = UnitFactory.buildUnit("archer", Terrain.GRASS, new Location(3, 0), jugador2);
+    Unit enemy3 = UnitFactory.buildUnit("lancer", Terrain.GRASS, new Location(3, 3), jugador2);
+    Unit enemy4 = UnitFactory.buildUnit("lancer", Terrain.GRASS, new Location(3, 1), jugador2);
+    Unit enemy5 = UnitFactory.buildUnit("lancer", Terrain.GRASS, new Location(3, 0), jugador2);
     FlowPane mainPanel = new FlowPane();
     final Canvas canvas = new Canvas(100*ancho+50,80*alto);
     final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
@@ -80,7 +80,7 @@ public class Main extends Application {
     public Location cellLocationToGridLocation (Double x, Double y){
         Location gridLocation = new Location(0, 0);
         int auxY,auxX;
-        if(y%80<70) {
+        if(y%80<70 && y%80>10) {
             auxY = (int) Math.floor(y / 75);
             auxX = auxY % 2 == 0 ? (int) Math.floor(x / 100) : (int) Math.floor((x - 50) / 100);
         }else{
