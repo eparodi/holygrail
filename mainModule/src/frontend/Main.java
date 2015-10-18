@@ -1,6 +1,7 @@
 package frontend;
 
 import backend.building.Building;
+import backend.exceptions.NullLocationException;
 import backend.units.Unit;
 import backend.units.UnitFactory;
 import backend.worldBuilding.Location;
@@ -16,147 +17,119 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
-import java.util.ArrayList;
-import java.util.Collection;
+
 
 
 public class Main extends Application {
-    public void start(Stage primaryStage) throws Exception{
-        FlowPane root = new FlowPane();
-        final Canvas canvas = new Canvas(600,600);
-        final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+    int ancho=5;
+    int alto=5;
+    final Player jugador1 = new Player("A");
+    final Player jugador2 = new Player("B");
+    final World mundo = new World(ancho,alto,jugador1,jugador2);
 
-
-        final Player jugador1 = new Player("A");
-        final Player jugador2 = new Player("B");
-        final World mundo = new World(5,5,jugador1,jugador2);
-
-        final Unit lancer = UnitFactory.buildUnit("rider", Terrain.GRASS, new Location(1, 1), jugador1);
-        Unit enemy1 = UnitFactory.buildUnit("lancer", Terrain.GRASS, new Location(3, 4), jugador2);
-        Unit enemy2 = UnitFactory.buildUnit("lancer", Terrain.GRASS, new Location(3, 2), jugador2);
-        Unit enemy3 = UnitFactory.buildUnit("archer", Terrain.GRASS, new Location(3, 3), jugador2);
-        Unit enemy4 = UnitFactory.buildUnit("archer", Terrain.GRASS, new Location(3, 1), jugador2);
-        Unit enemy5 = UnitFactory.buildUnit("archer", Terrain.GRASS, new Location(3, 0), jugador2);
-
-        canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent e) {
-                        Location lugar=drawLocationToGridLocation(e.getX(),e.getY());
-                        if(lancer.getRange()>=mundo.distance(lancer.getLocation(),lugar)) {
-                            if ((mundo.getCellAt(lugar).getUnit() == null)) {
-                                mundo.moveUnit(lancer.getLocation(), lugar);
-                            } else {
-                                if (mundo.getCellAt(lugar).getUnit().getOwner() == jugador2) {
-                                    mundo.skirmish(lancer, mundo.getCellAt(lugar).getUnit());
-                                }
-                            }
-                        }
+    final Unit lancer = UnitFactory.buildUnit("lancer", Terrain.GRASS, new Location(1, 2), jugador1);
+    Unit enemy1 = UnitFactory.buildUnit("lancer", Terrain.GRASS, new Location(3, 4), jugador2);
+    Unit enemy2 = UnitFactory.buildUnit("lancer", Terrain.GRASS, new Location(3, 2), jugador2);
+    Unit enemy3 = UnitFactory.buildUnit("archer", Terrain.GRASS, new Location(3, 3), jugador2);
+    Unit enemy4 = UnitFactory.buildUnit("archer", Terrain.GRASS, new Location(3, 1), jugador2);
+    Unit enemy5 = UnitFactory.buildUnit("archer", Terrain.GRASS, new Location(3, 0), jugador2);
+    FlowPane mainPanel = new FlowPane();
+    final Canvas canvas = new Canvas(100*ancho+50,80*alto);
+    final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
 
 
 
-                        for (int i = 0; i < 5; i++) {
-                            for (int j = 0; j < 5; j++) {
-                                Image terrain = new Image("file:C:\\cellGreen.png", 100, 100, true, true);
-                                graphicsContext.drawImage(terrain,
-                                        gridLocationToDrawLocation(new Location(i, j)).getX(),
-                                        gridLocationToDrawLocation(new Location(i, j)).getY()
-                                );
-                                Unit unidadencell = mundo.getCellAt(new Location(i, j)).getUnit();
-                                if (unidadencell != null) {
-                                    Image unidad = new Image("file:C:\\archer.png", 100, 100, true, true);
-                                    if (unidadencell.getOwner() == jugador2)
-                                        unidad = new Image("file:C:\\may.png", 100, 100, true, true);
-                                    graphicsContext.drawImage(unidad,
-                                            gridLocationToDrawLocation(new Location(i, j)).getX(),
-                                            gridLocationToDrawLocation(new Location(i, j)).getY()
-                                    );
-                                }
-                                Building edificio = mundo.getCellAt(new Location(i, j)).getBuilding();
-                                if (edificio != null) {
-                                    Image castillo = new Image("file:C:\\castillo.png", 100, 100, true, true);
-                                    graphicsContext.drawImage(castillo,
-                                            gridLocationToDrawLocation(new Location(i, j)).getX(),
-                                            gridLocationToDrawLocation(new Location(i, j)).getY()
-                                    );
-                                }
+    public void DrawInCell (String ImgFile, GraphicsContext gCtxt, Location drawLo){
+        Image img = new Image(ImgFile, 100, 100, true, true);
+        gCtxt.drawImage(img,
+                gridLocationToCellLocation(drawLo).getX(),
+                gridLocationToCellLocation(drawLo).getY()
+        );
+    }
 
-                            }
-                        }
+    public Location gridLocationToCellLocation (Location gridLocation){
+        int cellSize = 100;
+        Location drawLocation = new Location(0, 0);
 
+        drawLocation.setX(gridLocation.getY() % 2 == 0 ? gridLocation.getX() * cellSize : gridLocation.getX() * cellSize + cellSize / 2);
+        drawLocation.setY(gridLocation.getY() * (cellSize - cellSize / 4));
+
+        return drawLocation;
+    }
+
+
+    public void redrawMap() {
+        for (int i = 0; i < ancho; i++) {
+            for (int j = 0; j < alto; j++) {
+                DrawInCell("file:C:\\cellGreen.png", graphicsContext, new Location(i, j));
+                Building edificio = mundo.getCellAt(new Location(i, j)).getBuilding();
+                if (edificio != null) {
+                    DrawInCell("file:C:\\castillo.png", graphicsContext, new Location(i, j));
+                }
+                Unit unidadencell = mundo.getCellAt(new Location(i, j)).getUnit();
+                if (unidadencell != null) {
+                    if (unidadencell.getOwner() == jugador2)
+                        DrawInCell("file:C:\\may.png", graphicsContext, new Location(i, j));
+                    else
+                        DrawInCell("file:C:\\ash.png", graphicsContext, new Location(i, j));
+                }
+            }
+        }
+    }
+
+    public Location cellLocationToGridLocation (Double x, Double y){
+        Location gridLocation = new Location(0, 0);
+        int auxY,auxX;
+        if(y%80<70) {
+            auxY = (int) Math.floor(y / 75);
+            auxX = auxY % 2 == 0 ? (int) Math.floor(x / 100) : (int) Math.floor((x - 50) / 100);
+        }else{
+            auxX=0;
+            auxY=0;
+        }
+        return new Location(auxX,auxY);
+    }
+
+    public static void main (String[]args) {
+        launch(args);
+    }
+
+    public void triggerMapClick(Location clickedCell,World mundo,Player jug1,Player jug2,Unit selUnit){
+        if(clickedCell.getX()>=0 && clickedCell.getX()<ancho && clickedCell.getY()>=0 && clickedCell.getY()<alto){
+            if(selUnit.getRange()>=mundo.distance(selUnit.getLocation(),clickedCell)) {
+                if ((mundo.getCellAt(clickedCell).getUnit() == null)) {
+                    mundo.moveUnit(selUnit.getLocation(), clickedCell);
+                } else {
+                    if (mundo.getCellAt(clickedCell).getUnit().getOwner() == jug2) {
+                        mundo.skirmish(selUnit, mundo.getCellAt(clickedCell).getUnit());
                     }
                 }
-        );
+            }
+            redrawMap();
 
+        }
+    }
+
+    public void start(Stage primaryStage) throws Exception{
         mundo.addUnit(lancer);
         mundo.addUnit(enemy1);
         mundo.addUnit(enemy2);
         mundo.addUnit(enemy3);
         mundo.addUnit(enemy4);
         mundo.addUnit(enemy5);
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                Image terrain = new Image("file:C:\\cellGreen.png", 100, 100, true, true);
-                graphicsContext.drawImage(terrain,
-                        gridLocationToDrawLocation(new Location(i, j)).getX(),
-                        gridLocationToDrawLocation(new Location(i, j)).getY()
-                );
-                Unit unidadencell = mundo.getCellAt(new Location(i, j)).getUnit();
-                if (unidadencell != null) {
-                    Image unidad = new Image("file:C:\\ash.png", 100, 100, true, true);
-                    if (unidadencell.getOwner() == jugador2)
-                        unidad = new Image("file:C:\\may.png", 100, 100, true, true);
-                    graphicsContext.drawImage(unidad,
-                            gridLocationToDrawLocation(new Location(i, j)).getX(),
-                            gridLocationToDrawLocation(new Location(i, j)).getY()
-                    );
+
+        canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent e) {
+                        Location lugar = cellLocationToGridLocation(e.getX(), e.getY());
+                        triggerMapClick(lugar, mundo, jugador1, jugador2, lancer);
+                    }
                 }
-                Building edificio = mundo.getCellAt(new Location(i, j)).getBuilding();
-                if (edificio != null) {
-                    Image castillo = new Image("file:C:\\castillo.png", 100, 100, true, true);
-                    graphicsContext.drawImage(castillo,
-                            gridLocationToDrawLocation(new Location(i, j)).getX(),
-                            gridLocationToDrawLocation(new Location(i, j)).getY()
-                    );
-                }
-
-            }
-        }
-
-
-
-
-        root.getChildren().add(canvas);
+        );
+        mainPanel.getChildren().add(canvas);
         primaryStage.setTitle("El Santo Grial");
-        primaryStage.setScene(new Scene(root, canvas.getWidth(), canvas.getHeight()));
+        primaryStage.setScene(new Scene(mainPanel, canvas.getWidth(), canvas.getHeight()));
         primaryStage.show();
-    }
-
-
-    public Location gridLocationToDrawLocation(Location gridLocation){
-        int cellSize=100;
-        Location drawLocation = new Location(0,0);
-
-        drawLocation.setX(gridLocation.getY() %2 == 0? gridLocation.getX()*cellSize:gridLocation.getX()*cellSize + cellSize/2);
-        drawLocation.setY(gridLocation.getY() *(cellSize - cellSize/4));
-
-        return drawLocation;
-    }
-
-    public Location drawLocationToGridLocation(Double x,Double y){
-        Location gridLocation = new Location(0,0);
-
-        Double auxY = Math.floor(y/75);
-        Double auxX = auxY.intValue() % 2 == 0? Math.floor(x/100):Math.floor((x-50)/100);
-
-        gridLocation.setY(auxY.intValue());
-        gridLocation.setX(auxX.intValue());
-
-        return gridLocation;
-    }
-
-
-
-    public static void main(String[] args) {
-        launch(args);
+        redrawMap();
     }
 }
