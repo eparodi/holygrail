@@ -27,7 +27,7 @@ public class Main extends Application {
     Player jugador2 = new Player("B");
     World mundo = new World(ancho,alto,jugador1,jugador2);
 
-    Unit lancer = UnitFactory.buildUnit("lancer", Terrain.GRASS, new Location(1, 2), jugador1);
+    Unit lancer = UnitFactory.buildUnit("archer", Terrain.GRASS, new Location(1, 2), jugador1);
     Unit enemy1 = UnitFactory.buildUnit("lancer", Terrain.GRASS, new Location(3, 4), jugador2);
     Unit enemy2 = UnitFactory.buildUnit("lancer", Terrain.GRASS, new Location(3, 2), jugador2);
     Unit enemy3 = UnitFactory.buildUnit("lancer", Terrain.GRASS, new Location(3, 3), jugador2);
@@ -84,8 +84,8 @@ public class Main extends Application {
             auxY = (int) Math.floor(y / 75);
             auxX = auxY % 2 == 0 ? (int) Math.floor(x / 100) : (int) Math.floor((x - 50) / 100);
         }else{
-            auxX=0;
-            auxY=0;
+            auxX=-1;
+            auxY=-1;
         }
         return new Location(auxX,auxY);
     }
