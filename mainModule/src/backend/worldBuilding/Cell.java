@@ -5,6 +5,7 @@ import backend.building.Building;
 import backend.exceptions.CellIsEmpty;
 import backend.exceptions.CellIsOccupiedException;
 import backend.units.Unit;
+import frontend.CellUIData;
 
 public class Cell {
     Location location;
@@ -64,5 +65,13 @@ public class Cell {
         return "Cell at " + ((location == null) ? "null location" : location.toString()) +
                 "terrain type: " + terrain + " unit: " + ((localUnit == null) ? "no unit" : localUnit.toString()) +
                 "building: " + ((building == null) ? "no building" : building.toString());
+    }
+
+    public CellUIData getCellUIData(){
+        CellUIData cellUIData;
+        cellUIData = new CellUIData(location,terrain);
+        if(hasBuilding()) cellUIData.addBuildingData(getBuilding().getBuildingType());
+        if(hasUnit()) cellUIData.addUnitData(getUnit().getName());
+        return cellUIData;
     }
 }

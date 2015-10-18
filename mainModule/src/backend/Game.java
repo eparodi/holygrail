@@ -7,8 +7,10 @@ import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.worldBuilding.World;
+import frontend.CellUIData;
 
 import java.util.ArrayDeque;
+import java.util.Collection;
 import java.util.Queue;
 
 public class Game {
@@ -20,6 +22,7 @@ public class Game {
     private Queue<String> logQueue;
 
     public Game() {
+        startNewGame(8,6,"Carlos","Pepe");
     }
 
     public void startNewGame(Integer worldWidth, Integer worldHeight, String player1, String player2) {
@@ -120,7 +123,6 @@ public class Game {
         return hasMoved;
     }
 
-
     private boolean captureAttempt(Unit unit, Cell clickedCell) {
         boolean hasCaptured = false;
 
@@ -165,5 +167,9 @@ public class Game {
         while(!logQueue.isEmpty()){
             System.out.println(logQueue.poll());
         }
+    }
+
+    public Collection<CellUIData> getCellUIData(){
+        return world.generateCellUIData();
     }
 }

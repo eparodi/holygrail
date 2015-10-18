@@ -10,6 +10,7 @@ import backend.exceptions.NullLocationException;
 import backend.units.Unit;
 import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
+import frontend.CellUIData;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,7 +29,7 @@ public class World {
         cells = generateCellCollection();
 
         Location player1Castle = new Location(1, Math.round(worldHeight / 2));
-        Location player2Castle = new Location(worldWidth - 1, Math.round(worldHeight / 2));
+        Location player2Castle = new Location(worldWidth - 2, Math.round(worldHeight / 2));
 
         Castle castle = new Castle(player1);
         getCellAt(player1Castle).addBuilding(castle);
@@ -193,6 +194,18 @@ public class World {
         return getCellAt(location).terrain;
     }
 
+    public Integer getWorldHeight() {
+        return worldHeight;
+    }
+
+    public Integer getWorldWidth() {
+        return worldWidth;
+    }
+
+    public Collection<Cell> getCells(){
+        return cells;
+    }
+
     public Terrain loadTerrain(Location location) {
         return Terrain.GRASS;
     }
@@ -213,5 +226,13 @@ public class World {
             }
         }
         return cellCollection;
+    }
+
+    public Collection<CellUIData> generateCellUIData(){
+        Collection<CellUIData> cellUIDataCollection = new ArrayList<CellUIData>();
+        for(Cell cell:cells){
+            cellUIDataCollection.add(cell.getCellUIData());
+        }
+        return cellUIDataCollection;
     }
 }

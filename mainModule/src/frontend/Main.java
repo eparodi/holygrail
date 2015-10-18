@@ -1,37 +1,37 @@
 package frontend;
 
+import backend.Game;
 import backend.worldBuilding.Location;
-import backend.worldBuilding.Player;
-import backend.worldBuilding.World;
 import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import java.util.ArrayList;
-import java.util.Collection;
 
 
 public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Group root = new Group();
-        Canvas canvas = new Canvas(600,600);
+        Canvas canvas = new Canvas(1000,600);
         GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+        Scene scene=new Scene(root, canvas.getWidth(), canvas.getHeight());
+        root.getChildren().add(canvas);
 
-        Player jugador1 = new Player("A");
-        Player jugador2 = new Player("B");
-        World mundo = new World(5,5,jugador1,jugador2);
+        Game game = new Game();
+        GameController gameController = new GameController(100,100);
+        canvas.autosize();
+        root.autosize();
 
+        //graphicsContext.fillRect(100,100,500,500);
+        game.attemptBuildUnit("Archer");
+        //este comando mueve la unidad :D
+        //game.actionAttempt(new Location(2,3));
+        gameController.updateGraphics(graphicsContext, game.getCellUIData());
 
+        primaryStage.setTitle("El Santo Grial");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
 
