@@ -43,6 +43,7 @@ public class GameController {
     public void updateGraphics(GraphicsContext graphicsContext, Collection<CellUIData> cellUIDataCollection){
         graphicsContext.fillRect(10,100,100,100);
         drawCells(graphicsContext, cellUIDataCollection);
+
     }
 
     public void drawCells(GraphicsContext graphicsContext, Collection<CellUIData> cellUIDataCollection){

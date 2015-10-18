@@ -18,7 +18,7 @@ public class Game {
     private World world;
     private Cell selectedCell;
     private Player player1, player2;
-    private Player currentPlayer;
+    private Player activePlayer;
     private Queue<String> logQueue;
 
     public Game() {
@@ -30,14 +30,14 @@ public class Game {
         this.player2 = new Player(player2);
         world = new World(worldWidth, worldHeight, this.player1, this.player2);
         logQueue = new ArrayDeque<String>();
-        currentPlayer = this.player1;
-        selectPlayerCastle(currentPlayer);
+        activePlayer = this.player1;
+        selectPlayerCastle(activePlayer);
     }
 
     private void selectPlayerCastle(Player player) {
         //Searches the castle from the first player and selects the cell where it is located
         //#Building needs location
-        selectedCell = world.getCellAt(world.getBuildingLocation(world.getPlayerCastle(currentPlayer)));
+        selectedCell = world.getCellAt(world.getBuildingLocation(world.getPlayerCastle(player)));
     }
 
     public void actionAttempt(Location location) {
@@ -51,14 +51,14 @@ public class Game {
         }
         if (selectedCell.hasUnit()) {
             if (clickedCell.hasUnit()) {
-                if (clickedCell.getUnit().getOwner().equals(currentPlayer)) {
+                if (clickedCell.getUnit().getOwner().equals(activePlayer)) {
                     setSelectedCell(clickedCell);
                 } else {
                     attackAttempt(selectedCell.getUnit(), clickedCell.getUnit());
                 }
             } else {
                 //No unit and building means unit tries to capture
-                if (clickedCell.hasBuilding() && !clickedCell.getBuilding().getOwner().equals(currentPlayer)) {
+                if (clickedCell.hasBuilding() && !clickedCell.getBuilding().getOwner().equals(activePlayer)) {
                     captureAttempt(selectedCell.getUnit(), clickedCell);
                     //TODO: CODIGO REPETIDO
                     selectedCell = clickedCell;
@@ -71,23 +71,29 @@ public class Game {
             //building is selected
             selectedCell = clickedCell;
         }
+        addLog(getSelectedCell().toString());
+        printLog();
     }
 
     public boolean attemptBuildUnit(String unitName) {
         if (unitName == null){
             throw new NullArgumentException("Unit name is null");
         }
-        Castle castle = world.getPlayerCastle(currentPlayer);
-        Cell castleCell = world.getCellAt(world.getBuildingLocation(world.getPlayerCastle(currentPlayer)));
+        Castle castle = world.getPlayerCastle(activePlayer);
+        Cell castleCell = world.getCellAt(world.getBuildingLocation(world.getPlayerCastle(activePlayer)));
 
         //TODO precio en castillo?
-        if (!castleCell.hasUnit() && currentPlayer.canPay(10)) {
-            Unit unitCreated = castle.buildUnit(unitName, castleCell.getTerrain(), castleCell.getLocation(), currentPlayer);
-            world.addUnit(unitCreated);
-            //TODO precio en castillo?
-            currentPlayer.pay(10);
-            return true;
-        }
+        if (!castleCell.hasUnit()){
+            if(activePlayer.canPay(10)) {
+                Unit unitCreated = castle.buildUnit(unitName, castleCell.getTerrain(), castleCell.getLocation(), activePlayer);
+                world.addUnit(unitCreated);
+                //TODO precio en castillo?
+                activePlayer.pay(10);
+                return true;
+            }addLog(getActivePlayer() + " has less than 10 gold" + getActivePlayer().getGold());
+        }addLog("Building at " + castleCell.getLocation() + " is occupied");
+        addLog("Successfully build a " + unitName + " in " + castleCell.getLocation());
+
         return false;
     }
 
@@ -171,5 +177,18 @@ public class Game {
 
     public Collection<CellUIData> getCellUIData(){
         return world.generateCellUIData();
+    }
+
+    public Player getActivePlayer(){
+        return activePlayer;
+    }
+
+    private void activateNextPlayer(){
+        activePlayer = activePlayer.equals(player1)? player2:player1;
+    }
+    public void endTurn(){
+        world.refillUnitsAP(getActivePlayer());
+        activateNextPlayer();
+        selectPlayerCastle(getActivePlayer());
     }
 }
