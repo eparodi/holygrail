@@ -45,6 +45,13 @@ public class World {
 //        }
     }
 
+    /**
+     * Adds a Building to the Cell at the given location, with the Cell addBuilding method.
+     *
+     * @param building building to add.
+     * @param location location of the cell.
+     * @see Cell#addBuilding(Building)
+     */
     public void addBuilding(Building building, Location location) {
         if (building == null) throw new NullArgumentException("null building parameter");
         if (location == null) throw new NullArgumentException("null location parameter");
@@ -52,20 +59,43 @@ public class World {
         getCellAt(location).addBuilding(building);
     }
 
+    /**
+     * Adds a Unit to the Cell at the given location, with the Cell addUnit method.
+     *
+     * @param unit unit to add.
+     * @see Cell#addUnit(Unit)
+     */
     public void addUnit(Unit unit) {
         if (unit == null) throw new NullArgumentException("null unit argument");
         if (unit.getLocation() == null) throw new NullLocationException("unit has no location");
         getCellAt(unit.getLocation()).addUnit(unit);
     }
 
+    /**
+     * Removes the Unit from the Cell at the specified Location, using the Cell removeUnit method.
+     *
+     * @param location location of the cell containing the unit to be removed.
+     * @see Cell#removeUnit()
+     */
     public void removeUnit(Location location) {
         getCellAt(location).removeUnit();
     }
 
+    /**
+     * Removes the Unit from the Cell at his Location, using the Cell removeUnit method.
+     *
+     * @param unit unit to remove.
+     * @see Cell#removeUnit()
+     */
     public void removeUnit(Unit unit) {
         getCellAt(unit.getLocation()).removeUnit();
     }
 
+    /**
+     * Refills all Units action points of certain Player.
+     *
+     * @param player player whose units AP will be filled.
+     */
     public void refillUnitsAP(Player player) {
         Unit unit;
         for (Cell cell : cells) {
@@ -74,6 +104,13 @@ public class World {
         }
     }
 
+    /**TODO: POR QUE USA GETCELLAT.ADDUNIT Y REMOVEUNIT SI WORLD YA TIENE ESTOS METODOS?
+     * Moves a Unit from the initialLocation Cell to the finalLocation Cell.
+     *
+     * @param initialLocation initial Location of the Unit.
+     * @param finalLocation final Location of the Unit.
+     * @see
+     */
     public void moveUnit(Location initialLocation, Location finalLocation) {
         Unit auxUnit = getCellAt(initialLocation).getUnit();
 
@@ -84,6 +121,13 @@ public class World {
         getCellAt(finalLocation).addUnit(auxUnit);
     }
 
+    /**
+     * Captures a Building moving a Unit to the Building Location, and setting the ownership of the building to the
+     * owner of the Unit.
+     *
+     * @param unit unit used to capture.
+     * @param buildingLocation location of the Building to capture.
+     */
     public void captureBuilding(Unit unit, Location buildingLocation) {
         if (unit == null) throw new NullArgumentException("null unit parameter");
         if (buildingLocation == null) throw new NullArgumentException("null location parameter");
@@ -92,11 +136,23 @@ public class World {
         getCellAt(buildingLocation).getBuilding().setOwner(unit.getOwner());
     }
 
+    /**
+     * Creates an Attack from an attacker, to the defender, who receives damage of this Attack.
+     *
+     * @param attacker attacking Unit.
+     * @param defender defending Unit.
+     */
     private void attack(Unit attacker, Unit defender) {
             Attack attack = attacker.getAttack();
             defender.receiveDamage(attack);
     }
 
+    /**
+     * Battle consisted of an Attack from the attacker, and a counter-attack from the defender, if he is in range.
+     *
+     * @param attacker attacking Unit.
+     * @param defender defending Unit.
+     */
     public void skirmish(Unit attacker, Unit defender) {
         attack(attacker, defender);
         if(isInRange(defender,attacker)) {
@@ -107,12 +163,25 @@ public class World {
         if (defender.isDed()) removeUnit(defender);
     }
 
-
+    /**
+     * Returns true if a Unit is in range to attack another Unit.
+     *
+     * @param attacker attacking Unit.
+     * @param defender defending Unit.
+     * @return true if the Distance between two Units is less or equals to the attacking range of the attacker Unit.
+     */
     public boolean isInRange(Unit attacker, Unit defender) {
         Integer range = attacker.getRange();
         return distance(attacker.getLocation(), defender.getLocation()) <= range;
     }
 
+    /**
+     * Calculates the distance between two Cells certain locations l1 and l2.
+     *
+     * @param l1 location 1.
+     * @param l2 location 2.
+     * @return Integer value with distance between cells.
+     */
     public static Integer distance(Location l1, Location l2) {
         // Cálculos raros para adaptar la matriz a la matriz de 3 ejes:
         Integer x1 = -l1.getY();
@@ -129,6 +198,12 @@ public class World {
         return Math.max(Math.max(deltaX, deltaY), deltaZ);
     }
 
+    /** TODO: Está bien que este método lo tenga el world, o tal vez cada Cell debería tener su APCost, y calcularlo segun el terrain?
+     * Returns the Terrain action points cost used to move a unit through it.
+     *
+     * @param terrain terrain to ask cost.
+     * @return Integer value of the action points cost.
+     */
     public Integer getTerrainAPCost(Terrain terrain) {
         switch (terrain) {
             case GRASS:
@@ -146,6 +221,12 @@ public class World {
         throw new InvalidTerrainException(terrain + " does not have a cost");
     }
 
+    /**
+     * Returns the Cell of certain Location.
+     *
+     * @param location location of the Cell.
+     * @return a Cell type object of the specified location.
+     */
     public Cell getCellAt(Location location) {
         for (Cell cell : cells) {
             if (cell.getLocation().equals(location)) return cell;
@@ -153,6 +234,11 @@ public class World {
         throw new CellOutOfWorldException("No cell exists at " + location.toString());
     }
 
+    /**TODO: Para qué usamos esto?
+     * Returns a Collection with all the Units in the World.
+     *
+     * @return a Collection of all Units.
+     */
     public Collection<Unit> getUnits() {
         Collection<Unit> units = new ArrayList<Unit>();
         Unit unit;
@@ -164,6 +250,11 @@ public class World {
         return units;
     }
 
+    /**TODO: Idem Arriba
+     * Returns a Collection with all the Units in the World of certain Player.
+     * @param player owner of the Units.
+     * @return a Collection of all Units from a Player.
+     */
     public Collection<Unit> getUnits(Player player) {
         Collection<Unit> units = new ArrayList<Unit>();
         Unit unit;
@@ -176,6 +267,12 @@ public class World {
         return units;
     }
 
+    /** TODO: Si buscamos un Castle, o una Mine, no te va a devolver solo 1?? Ya que siempre va a buscar en el mismo orden de cells, y va a retornar la location del primero que encuentre
+     * Returns the Locations of certain Building.
+     *
+     * @param building building to search.
+     * @return Location of the Building.
+     */
     public Location getBuildingLocation(Building building) {
         Location location;
         if (building == null) throw new NullArgumentException("building is null");
@@ -186,6 +283,12 @@ public class World {
         return null;
     }
 
+    /**
+     * Returns the Castle of the specified Player.
+     *
+     * @param player owner of the Castle.
+     * @return Castle owned by Player.
+     */
     public Castle getPlayerCastle(Player player) {
         for (Cell cell : cells) {
             if (cell.getBuilding() != null && cell.getBuilding().getOwner() != null) {
@@ -199,18 +302,39 @@ public class World {
         return null;
     }
 
+    /**
+     * Returns the Terrain of the Cell in certain Location.
+     *
+     * @param location location of the Cell.
+     * @return Terrain of the Cell in Location.
+     */
     public Terrain getTerrainAt(Location location) {
         return getCellAt(location).terrain;
     }
 
+    /**
+     * Returns the World height.
+     *
+     * @return Integer value of World height.
+     */
     public Integer getWorldHeight() {
         return worldHeight;
     }
 
+    /**
+     * Returns the World width.
+     *
+     * @return Integer value of World width.
+     */
     public Integer getWorldWidth() {
         return worldWidth;
     }
 
+    /**
+     * Returns a Collection of all Cells in the World.
+     *
+     * @return Collection of all Cells.
+     */
     public Collection<Cell> getCells() {
         return cells;
     }
@@ -232,6 +356,11 @@ public class World {
         return Terrain.GRASS;
     }
 
+    /**TODO: Vamos a hacer mapas específicos despues?
+     * Generates all the Cells of the World.
+     *
+     * @return Collection of Cells.
+     */
     private Collection<Cell> generateCellCollection() {
 
         Collection<Cell> cellCollection = new ArrayList<Cell>();
@@ -250,6 +379,11 @@ public class World {
         return cellCollection;
     }
 
+    /**
+     * TODO: Otro metodo que utiliza una clase de Frontend.
+     * @param seletedCell
+     * @return
+     */
     public Collection<CellUIData> generateCellUIData(Cell seletedCell) {
         Collection<CellUIData> cellUIDataCollection = new ArrayList<CellUIData>();
         for (Cell cell : cells) {
@@ -258,6 +392,11 @@ public class World {
         return cellUIDataCollection;
     }
 
+    /**
+     * Returns the Player gold income.
+     * @param player player whose income is asked.
+     * @return Integer value with gold income.
+     */
     public Integer getPlayerIncome(Player player){
         Integer income=0;
         if(player == null) {
