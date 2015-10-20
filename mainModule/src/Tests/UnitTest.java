@@ -6,6 +6,7 @@ import backend.items.Item;
 import backend.items.ItemFactory;
 import backend.units.Unit;
 import backend.units.UnitFactory;
+import backend.units.UnitType;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.worldBuilding.Terrain;
@@ -27,7 +28,7 @@ public class UnitTest {
         p2 = new Player("Sergio");
         world = new World(50, 50, p1, p2);
 
-        archer = UnitFactory.buildUnit("archer", Terrain.GRASS, new Location(3, 0), p1);
+        archer = UnitFactory.buildUnit(UnitType.ARCHER, Terrain.GRASS, new Location(3, 0), p1);
     }
 
     @Test
@@ -56,7 +57,7 @@ public class UnitTest {
     @Test
     //Sees if two units attack each other
     public void BattleTest() {
-        Unit lancer = UnitFactory.buildUnit("lancer", Terrain.GRASS, new Location(3, 1), p2);
+        Unit lancer = UnitFactory.buildUnit(UnitType.WARRIOR, Terrain.GRASS, new Location(3, 1), p2);
 
         world.addUnit(archer);
         world.addUnit(lancer);
@@ -73,7 +74,7 @@ public class UnitTest {
     //Sees if a Unit can pickup an item
     public void PickupTest() {
         //Extra item:
-        Unit archer1 = UnitFactory.buildUnit("archer", Terrain.GRASS, new Location(3, 1), p1);
+        Unit archer1 = UnitFactory.buildUnit(UnitType.ARCHER, Terrain.GRASS, new Location(3, 1), p1);
         world.addUnit(archer1);
 
         Integer maxHealthIni = archer1.getMaxHealth();
@@ -87,7 +88,7 @@ public class UnitTest {
         world.removeUnit(archer1);
 
         //Rune item
-        Unit archer2 = UnitFactory.buildUnit("archer", Terrain.GRASS, new Location(3, 1), p1);
+        Unit archer2 = UnitFactory.buildUnit(UnitType.ARCHER, Terrain.GRASS, new Location(3, 1), p1);
         world.addUnit(archer2);
 
         Attack attackIni = archer2.getAttack();

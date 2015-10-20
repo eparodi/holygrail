@@ -1,9 +1,11 @@
 package frontend;
 
 import backend.Game;
+import backend.units.UnitType;
 import backend.worldBuilding.Location;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -11,40 +13,42 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+
+import java.awt.*;
 
 
 public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Group root = new Group();
-        Canvas canvas = new Canvas(1000,600);
+
+//        Canvas canvas = new Canvas(Screen.getPrimary().getBounds().getWidth()-200,Screen.getPrimary().getBounds().getHeight()-200);
+        Canvas canvas = new Canvas(500,500);
         final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
         Scene scene=new Scene(root, canvas.getWidth(), canvas.getHeight());
         root.getChildren().add(canvas);
 
         final Game game = new Game();
-        final GameController gameController = new GameController(100,100);
+        final GameController gameController = new GameController(game.getWorldHeight(),game.getWorldWidth(),graphicsContext);
         canvas.autosize();
         root.autosize();
 
         gameController.updateGraphics(graphicsContext, game.getCellUIData());
-
         root.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-                Location destination = drawLocationToGridLocation(e.getX(), e.getY());
-                game.actionAttempt(destination);
+                gameController.attemptAction(game,e.getX(),e.getY());
                 gameController.updateGraphics(graphicsContext, game.getCellUIData());
-
             }
         });
 
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent key) {
                 if (key.getCode().equals(KeyCode.A))
-                    game.attemptBuildUnit("Archer");
+                    game.attemptBuildUnit(UnitType.ARCHER);
                 if (key.getCode().equals(KeyCode.L)){
-                    game.attemptBuildUnit("Lancer");
+                    game.attemptBuildUnit(UnitType.WARRIOR);
                 }
 
                 if (key.getCode().equals(KeyCode.SPACE))
@@ -52,15 +56,6 @@ public class Main extends Application {
                 gameController.updateGraphics(graphicsContext, game.getCellUIData());
             }
         });
-
-
-
-        //graphicsContext.fillRect(100,100,500,500);
-        game.attemptBuildUnit("Archer");
-
-        //este comando mueve la unidad :D
-        //game.actionAttempt(new Location(2,3));
-
 
         primaryStage.setTitle("El Santo Grial");
         primaryStage.setScene(scene);

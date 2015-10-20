@@ -13,28 +13,27 @@ import backend.worldBuilding.Terrain;
 public class UnitFactory {
 
     //Constructor: name, baseAttack, maxHealth, maxActionPoints, range, currentTerrain, preferredTerrain, location, owner
-    public static Unit buildUnit(String unitName, Terrain currentTerrain, Location location, Player player) {
+    public static Unit buildUnit(UnitType unitType, Terrain currentTerrain, Location location, Player player) {
 
         Unit unit = null;
-        if (unitName == null) throw new NullNameException("Null unit name");
+        if (unitType == null) throw new NullNameException("Null unit name");
 
-        if (unitName.equalsIgnoreCase("Archer")) {
-            unit = new Unit("Archer", new Attack(1, 4, 1), new Defense(1,4,2), 10, 7, 2, Terrain.FOREST, currentTerrain,
-                    location, player);
+        switch (unitType){
+            case ARCHER:
+                unit = new Unit(UnitType.ARCHER , new Attack(1, 6, 1), new Defense(1,4,2), 10, 4, 2, Terrain.FOREST,
+                        currentTerrain, location, player);
+                break;
 
-            ItemFactory itemFactory = new ItemFactory();
+            case WARRIOR:
+                unit = new Unit(UnitType.WARRIOR, new Attack(2, 2, 5), new Defense(3,2,3), 15, 6, 1, Terrain.GRASS,
+                        currentTerrain, location, player);
+                break;
         }
 
-        if (unitName.equalsIgnoreCase("Lancer")) {
-            unit = new Unit("Lancer", new Attack(2, 2, 7), new Defense(3,2,3), 20, 10, 1, Terrain.GRASS, currentTerrain,
-                    location, player);
-
-            ItemFactory itemFactory = new ItemFactory();
-        }
 
         //TODO agregar otros
 
-        if (unit == null) throw new NoSuchUnitType("No unit type called '" + unitName + "'");
+        if (unit == null) throw new NoSuchUnitType("No unit type called '" + unitType);
         return unit;
     }
 }

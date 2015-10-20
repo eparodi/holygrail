@@ -89,13 +89,16 @@ public class World {
     }
 
     private void attack(Unit attacker, Unit defender) {
+
             Attack attack = attacker.getAttack();
             defender.receiveDamage(attack);
     }
 
     public void skirmish(Unit attacker, Unit defender) {
         attack(attacker, defender);
-        attack(defender, attacker);
+        if(isInRange(attacker,defender)) {
+            attack(defender, attacker);
+        }
 
         if (attacker.isDed()) removeUnit(attacker);
         if (defender.isDed()) removeUnit(defender);

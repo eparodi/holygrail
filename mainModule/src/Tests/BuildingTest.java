@@ -2,7 +2,7 @@ package Tests;
 
 import backend.building.Castle;
 import backend.units.Unit;
-import backend.units.UnitFactory;
+import backend.units.UnitType;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.worldBuilding.Terrain;
@@ -29,9 +29,9 @@ public class BuildingTest {
         Castle castle = new Castle(p1);
         world.addBuilding(castle, new Location(0,0));
 
-        Unit unit = castle.buildUnit("lancer", Terrain.FOREST, new Location(1,1), p1);
+        Unit unit = castle.buildUnit(UnitType.WARRIOR, Terrain.FOREST, new Location(1,1), p1);
 
-        assertTrue(unit.getName().equals("Lancer"));
+        assertTrue(unit.getUnitType().equals(UnitType.WARRIOR));
         assertTrue(unit.getLocation().equals(new Location(1,1)));
         assertTrue(unit.getOwner().equals(p1));
     }

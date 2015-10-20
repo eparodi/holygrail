@@ -4,35 +4,41 @@ import backend.Game;
 import backend.exceptions.InvalidTerrainException;
 import backend.exceptions.NoSuchUnitType;
 import backend.exceptions.NullArgumentException;
+import backend.units.UnitType;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Terrain;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import org.omg.CORBA.IMP_LIMIT;
 
 import java.util.Collection;
 
 public class GameController {
-    Integer cellHeight, cellWidth, worldHeight, worldWidth;
+    Integer cellHeight;
+    Integer cellWidth;
+    Integer worldHeight;
+    Integer worldWidth;
 
-    /**
-     * @param cellHeight    The height of the cell in pixels
-     * @param cellWidth     The width of the cell in pixels
-     */
-    public GameController(Integer cellHeight, Integer cellWidth) {
-        this.cellHeight = cellHeight;
-        this.cellWidth = cellWidth;
+//    /**
+//     * @param cellHeight    The height of the cell in pixels
+//     * @param cellWidth     The width of the cell in pixels
+//     */
+    public GameController(Integer worldHeight, Integer worldWidth, GraphicsContext graphicsContext) {
+        this.worldHeight = worldHeight;
+        this.worldWidth = worldWidth;
+        cellWidth =(int) graphicsContext.getCanvas().getWidth() / worldWidth;
+        cellHeight =(int) graphicsContext.getCanvas().getHeight() / worldHeight;
     }
+
 
     public void SelectCell(Game game, Location location){
         game.actionAttempt(location);
     }
 
-    public Location drawLocationToGridLocation(Double x,Double y){
+    public Location drawLocationToGridLocation(Integer x,Integer y){
         Location gridLocation = new Location(0,0);
 
-        Double auxY = Math.floor(y/75);
-        Double auxX = auxY.intValue() % 2 == 0? Math.floor(x/100):Math.floor((x-50)/100);
+        Double auxY = Math.floor(y/(((double) 3/4)*cellHeight));
+        Double auxX = auxY.intValue() % 2 == 0? Math.floor(x/cellWidth):Math.floor((x-cellWidth/2)/cellWidth);
 
         gridLocation.setY(auxY.intValue());
         gridLocation.setX(auxX.intValue());
@@ -40,10 +46,17 @@ public class GameController {
         return gridLocation;
     }
 
+    public void attemptAction(Game game, double drawX, double drawY){
+        Location gridLocation = drawLocationToGridLocation((int) drawX,(int) drawY);
+        if(gridLocation.getY()< worldHeight && gridLocation.getX() < worldWidth)
+            game.actionAttempt(gridLocation);
+    }
     public void updateGraphics(GraphicsContext graphicsContext, Collection<CellUIData> cellUIDataCollection){
-        graphicsContext.fillRect(10,100,100,100);
+        //clear the canvas
+        cellWidth =(int) graphicsContext.getCanvas().getWidth() / worldWidth;
+        cellHeight =(int) graphicsContext.getCanvas().getHeight() / worldHeight;
+        graphicsContext.clearRect(0, 0, graphicsContext.getCanvas().getWidth(), graphicsContext.getCanvas().getHeight());
         drawCells(graphicsContext, cellUIDataCollection);
-
     }
 
     public void drawCells(GraphicsContext graphicsContext, Collection<CellUIData> cellUIDataCollection){
@@ -53,8 +66,8 @@ public class GameController {
             if(cellUIData.buildingType != null )
                 drawBuilding(graphicsContext,cellUIData.buildingType,cellUIData.getLocation());
 
-            if(cellUIData.getUnitName() != null)
-                drawUnit(graphicsContext,cellUIData.getUnitName(),cellUIData.getLocation());
+            if(cellUIData.getUnitType() != null)
+                drawUnit(graphicsContext,cellUIData.getUnitType(),cellUIData.getLocation());
 
         }
     }
@@ -64,12 +77,11 @@ public class GameController {
         Location drawLocation = gridLocationToDrawLocation(location);
         graphicsContext.drawImage(image,drawLocation.getX(),drawLocation.getY());
     }
-    private void drawUnit(GraphicsContext graphicsContext, String unitType, Location location){
+    private void drawUnit(GraphicsContext graphicsContext, UnitType unitType, Location location){
         Image image = getUnitImage(unitType);
         Location drawLocation = gridLocationToDrawLocation(location);
         graphicsContext.drawImage(image,drawLocation.getX(),drawLocation.getY());
     }
-
     public void drawTerrain(GraphicsContext graphicsContext, Terrain terrain, Location location){
         Image image = getTerrainImage(terrain);
         Location drawLocation = gridLocationToDrawLocation(location);
@@ -79,7 +91,8 @@ public class GameController {
     public Location gridLocationToDrawLocation(Location gridLocation) {
         Location drawLocation = new Location(0, 0);
 
-        drawLocation.setX(gridLocation.getY() % 2 == 0 ? gridLocation.getX() * cellWidth : gridLocation.getX() * cellWidth + cellWidth / 2); // Depende de fila par/impar
+        drawLocation.setX(gridLocation.getY() % 2 == 0 ? gridLocation.getX() * cellWidth :
+                                        gridLocation.getX() * cellWidth + cellWidth / 2); // Depende de fila par/impar
         drawLocation.setY(gridLocation.getY() * (cellHeight - cellHeight / 4));
 
         return drawLocation;
@@ -109,12 +122,20 @@ public class GameController {
         }
         throw new InvalidTerrainException("No image for that terrain");
     }
-    public Image getUnitImage(String unitName){
-        if(unitName == null) throw new NullArgumentException("Null unit unitName in image");
-        if(unitName.equalsIgnoreCase("Archer"))
+    public Image getUnitImage(UnitType unitType){
+        if(unitType == null) throw new NullArgumentException("Null unit unitType in image");
+
+        switch (unitType) {
+            case ARCHER:
                 return new Image("file:mainModule/resources/may.png", cellWidth, cellHeight, false, false);
-        if(unitName.equalsIgnoreCase("Lancer"))
+
+            case WARRIOR:
                 return new Image("file:mainModule/resources/ash.png", cellWidth, cellHeight, false, false);
-        throw new NoSuchUnitType("No image for that unit: " + unitName);
+
+        }
+        throw new NoSuchUnitType("No image for that unit: " + unitType);
     }
+}
+enum Direction{
+    UP,DOWN,LEFT,RIGHT
 }

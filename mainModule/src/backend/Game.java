@@ -3,6 +3,7 @@ package backend;
 import backend.building.Castle;
 import backend.exceptions.NullArgumentException;
 import backend.units.Unit;
+import backend.units.UnitType;
 import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
@@ -22,7 +23,14 @@ public class Game {
     private Queue<String> logQueue;
 
     public Game() {
-        startNewGame(8,6,"Carlos","Pepe");
+        startNewGame(10,20,"Carlos","Pepe");
+    }
+
+    public Integer getWorldHeight(){
+        return world.getWorldHeight();
+    }
+    public Integer getWorldWidth(){
+        return world.getWorldWidth();
     }
 
     public void startNewGame(Integer worldWidth, Integer worldHeight, String player1, String player2) {
@@ -75,8 +83,8 @@ public class Game {
         printLog();
     }
 
-    public boolean attemptBuildUnit(String unitName) {
-        if (unitName == null){
+    public boolean attemptBuildUnit(UnitType unitType) {
+        if (unitType == null){
             throw new NullArgumentException("Unit name is null");
         }
         Castle castle = world.getPlayerCastle(activePlayer);
@@ -85,14 +93,14 @@ public class Game {
         //TODO precio en castillo?
         if (!castleCell.hasUnit()){
             if(activePlayer.canPay(10)) {
-                Unit unitCreated = castle.buildUnit(unitName, castleCell.getTerrain(), castleCell.getLocation(), activePlayer);
+                Unit unitCreated = castle.buildUnit(unitType, castleCell.getTerrain(), castleCell.getLocation(), activePlayer);
                 world.addUnit(unitCreated);
                 //TODO precio en castillo?
                 activePlayer.pay(10);
                 return true;
             }addLog(getActivePlayer() + " has less than 10 gold" + getActivePlayer().getGold());
         }addLog("Building at " + castleCell.getLocation() + " is occupied");
-        addLog("Successfully build a " + unitName + " in " + castleCell.getLocation());
+        addLog("Successfully build a " + unitType + " in " + castleCell.getLocation());
 
         return false;
     }

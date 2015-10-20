@@ -15,7 +15,7 @@ public class Unit {
 
     Player owner;
     private Integer id;
-    private String name;
+    private UnitType unitType;
     private Terrain preferredTerrain;
 
     private Terrain currentTerrain;
@@ -32,9 +32,9 @@ public class Unit {
     private Integer maxActionPoints;
     private Integer range;
 
-    public Unit(String name, Attack baseAttack, Defense defense, Integer maxHealth, Integer maxActionPoints, Integer range,
+    public Unit(UnitType unitType, Attack baseAttack, Defense defense, Integer maxHealth, Integer maxActionPoints, Integer range,
                 Terrain currentTerrain, Terrain preferredTerrain, Location location, Player owner) {
-        this.name = name;
+        this.unitType = unitType;
         this.baseAttack = baseAttack;
         this.defense = defense;
         this.maxHealth = maxHealth;
@@ -70,7 +70,7 @@ public class Unit {
     public Attack getAttack() {
         // returns the base attack with the terrain bonus the attacking unit is
         // on
-        System.out.println(name + "is attacking");
+        System.out.println(unitType + "is attacking");
         System.out.println("attackerTerrain = " + currentTerrain);
         System.out.println("baseAttack = " + baseAttack);
         System.out.println("baseAttack.getModifiedAttack(calcTerrainMod(attackerTerrain)) = "
@@ -164,7 +164,6 @@ public class Unit {
         return currentTerrain;
     }
 
-
     public boolean isDed() {
         return getHealth() == 0;
     }
@@ -173,12 +172,20 @@ public class Unit {
         return location;
     }
 
-    public String getName() {
-        return name;
+    public UnitType getUnitType() {
+        return unitType;
     }
 
     public void spendAP(Integer actionPointsSpent) {
         actionPoints -= actionPointsSpent;
         if (actionPoints < 0) throw new IllegalStateException(this + " is using more AP than it has");
+    }
+
+    public String toString() {
+        return getUnitType() + " " + getId();
+    }
+
+    public Integer getId() {
+        return id;
     }
 }

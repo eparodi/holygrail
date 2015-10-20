@@ -1,6 +1,6 @@
 package frontend;
 
-import backend.units.Unit;
+import backend.units.UnitType;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Terrain;
 
@@ -9,11 +9,11 @@ public class CellUIData {
     Location location;
     Terrain terrain;
     Integer health, maxHealth;
-    String unitName;
+    UnitType unitType;
     String buildingType;
 
-    public String getUnitName() {
-        return unitName;
+    public UnitType getUnitType() {
+        return unitType;
     }
 
     public Location getLocation() {
@@ -43,7 +43,7 @@ public class CellUIData {
     public void addBuildingData(String buildingType){
         this.buildingType = buildingType;
     }
-    public void addUnitData(String unitName){
-        this.unitName = unitName;
+    public void addUnitData(UnitType unitType){
+        this.unitType = unitType;
     }
 }
