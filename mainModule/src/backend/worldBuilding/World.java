@@ -104,6 +104,7 @@ public class World {
         if (defender.isDed()) removeUnit(defender);
     }
 
+
     public boolean isInRange(Unit attacker, Unit defender) {
         Integer range = attacker.getRange();
         return distance(attacker.getLocation(), defender.getLocation()) <= range;
@@ -237,5 +238,17 @@ public class World {
             cellUIDataCollection.add(cell.getCellUIData());
         }
         return cellUIDataCollection;
+    }
+
+    public Integer getPlayerIncome(Player player){
+        Integer income=0;
+        for(Cell cell:cells){
+            if(cell.hasBuilding()){
+                if(cell.getBuilding().getOwner().equals(player)){
+                    income+=cell.getBuilding().getPerTurnGoldIncome();
+                }
+            }
+        }
+        return income;
     }
 }

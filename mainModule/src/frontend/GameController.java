@@ -9,6 +9,7 @@ import backend.worldBuilding.Location;
 import backend.worldBuilding.Terrain;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.stage.Screen;
 
 import java.util.Collection;
 
@@ -53,8 +54,8 @@ public class GameController {
     }
     public void updateGraphics(GraphicsContext graphicsContext, Collection<CellUIData> cellUIDataCollection){
         //clear the canvas
-        cellWidth =(int) graphicsContext.getCanvas().getWidth() / worldWidth;
-        cellHeight =(int) graphicsContext.getCanvas().getHeight() / worldHeight;
+        cellWidth =(int)( graphicsContext.getCanvas().getWidth() /( worldWidth+0.5d));
+        cellHeight =(int) (graphicsContext.getCanvas().getHeight() / (worldHeight-2d));
         graphicsContext.clearRect(0, 0, graphicsContext.getCanvas().getWidth(), graphicsContext.getCanvas().getHeight());
         drawCells(graphicsContext, cellUIDataCollection);
     }

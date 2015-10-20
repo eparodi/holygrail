@@ -8,16 +8,13 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by Pedro on 17/10/2015.
- */
 public class GameTest {
 
-    Game game = new Game();
+    Game game;
 
     @Before
     public void initialisation() {
-        game.startNewGame(20, 20, "Sergio", "Pablo");
+        game = new Game(20,20,"Sergio","Pablo");
     }
 
     @Test

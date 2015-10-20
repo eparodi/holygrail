@@ -22,8 +22,8 @@ public class Game {
     private Player activePlayer;
     private Queue<String> logQueue;
 
-    public Game() {
-        startNewGame(10,20,"Carlos","Pepe");
+    public Game(Integer worldWidth, Integer worldHeight, String player1, String player2) {
+        startNewGame(worldWidth,worldHeight,player1,player2);
     }
 
     public Integer getWorldHeight(){
@@ -42,10 +42,15 @@ public class Game {
         selectPlayerCastle(activePlayer);
     }
 
-    private void selectPlayerCastle(Player player) {
+    private boolean selectPlayerCastle(Player player) {
         //Searches the castle from the first player and selects the cell where it is located
         //#Building needs location
-        selectedCell = world.getCellAt(world.getBuildingLocation(world.getPlayerCastle(player)));
+        if(world.getPlayerCastle(player) == null){
+            addLog(player + "lost, he has no more buildings");
+            return false;
+        }
+        else selectedCell = world.getCellAt(world.getBuildingLocation(world.getPlayerCastle(player)));
+        return true;
     }
 
     public void actionAttempt(Location location) {
@@ -61,10 +66,12 @@ public class Game {
             if (clickedCell.hasUnit()) {
                 if (clickedCell.getUnit().getOwner().equals(activePlayer)) {
                     setSelectedCell(clickedCell);
-                } else {
+                } else if(selectedCell.getUnit().getOwner().equals(activePlayer)){
                     attackAttempt(selectedCell.getUnit(), clickedCell.getUnit());
+                }else{
+                    setSelectedCell(clickedCell);
                 }
-            } else {
+            } else if(getSelectedCell().getUnit().getOwner().equals(getActivePlayer())){
                 //No unit and building means unit tries to capture
                 if (clickedCell.hasBuilding() && !clickedCell.getBuilding().getOwner().equals(activePlayer)) {
                     captureAttempt(selectedCell.getUnit(), clickedCell);
@@ -75,6 +82,7 @@ public class Game {
                     selectedCell = clickedCell;
                 }
             }
+            else {setSelectedCell(clickedCell);}
         } else {
             //building is selected
             selectedCell = clickedCell;
@@ -157,6 +165,8 @@ public class Game {
 
         if (attacker.getOwner().equals(defender.getOwner()))
             throw new IllegalStateException("tries to attack own unit");
+        if(attacker.equals(defender))
+            throw new IllegalStateException("tries to attack itself");
 
         if (world.isInRange(attacker, defender)) {
             if (attacker.getActionPoints() >= ATTACK_AP_COST) {
@@ -196,7 +206,14 @@ public class Game {
     }
     public void endTurn(){
         world.refillUnitsAP(getActivePlayer());
+
+        getActivePlayer().addGold(world.getPlayerIncome(getActivePlayer()));
         activateNextPlayer();
-        selectPlayerCastle(getActivePlayer());
+        if(! selectPlayerCastle(getActivePlayer())) {
+            addLog("The game has ended, please do not move anything");
+            activateNextPlayer();
+        }
+        addLog(getActivePlayer() + " has " + getActivePlayer().getGold() + " gold and recieved " +
+                world.getPlayerIncome(getActivePlayer()));
     }
 }

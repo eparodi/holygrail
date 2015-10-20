@@ -23,16 +23,16 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Group root = new Group();
 
-//        Canvas canvas = new Canvas(Screen.getPrimary().getBounds().getWidth()-200,Screen.getPrimary().getBounds().getHeight()-200);
-        Canvas canvas = new Canvas(500,500);
+        //TO CHANGE RESOLUTION OR WORLD HEIGHT MODIFY THIS:
+        Canvas canvas = new Canvas(1000,700);
+        final Game game = new Game(10,15,"Jorge","Marcos");
+        //END OF MODIFIABLE, DONT TOUCH THE REST
+
         final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
         Scene scene=new Scene(root, canvas.getWidth(), canvas.getHeight());
         root.getChildren().add(canvas);
 
-        final Game game = new Game();
         final GameController gameController = new GameController(game.getWorldHeight(),game.getWorldWidth(),graphicsContext);
-        canvas.autosize();
-        root.autosize();
 
         gameController.updateGraphics(graphicsContext, game.getCellUIData());
         root.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
@@ -45,10 +45,14 @@ public class Main extends Application {
 
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent key) {
-                if (key.getCode().equals(KeyCode.A))
+                if (key.getCode().equals(KeyCode.A)){
                     game.attemptBuildUnit(UnitType.ARCHER);
-                if (key.getCode().equals(KeyCode.L)){
+                }
+                if (key.getCode().equals(KeyCode.W)){
                     game.attemptBuildUnit(UnitType.WARRIOR);
+                }
+                if (key.getCode().equals(KeyCode.R)){
+                    game.attemptBuildUnit(UnitType.RIDER);
                 }
 
                 if (key.getCode().equals(KeyCode.SPACE))

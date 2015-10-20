@@ -12,6 +12,7 @@ public class Castle extends Building {
     public Castle(Player player) {
         owner = player;
         buildingType = "Castle";
+        perTurnGoldIncome = 10;
     }
 
     public Unit buildUnit(UnitType unitType, Terrain terrain, Location location, Player player) {

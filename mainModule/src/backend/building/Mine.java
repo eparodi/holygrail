@@ -8,6 +8,7 @@ public class Mine extends Building{
     public Mine(Integer gold){
         income = gold;
         buildingType = "Mine";
+        perTurnGoldIncome = 15;
     }
 
     public Integer getIncome(){

@@ -5,6 +5,11 @@ import backend.worldBuilding.Player;
 public abstract class Building {
     String buildingType;
     Player owner = null;
+    Integer perTurnGoldIncome;
+
+    public Integer getPerTurnGoldIncome(){
+        return perTurnGoldIncome;
+    }
 
     public Player getOwner() {
         return owner;
