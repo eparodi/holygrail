@@ -37,10 +37,21 @@ public class Player {
         return gold;
     }
 
+    /**
+     * Returns true if a Player has enough gold to pay certain amount.
+     *
+     * @param amount gold to pay.
+     * @return true if the Player has more gold than amount, false if he hasn't.
+     */
     public boolean canPay(Integer amount){
         return amount <= gold;
     }
 
+    /**
+     * Adds certain amount of gold to a Player.
+     *
+     * @param amount gold to add.
+     */
     public void addGold(Integer amount){
         gold+=amount;
     }
