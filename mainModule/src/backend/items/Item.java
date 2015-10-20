@@ -1,6 +1,5 @@
 package backend.items;
 
-
 public abstract class Item {
 	String name = "Default";
 

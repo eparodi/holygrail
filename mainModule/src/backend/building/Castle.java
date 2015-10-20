@@ -23,7 +23,7 @@ public class Castle extends Building {
     }
 
     /**
-     * This method creates a Unit object using the UnitFactory class.
+     * Creates a Unit object using the UnitFactory class.
      * @param  unitType The type of the unit.
      * @param  terrain The terrain where the unit currently is.
      * @param  location The position of the unit.
@@ -31,6 +31,7 @@ public class Castle extends Building {
      * @return The unit that the Castle has created.
      * @see    UnitFactory
      * @see    Unit
+     * @see    UnitType
      */
     public Unit buildUnit(UnitType unitType, Terrain terrain, Location location, Player player) {
         return UnitFactory.buildUnit(unitType, terrain, location, player);

@@ -9,8 +9,20 @@ import backend.worldBuilding.Player;
 import backend.worldBuilding.Terrain;
 
 //TODO (ToAsk) hacer con String o calses speparadas por tipo de unidad
+
+/**
+ * This class is used to generate new Unit objects.
+ */
 public class UnitFactory {
 
+    /**
+     * Creates a new Unit.
+     * @param unitType       the type of the Unit.
+     * @param currentTerrain the current Terrain of the Unit.
+     * @param location       the current position of the Unit.
+     * @param player         the player who owns this Unit.
+     * @return the Unit that was created.
+     */
     //Constructor: name, baseAttack, maxHealth, maxActionPoints, range, currentTerrain, preferredTerrain, location, owner
     public static Unit buildUnit(UnitType unitType, Terrain currentTerrain, Location location, Player player) {
 
