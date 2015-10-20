@@ -9,12 +9,26 @@ import backend.worldBuilding.Terrain;
 
 public class Castle extends Building {
 
+    /**
+     * Constructs a Castle Building, owned by certain Player.
+     *
+     * @param player Owner of the Castle.
+     */
     public Castle(Player player) {
         owner = player;
         buildingType = "Castle";
         perTurnGoldIncome = 10;
     }
 
+    /**
+     * Creates a Unit.
+     *
+     * @param unitType Type of the Unit.
+     * @param terrain Current terrain of the Castle Cell.
+     * @param location Location of the Unit.
+     * @param player Owner of the Unit.
+     * @return A new Unit.
+     */
     public Unit buildUnit(UnitType unitType, Terrain terrain, Location location, Player player) {
         return UnitFactory.buildUnit(unitType, terrain, location, player);
     }

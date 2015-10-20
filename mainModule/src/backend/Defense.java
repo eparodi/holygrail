@@ -23,7 +23,7 @@ public class Defense {
      *
      * @param attack Attack made.
      * @param terrainMod Terrain modifier.
-     * @return an Integer value with damage done by an Attack, after being applied to certain Defense.
+     * @return An Integer value with damage done by an Attack, after being applied to certain Defense.
      */
     public Integer getDamageDealt(Attack attack, Double terrainMod){
         Integer damageDealt = 0;

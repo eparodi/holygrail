@@ -49,6 +49,11 @@ public class Unit {
         this.owner = owner;
     }
 
+    /**TODO: Remover Printf's
+     * Makes the unit receive an Attack.
+     *
+     * @param attack Attack to receive.
+     */
     public void receiveDamage(Attack attack) {
         System.out.println("calcTerrainMod(defendersTerrain) = " + calcTerrainMod(currentTerrain));
         Integer damageDealt = defense.getDamageDealt(attack, calcTerrainMod(currentTerrain));
@@ -57,6 +62,12 @@ public class Unit {
         System.out.println("health = " + health);
     }
 
+    /**
+     * Calculates the Terrain modifier for the Unit stats.
+     *
+     * @param targetTerrain Terrain where the Unit is standing.
+     * @return Double value with the Terrain modifier.
+     */
     public Double calcTerrainMod(Terrain targetTerrain) {
         // This will have to be extended to use a list of terrains?
         // Maybe a ranking of prefered terrains, with the first one getting the
@@ -67,6 +78,11 @@ public class Unit {
         return mod;
     }
 
+    /**TODO: Sacar Printf's.
+     * Returns an Attack dealt by the Unit, considering his Runes, and the Terrain modifier.
+     *
+     * @return modified Attack.
+     */
     public Attack getAttack() {
         // returns the base attack with the terrain bonus the attacking unit is
         // on
@@ -98,6 +114,9 @@ public class Unit {
         }
     }
 
+    /**
+     * Updates the Health and Action Points, adding the bonuses from Items.
+     */
     public void updateStatus() {
         Integer newHealth = health + extra.getMaxHealthBonus();
         health = newHealth < getMaxHealth() ? newHealth : getMaxHealth();
@@ -142,6 +161,9 @@ public class Unit {
         this.currentTerrain = terrain;
     }
 
+    /**
+     * Refills the Unit Action Points.
+     */
     public void refillAP() {
         this.actionPoints = this.maxActionPoints;
     }
@@ -164,6 +186,10 @@ public class Unit {
         return currentTerrain;
     }
 
+    /**
+     * Returns true if the unit has died.
+     * @return true if the unit is dead, false if it's alive.
+     */
     public boolean isDed() {
         return getHealth() == 0;
     }
@@ -176,6 +202,10 @@ public class Unit {
         return unitType;
     }
 
+    /**
+     * Spends an amount of the Unit Action Points.
+     * @param actionPointsSpent ap spent.
+     */
     public void spendAP(Integer actionPointsSpent) {
         actionPoints -= actionPointsSpent;
         if (actionPoints < 0) throw new IllegalStateException(this + " is using more AP than it has");

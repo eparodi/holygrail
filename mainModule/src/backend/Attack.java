@@ -7,6 +7,7 @@ public class Attack{
 
     /**
      * Creates an Attack with three different types of damage.
+     *
      * @param slashDamage Slash damage value.
      * @param piercingDamage Piercing damage value.
      * @param bluntDamage Blunt damage value.
