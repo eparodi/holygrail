@@ -66,8 +66,4 @@ public class Player {
         return ((Player)obj).id.equals(id);
     }
 
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
 }

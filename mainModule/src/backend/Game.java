@@ -175,7 +175,7 @@ public class Game {
 
         if (attacker.getOwner().equals(defender.getOwner())) {
             throw new IllegalStateException("tries to attack own unit");
-
+        }
         if (world.isInRange(attacker, defender)) {
             if (attacker.getActionPoints() >= ATTACK_AP_COST) {
                 attacker.spendAP(ATTACK_AP_COST);

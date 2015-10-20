@@ -24,8 +24,9 @@ public class GameController {
     public GameController(Integer worldHeight, Integer worldWidth, GraphicsContext graphicsContext) {
         this.worldHeight = worldHeight;
         this.worldWidth = worldWidth;
-        cellWidth =(int) graphicsContext.getCanvas().getWidth() / worldWidth;
-        cellHeight =(int) graphicsContext.getCanvas().getHeight() / worldHeight;
+        cellWidth =(int) (graphicsContext.getCanvas().getWidth() / (worldWidth+0.417d));
+        cellHeight =(int) (graphicsContext.getCanvas().getHeight() / (worldHeight*0.80));
+        System.out.println(cellHeight+","+cellWidth);
     }
 
     public Integer getCellHeight(){
@@ -36,7 +37,7 @@ public class GameController {
         return cellWidth;
     }
 
-    public void SelectCell(Game game, Location location) {
+    public void selectCell(Game game, Location location) {
         game.actionAttempt(location);
     }
 
@@ -59,8 +60,6 @@ public class GameController {
     }
     public void updateGraphics(GraphicsContext graphicsContext, Collection<CellUIData> cellUIDataCollection){
         //clear the canvas
-        cellWidth =(int)( graphicsContext.getCanvas().getWidth() /( worldWidth+0.5d));
-        cellHeight =(int) (graphicsContext.getCanvas().getHeight() / (worldHeight-2d));
         graphicsContext.clearRect(0, 0, graphicsContext.getCanvas().getWidth(), graphicsContext.getCanvas().getHeight());
         drawCells(graphicsContext, cellUIDataCollection);
     }

@@ -24,8 +24,8 @@ public class Main extends Application {
         Group root = new Group();
 
         //TO CHANGE RESOLUTION OR WORLD HEIGHT MODIFY THIS:
-        Canvas canvas = new Canvas(1000,700);
-        final Game game = new Game(10,15,"Jorge","Marcos");
+        Canvas canvas = new Canvas(1000,600);
+        final Game game = new Game(15,10,"Jorge","Marcos");
         //END OF MODIFIABLE, DONT TOUCH THE REST
 
         final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
@@ -48,8 +48,8 @@ public class Main extends Application {
                 if (key.getCode().equals(KeyCode.A)){
                     game.attemptBuildUnit(UnitType.ARCHER);
                 }
-                if (key.getCode().equals(KeyCode.W)){
-                    game.attemptBuildUnit(UnitType.WARRIOR);
+                if (key.getCode().equals(KeyCode.L)){
+                    game.attemptBuildUnit(UnitType.LANCER);
                 }
                 if (key.getCode().equals(KeyCode.R)){
                     game.attemptBuildUnit(UnitType.RIDER);
@@ -64,21 +64,6 @@ public class Main extends Application {
         primaryStage.setTitle("El Santo Grial");
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-
-    public Location drawLocationToGridLocation(Double x,Double y, Integer cellHeight, Integer cellWidth){
-        Location gridLocation = new Location(0,0);
-
-        //a new row of hexagonal cells start at 75% of cell's height
-        Double auxY = Math.floor(y/(cellHeight*.75));
-        //odd rows are moved cellWidth/2 to the right
-        Double auxX = auxY.intValue() % 2 == 0? Math.floor(x/cellWidth):Math.floor((x-cellWidth/2)/cellWidth);
-
-        gridLocation.setY(auxY.intValue());
-        gridLocation.setX(auxX.intValue());
-
-        return gridLocation;
     }
 
     public static void main(String[] args) {

@@ -224,10 +224,10 @@ public class World {
             return Terrain.HILL;
         }
         if (location.getX() > 5 && location.getY() <= 2){
-            return Terrain.MOUNTAIN;
+            return Terrain.WATER;
         }
         if (location.getX() <= 2 && location.getY() > 4){
-            return Terrain.WATER;
+            return Terrain.GRASS;
         }
         return Terrain.GRASS;
     }
@@ -260,10 +260,15 @@ public class World {
 
     public Integer getPlayerIncome(Player player){
         Integer income=0;
+        if(player == null) {
+            throw new NullArgumentException("player is null");
+        }
         for(Cell cell:cells){
             if(cell.hasBuilding()){
-                if(cell.getBuilding().getOwner().equals(player)){
-                    income+=cell.getBuilding().getPerTurnGoldIncome();
+                if(cell.getBuilding().getOwner() != null){
+                    if(cell.getBuilding().getOwner().equals(player)){
+                        income+=cell.getBuilding().getPerTurnGoldIncome();
+                    }
                 }
             }
         }
