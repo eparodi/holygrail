@@ -2,15 +2,18 @@ package frontend;
 
 import backend.units.UnitType;
 import backend.worldBuilding.Location;
+import backend.worldBuilding.Player;
 import backend.worldBuilding.Terrain;
 
 
 public class CellUIData {
-    Location location;
-    Terrain terrain;
-    Integer health, maxHealth;
-    UnitType unitType;
-    String buildingType;
+    private Location location;
+    private Terrain terrain;
+    private Integer health, maxHealth;
+    private UnitType unitType;
+    private String buildingType;
+    private Player owner;
+    private boolean isSelected;
 
     public UnitType getUnitType() {
         return unitType;
@@ -32,6 +35,10 @@ public class CellUIData {
         return maxHealth;
     }
 
+    public Player getOwner() {
+        return owner;
+    }
+
     public String getBuildingType() {
         return buildingType;
     }
@@ -43,7 +50,20 @@ public class CellUIData {
     public void addBuildingData(String buildingType){
         this.buildingType = buildingType;
     }
-    public void addUnitData(UnitType unitType){
+
+    public void addUnitData(UnitType unitType, Integer health, Integer maxHealth, Player owner) {
         this.unitType = unitType;
+        this.health = health;
+        this.maxHealth = maxHealth;
+        this.owner = owner;
+
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void selectCell() {
+        isSelected = true;
     }
 }

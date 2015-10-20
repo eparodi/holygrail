@@ -23,7 +23,7 @@ public class Game {
     private Queue<String> logQueue;
 
     public Game() {
-        startNewGame(10,20,"Carlos","Pepe");
+        startNewGame(8,6,"Carlos","Pepe");
     }
 
     public Integer getWorldHeight(){
@@ -177,24 +177,25 @@ public class Game {
         return selectedCell;
     }
 
-    public void printLog(){
-        while(!logQueue.isEmpty()){
+    public void printLog() {
+        while (!logQueue.isEmpty()) {
             System.out.println(logQueue.poll());
         }
     }
 
-    public Collection<CellUIData> getCellUIData(){
-        return world.generateCellUIData();
+    public Collection<CellUIData> getCellUIData() {
+        return world.generateCellUIData(selectedCell);
     }
 
-    public Player getActivePlayer(){
+    public Player getActivePlayer() {
         return activePlayer;
     }
 
-    private void activateNextPlayer(){
-        activePlayer = activePlayer.equals(player1)? player2:player1;
+    private void activateNextPlayer() {
+        activePlayer = activePlayer.equals(player1) ? player2 : player1;
     }
-    public void endTurn(){
+
+    public void endTurn() {
         world.refillUnitsAP(getActivePlayer());
         activateNextPlayer();
         selectPlayerCastle(getActivePlayer());

@@ -2,9 +2,8 @@ package backend.units;
 
 import backend.Attack;
 import backend.Defense;
-import backend.exceptions.NoSuchUnitType;
+import backend.exceptions.NoSuchUnitTypeException;
 import backend.exceptions.NullNameException;
-import backend.items.ItemFactory;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.worldBuilding.Terrain;
@@ -24,16 +23,22 @@ public class UnitFactory {
                         currentTerrain, location, player);
                 break;
 
-            case WARRIOR:
-                unit = new Unit(UnitType.WARRIOR, new Attack(2, 2, 5), new Defense(3,2,3), 15, 6, 1, Terrain.GRASS,
+            case LANCER:
+                unit = new Unit(UnitType.LANCER, new Attack(2, 2, 5), new Defense(3,2,3), 15, 6, 1, Terrain.GRASS,
+                        currentTerrain, location, player);
+                break;
+
+            case RIDER:
+                unit = new Unit(UnitType.RIDER, new Attack(2, 2, 5), new Defense(3,2,3), 15, 6, 1, Terrain.GRASS,
                         currentTerrain, location, player);
                 break;
         }
 
-
         //TODO agregar otros
 
-        if (unit == null) throw new NoSuchUnitType("No unit type called '" + unitType);
+        if (unit == null){
+            throw new NoSuchUnitTypeException("No unit type called '" + unitType + "'");
+        }
         return unit;
     }
 }

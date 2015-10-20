@@ -89,7 +89,6 @@ public class World {
     }
 
     private void attack(Unit attacker, Unit defender) {
-
             Attack attack = attacker.getAttack();
             defender.receiveDamage(attack);
     }
@@ -205,7 +204,7 @@ public class World {
         return worldWidth;
     }
 
-    public Collection<Cell> getCells(){
+    public Collection<Cell> getCells() {
         return cells;
     }
 
@@ -231,10 +230,10 @@ public class World {
         return cellCollection;
     }
 
-    public Collection<CellUIData> generateCellUIData(){
+    public Collection<CellUIData> generateCellUIData(Cell seletedCell) {
         Collection<CellUIData> cellUIDataCollection = new ArrayList<CellUIData>();
-        for(Cell cell:cells){
-            cellUIDataCollection.add(cell.getCellUIData());
+        for (Cell cell : cells) {
+                cellUIDataCollection.add(cell.getCellUIData(cell.equals(seletedCell)));
         }
         return cellUIDataCollection;
     }
