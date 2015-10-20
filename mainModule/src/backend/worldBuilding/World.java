@@ -215,7 +215,20 @@ public class World {
         return cells;
     }
 
+    //TODO: change, it's only for testing terrains
     public Terrain loadTerrain(Location location) {
+        if (location.getX() <= 2 && location.getY() <= 4 && location.getY() > 2){
+            return Terrain.FOREST;
+        }
+        if (location.getX() > 6 && location.getY() <= 4 && location.getY() >= 2){
+            return Terrain.HILL;
+        }
+        if (location.getX() > 5 && location.getY() <= 2){
+            return Terrain.MOUNTAIN;
+        }
+        if (location.getX() <= 2 && location.getY() > 4){
+            return Terrain.WATER;
+        }
         return Terrain.GRASS;
     }
 

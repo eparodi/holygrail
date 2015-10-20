@@ -149,6 +149,9 @@ public class GameController {
 
             case WATER:
                 return new Image("file:mainModule/resources/cellWater.png", cellWidth, cellHeight, false, false);
+
+            case HILL:
+                return new Image("file:mainModule/resources/cellHill.png", cellWidth, cellHeight, false, false);
         }
         throw new InvalidTerrainException("No image for that terrain");
     }
