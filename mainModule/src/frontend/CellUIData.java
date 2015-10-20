@@ -47,8 +47,9 @@ public class CellUIData {
         this.location = location;
         this.terrain = terrain;
     }
-    public void addBuildingData(String buildingType){
+    public void addBuildingData(String buildingType, Player owner){
         this.buildingType = buildingType;
+        this.owner = owner;
     }
 
     public void addUnitData(UnitType unitType, Integer health, Integer maxHealth, Player owner) {

@@ -20,16 +20,16 @@ import java.awt.*;
 
 
 public class Main extends Application {
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws Exception{
         Group root = new Group();
-        Canvas canvas = new Canvas(1000, 600);
+        Integer worldHeight = 1000, worldWidth = 600;
+        Canvas canvas = new Canvas(worldHeight, worldWidth);
         final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
-        Scene scene = new Scene(root, canvas.getWidth(), canvas.getHeight());
+        Scene scene=new Scene(root, canvas.getWidth(), canvas.getHeight());
         root.getChildren().add(canvas);
 
         final Game game = new Game();
-        Integer worldHeight = 1000, worldWidth = 900;
-        final GameController gameController = new GameController(worldHeight, worldWidth, graphicsContext);
+        final GameController gameController = new GameController(worldHeight, worldWidth,graphicsContext);
         canvas.autosize();
         root.autosize();
 
@@ -52,6 +52,9 @@ public class Main extends Application {
                 if (key.getCode().equals(KeyCode.L)) {
                     game.attemptBuildUnit(UnitType.LANCER);
                 }
+                if (key.getCode().equals(KeyCode.R)) {
+                    game.attemptBuildUnit(UnitType.RIDER);
+                }
 
                 if (key.getCode().equals(KeyCode.SPACE))
                     game.endTurn();
@@ -65,13 +68,13 @@ public class Main extends Application {
     }
 
 
-    public Location drawLocationToGridLocation(Double x, Double y, Integer cellHeight, Integer cellWidth) {
-        Location gridLocation = new Location(0, 0);
+    public Location drawLocationToGridLocation(Double x,Double y, Integer cellHeight, Integer cellWidth){
+        Location gridLocation = new Location(0,0);
 
         //a new row of hexagonal cells start at 75% of cell's height
-        Double auxY = Math.floor(y / (cellHeight * .75));
+        Double auxY = Math.floor(y/(cellHeight*.75));
         //odd rows are moved cellWidth/2 to the right
-        Double auxX = auxY.intValue() % 2 == 0 ? Math.floor(x / cellWidth) : Math.floor((x - cellWidth / 2) / cellWidth);
+        Double auxX = auxY.intValue() % 2 == 0? Math.floor(x/cellWidth):Math.floor((x-cellWidth/2)/cellWidth);
 
         gridLocation.setY(auxY.intValue());
         gridLocation.setX(auxX.intValue());

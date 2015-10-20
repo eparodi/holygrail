@@ -87,7 +87,7 @@ public class Cell {
         CellUIData cellUIData;
         cellUIData = new CellUIData(location, terrain);
         if (hasBuilding()) {
-            cellUIData.addBuildingData(getBuilding().getBuildingType());
+            cellUIData.addBuildingData(getBuilding().getBuildingType(), getBuilding().getOwner());
         }
         if (hasUnit()) {
             cellUIData.addUnitData(getUnit().getUnitType(), getUnit().getHealth(), getUnit().getMaxHealth(), getUnit().getOwner());

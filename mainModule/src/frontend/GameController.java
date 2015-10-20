@@ -1,12 +1,10 @@
 package frontend;
 
 import backend.Game;
-import backend.exceptions.InvalidTerrainException;
-import backend.exceptions.NoSuchLifeImageException;
-import backend.exceptions.NoSuchUnitTypeException;
-import backend.exceptions.NullArgumentException;
+import backend.exceptions.*;
 import backend.units.UnitType;
 import backend.worldBuilding.Location;
+import backend.worldBuilding.Player;
 import backend.worldBuilding.Terrain;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -14,8 +12,8 @@ import javafx.scene.image.Image;
 import java.util.Collection;
 
 public class GameController {
-    Integer cellHeight = 100;
-    Integer cellWidth = 100;
+    Integer cellHeight;
+    Integer cellWidth;
     Integer worldHeight;
     Integer worldWidth;
 
@@ -26,8 +24,11 @@ public class GameController {
     public GameController(Integer worldHeight, Integer worldWidth, GraphicsContext graphicsContext) {
         this.worldHeight = worldHeight;
         this.worldWidth = worldWidth;
-        cellWidth = (int) graphicsContext.getCanvas().getWidth() / worldWidth;
-        cellHeight = (int) graphicsContext.getCanvas().getHeight() / worldHeight;
+        //TODO: cálculos turbio que rompen todo
+//        cellWidth = (int) graphicsContext.getCanvas().getWidth() / worldWidth;
+//        cellHeight = (int) graphicsContext.getCanvas().getHeight() / worldHeight;
+        cellHeight = 100;
+        cellWidth = 100;
     }
 
     public Integer getCellHeight(){
@@ -42,12 +43,10 @@ public class GameController {
         game.actionAttempt(location);
     }
 
-    public Location drawLocationToGridLocation(Double x, Double y, Integer cellHeight, Integer cellWidth) {
+    public Location drawLocationToGridLocation(Integer x, Integer y) {
         Location gridLocation = new Location(0, 0);
 
-        //a new row of hexagonal cells start at 75% of cell's height
-        Double auxY = Math.floor(y / (cellHeight * .75));
-        //odd rows are moved cellWidth/2 to the right
+        Double auxY = Math.floor(y / (((double) 3 / 4) * cellHeight));
         Double auxX = auxY.intValue() % 2 == 0 ? Math.floor(x / cellWidth) : Math.floor((x - cellWidth / 2) / cellWidth);
 
         gridLocation.setY(auxY.intValue());
@@ -56,28 +55,17 @@ public class GameController {
         return gridLocation;
     }
 
-//    public Location drawLocationToGridLocation(Integer x, Integer y) {
-//        Location gridLocation = new Location(0, 0);
-//
-//        Double auxY = Math.floor(y / (((double) 3 / 4) * cellHeight));
-//        Double auxX = auxY.intValue() % 2 == 0 ? Math.floor(x / cellWidth) : Math.floor((x - cellWidth / 2) / cellWidth);
-//
-//        gridLocation.setY(auxY.intValue());
-//        gridLocation.setX(auxX.intValue());
-//
-//        return gridLocation;
-//    }
-
     public void attemptAction(Game game, double drawX, double drawY) {
-        Location gridLocation = drawLocationToGridLocation(drawX, drawY, cellHeight, cellWidth);
+        Location gridLocation = drawLocationToGridLocation((int) drawX, (int) drawY);
         if (gridLocation.getY() < worldHeight && gridLocation.getX() < worldWidth)
             game.actionAttempt(gridLocation);
     }
 
     public void updateGraphics(GraphicsContext graphicsContext, Collection<CellUIData> cellUIDataCollection) {
+        //TODO Revisar:
+//        cellWidth = (int) graphicsContext.getCanvas().getWidth() / worldWidth;
+//        cellHeight = (int) graphicsContext.getCanvas().getHeight() / worldHeight;
         //clear the canvas
-        cellWidth = (int) graphicsContext.getCanvas().getWidth() / worldWidth;
-        cellHeight = (int) graphicsContext.getCanvas().getHeight() / worldHeight;
         graphicsContext.clearRect(0, 0, graphicsContext.getCanvas().getWidth(), graphicsContext.getCanvas().getHeight());
         drawCells(graphicsContext, cellUIDataCollection);
 
@@ -92,19 +80,21 @@ public class GameController {
             }
 
             if (cellUIData.getBuildingType() != null) {
-                drawBuilding(graphicsContext, cellUIData.getBuildingType(), cellUIData.getLocation());
+                drawBuilding(graphicsContext, cellUIData.getBuildingType(), cellUIData.getLocation(), cellUIData.getOwner());
             }
             if (cellUIData.getUnitType() != null) {
-                drawUnit(graphicsContext, cellUIData.getUnitType(), cellUIData.getLocation());
+                drawUnit(graphicsContext, cellUIData.getUnitType(), cellUIData.getLocation(), cellUIData.getOwner());
                 drawLife(graphicsContext, cellUIData.getHealth(), cellUIData.getMaxHealth(), cellUIData.getLocation());
             }
         }
     }
 
-    private void drawBuilding(GraphicsContext graphicsContext, String buildingType, Location location) {
+    private void drawBuilding(GraphicsContext graphicsContext, String buildingType, Location location, Player owner) {
         Image image = getBuildingImage(buildingType);
+        Image flag = getFlagImage(owner);
         Location drawLocation = gridLocationToDrawLocation(location);
         graphicsContext.drawImage(image, drawLocation.getX(), drawLocation.getY());
+        graphicsContext.drawImage(flag, drawLocation.getX(), drawLocation.getY());
     }
 
     public void drawCellSelection(GraphicsContext graphicsContext, Location location) {
@@ -119,9 +109,11 @@ public class GameController {
         graphicsContext.drawImage(image, drawLocation.getX(), drawLocation.getY());
     }
 
-    private void drawUnit(GraphicsContext graphicsContext, UnitType unitType, Location location) {
+    private void drawUnit(GraphicsContext graphicsContext, UnitType unitType, Location location, Player owner) {
         Image image = getUnitImage(unitType);
+        Image ownerMarker = getOwnerMarker(owner);
         Location drawLocation = gridLocationToDrawLocation(location);
+        graphicsContext.drawImage(ownerMarker, drawLocation.getX(), drawLocation.getY());
         graphicsContext.drawImage(image, drawLocation.getX(), drawLocation.getY());
     }
 
@@ -199,6 +191,34 @@ public class GameController {
             return new Image("file:mainModule/resources/lifeMin.png", cellWidth, cellHeight, false, false);
         }
         throw new NoSuchLifeImageException("No image to represent health.");
+    }
+
+    public Image getOwnerMarker(Player owner){
+        //TODO retorno null asi no mas?
+        if (owner == null){
+            return null;
+        }
+        if (owner.getId().equals(1)){
+            return new Image("file:mainModule/resources/blueMarker.png", cellWidth, cellHeight, false, false);
+        } else if (owner.getId().equals(2)){
+            return new Image("file:mainModule/resources/redMarker.png", cellWidth, cellHeight, false, false);
+        } else{
+            throw new NoSuchPlayerException("The player " + owner.getId() + " does not exist.");
+        }
+    }
+
+    public Image getFlagImage(Player owner){
+        //TODO retorno null asi no mas?
+        if (owner == null){
+            return null;
+        }
+        if (owner.getId().equals(1)){
+            return new Image("file:mainModule/resources/blueFlag.png", cellWidth, cellHeight, false, false);
+        } else if (owner.getId().equals(2)){
+            return new Image("file:mainModule/resources/redFlag.png", cellWidth, cellHeight, false, false);
+        } else{
+            throw new NoSuchPlayerException("The player " + owner.getId() + " does not exist.");
+        }
     }
 }
 

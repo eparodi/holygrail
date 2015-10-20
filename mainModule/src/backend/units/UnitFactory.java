@@ -24,12 +24,12 @@ public class UnitFactory {
                 break;
 
             case LANCER:
-                unit = new Unit(UnitType.LANCER, new Attack(2, 2, 5), new Defense(3,2,3), 15, 6, 1, Terrain.GRASS,
+                unit = new Unit(UnitType.LANCER, new Attack(2, 2, 5), new Defense(3,2,3), 15, 5, 1, Terrain.GRASS,
                         currentTerrain, location, player);
                 break;
 
             case RIDER:
-                unit = new Unit(UnitType.RIDER, new Attack(2, 2, 5), new Defense(3,2,3), 15, 6, 1, Terrain.GRASS,
+                unit = new Unit(UnitType.RIDER, new Attack(3, 2, 4), new Defense(2,4,1), 15, 7, 1, Terrain.GRASS,
                         currentTerrain, location, player);
                 break;
         }
