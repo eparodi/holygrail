@@ -26,10 +26,11 @@ public class Game {
         startNewGame(worldWidth,worldHeight,player1,player2);
     }
 
-    public Integer getWorldHeight(){
+    public Integer getWorldHeight() {
         return world.getWorldHeight();
     }
-    public Integer getWorldWidth(){
+
+    public Integer getWorldWidth() {
         return world.getWorldWidth();
     }
 
@@ -66,23 +67,22 @@ public class Game {
             if (clickedCell.hasUnit()) {
                 if (clickedCell.getUnit().getOwner().equals(activePlayer)) {
                     setSelectedCell(clickedCell);
-                } else if(selectedCell.getUnit().getOwner().equals(activePlayer)){
+                } else if (!selectedCell.equals(clickedCell)) {
                     attackAttempt(selectedCell.getUnit(), clickedCell.getUnit());
-                }else{
-                    setSelectedCell(clickedCell);
                 }
-            } else if(getSelectedCell().getUnit().getOwner().equals(getActivePlayer())){
+            } else {
                 //No unit and building means unit tries to capture
-                if (clickedCell.hasBuilding() && !clickedCell.getBuilding().getOwner().equals(activePlayer)) {
+                //getOwner() can be null if its a neutral mine
+                if (clickedCell.hasBuilding() &&
+                        (clickedCell.getBuilding().getOwner() == null || !clickedCell.getBuilding().getOwner().equals(activePlayer))) {
                     captureAttempt(selectedCell.getUnit(), clickedCell);
                     //TODO: CODIGO REPETIDO
                     selectedCell = clickedCell;
-                } else {
+                } else if (selectedCell.getUnit().getOwner().equals(activePlayer)) { //Fixes bug that can move opponents units
                     moveAttempt(selectedCell.getUnit(), clickedCell);
                     selectedCell = clickedCell;
                 }
             }
-            else {setSelectedCell(clickedCell);}
         } else {
             //building is selected
             selectedCell = clickedCell;
@@ -92,22 +92,24 @@ public class Game {
     }
 
     public boolean attemptBuildUnit(UnitType unitType) {
-        if (unitType == null){
+        if (unitType == null) {
             throw new NullArgumentException("Unit name is null");
         }
         Castle castle = world.getPlayerCastle(activePlayer);
         Cell castleCell = world.getCellAt(world.getBuildingLocation(world.getPlayerCastle(activePlayer)));
 
         //TODO precio en castillo?
-        if (!castleCell.hasUnit()){
-            if(activePlayer.canPay(10)) {
+        if (!castleCell.hasUnit()) {
+            if (getActivePlayer().canPay(10)) {
                 Unit unitCreated = castle.buildUnit(unitType, castleCell.getTerrain(), castleCell.getLocation(), activePlayer);
                 world.addUnit(unitCreated);
                 //TODO precio en castillo?
                 activePlayer.pay(10);
                 return true;
-            }addLog(getActivePlayer() + " has less than 10 gold" + getActivePlayer().getGold());
-        }addLog("Building at " + castleCell.getLocation() + " is occupied");
+            }
+            addLog(getActivePlayer() + " has less than 10 gold" + getActivePlayer().getGold());
+        }
+        addLog("Building at " + castleCell.getLocation() + " is occupied");
         addLog("Successfully build a " + unitType + " in " + castleCell.getLocation());
 
         return false;
@@ -127,8 +129,12 @@ public class Game {
         //TODO ask how we can display a log
         boolean hasMoved = false;
 
-        if (unit == null) throw new NullArgumentException("null unit movement attempt");
-        if (clickedCell == null) throw new NullArgumentException("null to cell movement attempt");
+        if (unit == null) {
+            throw new NullArgumentException("null unit movement attempt");
+        }
+        if (clickedCell == null) {
+            throw new NullArgumentException("null to cell movement attempt");
+        }
 
         Integer distance = World.distance(unit.getLocation(), clickedCell.getLocation());
         if (distance == 1) {
@@ -160,13 +166,15 @@ public class Game {
     public boolean attackAttempt(Unit attacker, Unit defender) {
         boolean hasAttacked = false;
 
-        if (attacker == null) throw new NullArgumentException("null attacker");
-        if (defender == null) throw new NullArgumentException("null defender");
+        if (attacker == null) {
+            throw new NullArgumentException("null attacker");
+        }
+        if (defender == null) {
+            throw new NullArgumentException("null defender");
+        }
 
-        if (attacker.getOwner().equals(defender.getOwner()))
+        if (attacker.getOwner().equals(defender.getOwner())) {
             throw new IllegalStateException("tries to attack own unit");
-        if(attacker.equals(defender))
-            throw new IllegalStateException("tries to attack itself");
 
         if (world.isInRange(attacker, defender)) {
             if (attacker.getActionPoints() >= ATTACK_AP_COST) {
@@ -187,24 +195,25 @@ public class Game {
         return selectedCell;
     }
 
-    public void printLog(){
-        while(!logQueue.isEmpty()){
+    public void printLog() {
+        while (!logQueue.isEmpty()) {
             System.out.println(logQueue.poll());
         }
     }
 
-    public Collection<CellUIData> getCellUIData(){
-        return world.generateCellUIData();
+    public Collection<CellUIData> getCellUIData() {
+        return world.generateCellUIData(selectedCell);
     }
 
-    public Player getActivePlayer(){
+    public Player getActivePlayer() {
         return activePlayer;
     }
 
-    private void activateNextPlayer(){
-        activePlayer = activePlayer.equals(player1)? player2:player1;
+    private void activateNextPlayer() {
+        activePlayer = activePlayer.equals(player1) ? player2 : player1;
     }
-    public void endTurn(){
+
+    public void endTurn() {
         world.refillUnitsAP(getActivePlayer());
 
         getActivePlayer().addGold(world.getPlayerIncome(getActivePlayer()));

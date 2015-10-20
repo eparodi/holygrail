@@ -2,7 +2,7 @@ package backend.worldBuilding;
 
 
 import backend.building.Building;
-import backend.exceptions.CellIsEmpty;
+import backend.exceptions.CellIsEmptyException;
 import backend.exceptions.CellIsOccupiedException;
 import backend.units.Unit;
 import frontend.CellUIData;
@@ -17,6 +17,22 @@ public class Cell {
     public Cell(Location location, Terrain terrain) {
         this.terrain = terrain;
         this.location = location;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        return ((Cell) o).getLocation().equals(this.getLocation());
+    }
+
+    @Override
+    public int hashCode() {
+        return location.hashCode();
     }
 
     public Terrain getTerrain() {
@@ -56,7 +72,7 @@ public class Cell {
 
     public void removeUnit() {
         if (!hasUnit()) {
-            throw new CellIsEmpty("Cell at " + location.toString() + " is empty");
+            throw new CellIsEmptyException("Cell at " + location.toString() + " is empty");
         }
         localUnit = null;
     }
@@ -67,11 +83,18 @@ public class Cell {
                 "building: " + ((building == null) ? "no building" : building.toString());
     }
 
-    public CellUIData getCellUIData(){
+    public CellUIData getCellUIData(boolean isSelected) {
         CellUIData cellUIData;
-        cellUIData = new CellUIData(location,terrain);
-        if(hasBuilding()) cellUIData.addBuildingData(getBuilding().getBuildingType());
-        if(hasUnit()) cellUIData.addUnitData(getUnit().getUnitType());
+        cellUIData = new CellUIData(location, terrain);
+        if (hasBuilding()) {
+            cellUIData.addBuildingData(getBuilding().getBuildingType(), getBuilding().getOwner());
+        }
+        if (hasUnit()) {
+            cellUIData.addUnitData(getUnit().getUnitType(), getUnit().getHealth(), getUnit().getMaxHealth(), getUnit().getOwner());
+        }
+        if (isSelected){
+            cellUIData.selectCell();
+        }
         return cellUIData;
     }
 }

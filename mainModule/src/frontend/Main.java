@@ -67,11 +67,13 @@ public class Main extends Application {
     }
 
 
-    public Location drawLocationToGridLocation(Double x,Double y){
+    public Location drawLocationToGridLocation(Double x,Double y, Integer cellHeight, Integer cellWidth){
         Location gridLocation = new Location(0,0);
 
-        Double auxY = Math.floor(y/75);
-        Double auxX = auxY.intValue() % 2 == 0? Math.floor(x/100):Math.floor((x-50)/100);
+        //a new row of hexagonal cells start at 75% of cell's height
+        Double auxY = Math.floor(y/(cellHeight*.75));
+        //odd rows are moved cellWidth/2 to the right
+        Double auxX = auxY.intValue() % 2 == 0? Math.floor(x/cellWidth):Math.floor((x-cellWidth/2)/cellWidth);
 
         gridLocation.setY(auxY.intValue());
         gridLocation.setX(auxX.intValue());

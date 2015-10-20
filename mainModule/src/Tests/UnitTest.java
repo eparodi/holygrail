@@ -57,7 +57,7 @@ public class UnitTest {
     @Test
     //Sees if two units attack each other
     public void BattleTest() {
-        Unit lancer = UnitFactory.buildUnit(UnitType.WARRIOR, Terrain.GRASS, new Location(3, 1), p2);
+        Unit lancer = UnitFactory.buildUnit(UnitType.LANCER, Terrain.GRASS, new Location(3, 1), p2);
 
         world.addUnit(archer);
         world.addUnit(lancer);

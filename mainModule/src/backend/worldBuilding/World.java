@@ -3,6 +3,7 @@ package backend.worldBuilding;
 import backend.Attack;
 import backend.building.Building;
 import backend.building.Castle;
+import backend.building.Mine;
 import backend.exceptions.CellOutOfWorldException;
 import backend.exceptions.InvalidTerrainException;
 import backend.exceptions.NullArgumentException;
@@ -21,7 +22,7 @@ public class World {
     Integer worldWidth, worldHeight;
 
 
-    //TODO Replace player1 and player2 with Collection<Player> and recieve map
+    //TODO Replace player1 and player2 with Collection<Player> and receive map
     public World(Integer worldWidth, Integer worldHeight, Player player1, Player player2) {
         this.worldHeight = worldHeight;
         this.worldWidth = worldWidth;
@@ -30,11 +31,14 @@ public class World {
 
         Location player1Castle = new Location(1, Math.round(worldHeight / 2));
         Location player2Castle = new Location(worldWidth - 2, Math.round(worldHeight / 2));
+        Location mineLocation = new Location(Math.round(worldWidth / 2), 0);
 
         Castle castle = new Castle(player1);
         getCellAt(player1Castle).addBuilding(castle);
         castle = new Castle(player2);
         getCellAt(player2Castle).addBuilding(castle);
+        Mine mine = new Mine(20);
+        getCellAt(mineLocation).addBuilding(mine);
 
 //        for (Cell cell : cells) {
 //            System.out.println(cell.toString());
@@ -89,14 +93,13 @@ public class World {
     }
 
     private void attack(Unit attacker, Unit defender) {
-
             Attack attack = attacker.getAttack();
             defender.receiveDamage(attack);
     }
 
     public void skirmish(Unit attacker, Unit defender) {
         attack(attacker, defender);
-        if(isInRange(attacker,defender)) {
+        if(isInRange(defender,attacker)) {
             attack(defender, attacker);
         }
 
@@ -185,9 +188,11 @@ public class World {
 
     public Castle getPlayerCastle(Player player) {
         for (Cell cell : cells) {
-            if (cell.getBuilding() != null) {
+            if (cell.getBuilding() != null && cell.getBuilding().getOwner() != null) {
                 if (cell.getBuilding().getOwner().equals(player)) {
-                    if (cell.getBuilding().getBuildingType().equals("Castle")) return (Castle) cell.getBuilding();
+                    if (cell.getBuilding().getBuildingType().equals("Castle")){
+                        return (Castle) cell.getBuilding();
+                    }
                 }
             }
         }
@@ -206,7 +211,7 @@ public class World {
         return worldWidth;
     }
 
-    public Collection<Cell> getCells(){
+    public Collection<Cell> getCells() {
         return cells;
     }
 
@@ -232,10 +237,10 @@ public class World {
         return cellCollection;
     }
 
-    public Collection<CellUIData> generateCellUIData(){
+    public Collection<CellUIData> generateCellUIData(Cell seletedCell) {
         Collection<CellUIData> cellUIDataCollection = new ArrayList<CellUIData>();
-        for(Cell cell:cells){
-            cellUIDataCollection.add(cell.getCellUIData());
+        for (Cell cell : cells) {
+                cellUIDataCollection.add(cell.getCellUIData(cell.equals(seletedCell)));
         }
         return cellUIDataCollection;
     }
