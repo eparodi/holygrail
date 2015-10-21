@@ -9,16 +9,13 @@ import backend.exceptions.InvalidTerrainException;
 import backend.exceptions.NullArgumentException;
 import backend.exceptions.NullLocationException;
 import backend.units.Unit;
-import backend.worldBuilding.Cell;
-import backend.worldBuilding.Location;
 import frontend.CellUIData;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Set;
+import java.util.*;
 
 public class World {
     Collection<Cell> cells;
+    List<Cell> holyGrailPossibleCells;
     Integer worldWidth, worldHeight;
 
 
@@ -39,6 +36,23 @@ public class World {
         getCellAt(player2Castle).addBuilding(castle);
         Mine mine = new Mine(20);
         getCellAt(mineLocation).addBuilding(mine);
+
+        holyGrailPossibleCells = new ArrayList<>();
+
+        for ( Cell cell : cells ){
+            if ( cell.getTerrain() != Terrain.WATER ){
+                Location cellLocation = cell.getLocation();
+                if ( distance(cellLocation, player1Castle) > 5 && distance(cellLocation,player2Castle) > 5){
+                    if ( cellLocation != mineLocation ){
+                        holyGrailPossibleCells.add(cell); //TODO si hay más de una mina hay que cambiarlo.
+                    }
+                }
+            }
+        }
+
+        Random random = new Random();
+        int holyGrailPosition = random.nextInt(holyGrailPossibleCells.size());
+        holyGrailPossibleCells.get(holyGrailPosition).addHolyGrail();
 
 //        for (Cell cell : cells) {
 //            System.out.println(cell.toString());
@@ -363,7 +377,7 @@ public class World {
      */
     private Collection<Cell> generateCellCollection() {
 
-        Collection<Cell> cellCollection = new ArrayList<Cell>();
+        Collection<Cell> cellCollection = new ArrayList<>();
         Cell cell;
         Location cellLocation;
 

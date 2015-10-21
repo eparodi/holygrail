@@ -4,18 +4,27 @@ package backend.worldBuilding;
 import backend.building.Building;
 import backend.exceptions.CellIsEmptyException;
 import backend.exceptions.CellIsOccupiedException;
+import backend.items.Item;
+import backend.items.ItemFactory;
+import backend.items.ItemType;
 import backend.units.Unit;
 import frontend.CellUIData;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Random;
 
 public class Cell {
     Location location;
     Unit localUnit;
     Building building;
-
+    Queue<Item> treasures;
+    private final static int MAX_ITEMS = 5;
     Terrain terrain;
 
     /**
-     * Constructs a new Cell, on a Location, with certain Terrain.
+     * Constructs a new Cell, on a Location, with certain Terrain and random Items.
      *
      * @param location Location of the Cell in the World.
      * @param terrain Terrain of the Cell.
@@ -23,6 +32,15 @@ public class Cell {
     public Cell(Location location, Terrain terrain) {
         this.terrain = terrain;
         this.location = location;
+        this.treasures = new LinkedList<>();
+
+        Random random = new Random();
+        int numberOfItems = random.nextInt() % MAX_ITEMS;
+
+        for ( int i = 0 ; i <= numberOfItems ; i++ ){
+            treasures.add(ItemFactory.buildRandomItem());
+        }
+
     }
 
     @Override
@@ -155,5 +173,12 @@ public class Cell {
             cellUIData.selectCell();
         }
         return cellUIData;
+    }
+
+    /**
+     * Add the Holy Grail item to the current Cell.
+     */
+    public void addHolyGrail(){
+        treasures.add(ItemFactory.buildItem("Holy Grail", ItemType.EXTRA, 0, 0, 0, 0, 0)); //TODO Check Values.
     }
 }

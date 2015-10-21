@@ -3,9 +3,7 @@ package backend.units;
 import backend.*;
 import backend.exceptions.NullLocationException;
 import backend.Defense;
-import backend.items.Extra;
 import backend.items.Item;
-import backend.items.Rune;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.worldBuilding.Terrain;
@@ -23,8 +21,14 @@ public class Unit {
 
     private Attack baseAttack = null;
     private Defense defense = null;
+
+    /*
     private Extra extra = null;
     private Rune rune = null;
+    */
+
+    private Item extra = null;
+    private Item rune = null;
 
     private Integer health;
     private Integer maxHealth;
@@ -94,23 +98,23 @@ public class Unit {
         return baseAttack.getModifiedAttack(calcTerrainMod(currentTerrain), rune);
     }
 
-    //TODO preguntar si está bien o no este metodo
+    //TODO REHACER
     public void pickItem(Item itemPicked) {
         if (itemPicked == null) {
             return; //make expection
         }
-        if (itemPicked.getClass().equals(Extra.class)) {
+        if (itemPicked.getClass().equals(Item.class)) {
             if (this.extra != null) {
                 dropItem(extra);
             }
-            extra = (Extra) itemPicked;
+            extra = itemPicked;
             updateStatus();
 
-        } else if (itemPicked.getClass().equals(Rune.class)) {
+        } else if (itemPicked.getClass().equals(Item.class)) {
             if (this.defense != null) {
                 dropItem(rune);
             }
-            rune = (Rune) itemPicked;
+            rune = itemPicked;
         }
     }
 
@@ -153,7 +157,7 @@ public class Unit {
     }
 
     public void setLocation(Location location) {
-        if (location == null) throw new NullLocationException(this.toString() + " recieved a null location");
+        if (location == null) throw new NullLocationException(this.toString() + " received a null location");
         this.location = location;
     }
 

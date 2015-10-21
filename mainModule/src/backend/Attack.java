@@ -1,6 +1,6 @@
 package backend;
 
-import backend.items.Rune;
+import backend.items.Item;
 
 public class Attack{
     Integer slashDamage, piercingDamage, bluntDamage;
@@ -23,18 +23,21 @@ public class Attack{
      * damage modifier for every Unit.
      *
      * @param terrainMod Terrain modifier.
-     * @param rune Rune item.
+     * @param rune item.
      * @return Attack with 3 types of damage.
      */
-    public Attack getModifiedAttack(Double terrainMod,Rune rune){
+    public Attack getModifiedAttack(Double terrainMod,Item rune){
         Attack modifiedAttack;
-        //TODO make item factory
+
         if(rune == null){
-            rune = new Rune("Rune default",1,1,1);
+            modifiedAttack = new Attack((int) Math.round(slashDamage*terrainMod),
+                                        (int) Math.round(piercingDamage*terrainMod),
+                                        (int) Math.round(bluntDamage*terrainMod));
+        }else {
+                    modifiedAttack = new Attack((int) Math.round((slashDamage + rune.getSlashBonus()) * terrainMod),
+                    (int) Math.round((piercingDamage + rune.getPiercingBonus()) * terrainMod),
+                    (int) Math.round((bluntDamage + rune.getBluntBonus()) * terrainMod));
         }
-        modifiedAttack = new Attack((int) Math.round((slashDamage+rune.getSlashBonus())*terrainMod),
-                                    (int) Math.round((piercingDamage+rune.getPiercingBonus())*terrainMod),
-                                    (int) Math.round(( bluntDamage+rune.getBluntBonus())*terrainMod));
         return modifiedAttack;
     }
 

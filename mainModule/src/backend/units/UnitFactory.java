@@ -22,6 +22,8 @@ public class UnitFactory {
      * @param location       the current position of the Unit.
      * @param player         the player who owns this Unit.
      * @return the Unit that was created.
+     * @throws NullNameException if the UnitType is null.
+     * @throws NoSuchUnitTypeException if the UnitType is not valid.
      */
     //Constructor: name, baseAttack, maxHealth, maxActionPoints, range, currentTerrain, preferredTerrain, location, owner
     public static Unit buildUnit(UnitType unitType, Terrain currentTerrain, Location location, Player player) {

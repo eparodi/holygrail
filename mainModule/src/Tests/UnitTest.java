@@ -4,6 +4,7 @@ import backend.Attack;
 import backend.building.Castle;
 import backend.items.Item;
 import backend.items.ItemFactory;
+import backend.items.ItemType;
 import backend.units.Unit;
 import backend.units.UnitFactory;
 import backend.units.UnitType;
@@ -80,7 +81,7 @@ public class UnitTest {
         Integer maxHealthIni = archer1.getMaxHealth();
         Integer healthIni = archer1.getHealth();
 
-        Item potion = ItemFactory.buildExtra("potion");
+        Item potion = ItemFactory.buildItem("potion",ItemType.EXTRA,20,1,0,0,0);
         archer1.pickItem(potion);
 
         assertTrue(!maxHealthIni.equals(archer1.getMaxHealth()) && !healthIni.equals(archer1.getHealth()));
@@ -93,7 +94,7 @@ public class UnitTest {
 
         Attack attackIni = archer2.getAttack();
 
-        Item rune = ItemFactory.buildRune("fire rune");
+        Item rune = ItemFactory.buildItem("fire rune",ItemType.RUNE,0,0,3,3,1);
         archer2.pickItem(rune);
 
         assertTrue(!attackIni.equals(archer2.getAttack()));
