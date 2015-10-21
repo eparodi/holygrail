@@ -38,7 +38,7 @@ public class Main extends Application {
 
 
         //TODO ARREGLAR LA VENTANA Y PONER EVENTOS
-        /*
+
         MenuBar mainMenu = new MenuBar();
         Menu menuNew = new Menu("Nueva Partida");
         menuNew.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
@@ -52,7 +52,7 @@ public class Main extends Application {
         mainMenu.getMenus().addAll(menuNew, menuSave, menuLoad, menuExit);
         VBox topContainer = new VBox();
         topContainer.getChildren().add(mainMenu);
-        root.getChildren().add(topContainer);*/
+        root.getChildren().add(topContainer);
         //TERMINA MENU
 
 
@@ -61,7 +61,7 @@ public class Main extends Application {
         final GameController gameController = new GameController(game.getWorldHeight(),game.getWorldWidth(),graphicsContext);
 
         gameController.updateGraphics(graphicsContext, game.getCellUIData());
-        root.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+        canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
                 gameController.attemptAction(game, e.getX(), e.getY());
