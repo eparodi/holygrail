@@ -38,6 +38,7 @@ public class Main extends Application {
 
 
         //TODO ARREGLAR LA VENTANA Y PONER EVENTOS
+        /*
         MenuBar mainMenu = new MenuBar();
         Menu menuNew = new Menu("Nueva Partida");
         menuNew.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
@@ -51,7 +52,7 @@ public class Main extends Application {
         mainMenu.getMenus().addAll(menuNew, menuSave, menuLoad, menuExit);
         VBox topContainer = new VBox();
         topContainer.getChildren().add(mainMenu);
-        root.getChildren().add(topContainer);
+        root.getChildren().add(topContainer);*/
         //TERMINA MENU
 
 
