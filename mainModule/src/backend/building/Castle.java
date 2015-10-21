@@ -7,14 +7,12 @@ import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.worldBuilding.Terrain;
 
-/**
- * This class represents the logic form of a Castle.
- */
 public class Castle extends Building {
 
     /**
-     * Constructs a Castle object. Its income per turn is 10 gold coins and its type is "Castle".
-     * @param player The player who owns the castle.
+     * Constructs a Castle Building, owned by certain Player.
+     *
+     * @param player Owner of the Castle.
      */
     public Castle(Player player) {
         owner = player;
@@ -23,15 +21,13 @@ public class Castle extends Building {
     }
 
     /**
-     * Creates a Unit object using the UnitFactory class.
-     * @param  unitType The type of the unit.
-     * @param  terrain The terrain where the unit currently is.
-     * @param  location The position of the unit.
-     * @param  player The player who owns the unit.
-     * @return The unit that the Castle has created.
-     * @see    UnitFactory
-     * @see    Unit
-     * @see    UnitType
+     * Creates a Unit.
+     *
+     * @param unitType Type of the Unit.
+     * @param terrain Current terrain of the Castle Cell.
+     * @param location Location of the Unit.
+     * @param player Owner of the Unit.
+     * @return A new Unit.
      */
     public Unit buildUnit(UnitType unitType, Terrain terrain, Location location, Player player) {
         return UnitFactory.buildUnit(unitType, terrain, location, player);
