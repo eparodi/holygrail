@@ -10,18 +10,23 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.awt.*;
 
 
 public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
-        Group root = new Group();
+        Pane root = new FlowPane();
 
         //TO CHANGE RESOLUTION OR WORLD HEIGHT MODIFY THIS:
         Canvas canvas = new Canvas(1000,600);
@@ -30,6 +35,26 @@ public class Main extends Application {
 
         final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
         Scene scene=new Scene(root, canvas.getWidth(), canvas.getHeight());
+
+
+        //TODO ARREGLAR LA VENTANA Y PONER EVENTOS
+        MenuBar mainMenu = new MenuBar();
+        Menu menuNew = new Menu("Nueva Partida");
+        menuNew.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+            }
+        });
+        Menu menuSave = new Menu("Guardar Partida");
+        Menu menuLoad = new Menu("Cargar Partida");
+        Menu menuExit = new Menu("Salir");
+        mainMenu.getMenus().addAll(menuNew, menuSave, menuLoad, menuExit);
+        VBox topContainer = new VBox();
+        topContainer.getChildren().add(mainMenu);
+        root.getChildren().add(topContainer);
+        //TERMINA MENU
+
+
         root.getChildren().add(canvas);
 
         final GameController gameController = new GameController(game.getWorldHeight(),game.getWorldWidth(),graphicsContext);
@@ -38,20 +63,20 @@ public class Main extends Application {
         root.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-                gameController.attemptAction(game,e.getX(),e.getY());
+                gameController.attemptAction(game, e.getX(), e.getY());
                 gameController.updateGraphics(graphicsContext, game.getCellUIData());
             }
         });
 
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent key) {
-                if (key.getCode().equals(KeyCode.A)){
+                if (key.getCode().equals(KeyCode.A)) {
                     game.attemptBuildUnit(UnitType.ARCHER);
                 }
-                if (key.getCode().equals(KeyCode.L)){
+                if (key.getCode().equals(KeyCode.L)) {
                     game.attemptBuildUnit(UnitType.LANCER);
                 }
-                if (key.getCode().equals(KeyCode.R)){
+                if (key.getCode().equals(KeyCode.R)) {
                     game.attemptBuildUnit(UnitType.RIDER);
                 }
 
@@ -60,6 +85,8 @@ public class Main extends Application {
                 gameController.updateGraphics(graphicsContext, game.getCellUIData());
             }
         });
+
+
 
         primaryStage.setTitle("El Santo Grial");
         primaryStage.setScene(scene);

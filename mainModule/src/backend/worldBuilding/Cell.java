@@ -32,7 +32,7 @@ public class Cell {
     public Cell(Location location, Terrain terrain) {
         this.terrain = terrain;
         this.location = location;
-        this.treasures = new LinkedList<>();
+        this.treasures = new LinkedList<Item>();
 
         Random random = new Random();
         int numberOfItems = random.nextInt() % MAX_ITEMS;

@@ -37,14 +37,14 @@ public class World {
         Mine mine = new Mine(20);
         getCellAt(mineLocation).addBuilding(mine);
 
-        holyGrailPossibleCells = new ArrayList<>();
+        holyGrailPossibleCells = new ArrayList<Cell>();
 
         for ( Cell cell : cells ){
             if ( cell.getTerrain() != Terrain.WATER ){
                 Location cellLocation = cell.getLocation();
                 if ( distance(cellLocation, player1Castle) > 5 && distance(cellLocation,player2Castle) > 5){
                     if ( cellLocation != mineLocation ){
-                        holyGrailPossibleCells.add(cell); //TODO si hay más de una mina hay que cambiarlo.
+                        holyGrailPossibleCells.add(cell); //TODO si hay mï¿½s de una mina hay que cambiarlo.
                     }
                 }
             }
@@ -197,7 +197,7 @@ public class World {
      * @return Integer value with distance between cells.
      */
     public static Integer distance(Location l1, Location l2) {
-        // Cálculos raros para adaptar la matriz a la matriz de 3 ejes:
+        // Cï¿½lculos raros para adaptar la matriz a la matriz de 3 ejes:
         Integer x1 = -l1.getY();
         Integer x2 = -l2.getY();
         Integer y1 = l1.getY() % 2 == 0 ? l1.getX() + l1.getY() / 2 : l1.getX() + (l1.getY() + 1) / 2;
@@ -212,7 +212,7 @@ public class World {
         return Math.max(Math.max(deltaX, deltaY), deltaZ);
     }
 
-    /** TODO: Está bien que este método lo tenga el world, o tal vez cada Cell debería tener su APCost, y calcularlo segun el terrain?
+    /** TODO: Estï¿½ bien que este mï¿½todo lo tenga el world, o tal vez cada Cell deberï¿½a tener su APCost, y calcularlo segun el terrain?
      * Returns the Terrain action points cost used to move a unit through it.
      *
      * @param terrain terrain to ask cost.
@@ -248,7 +248,7 @@ public class World {
         throw new CellOutOfWorldException("No cell exists at " + location.toString());
     }
 
-    /**TODO: Para qué usamos esto?
+    /**TODO: Para quï¿½ usamos esto?
      * Returns a Collection with all the Units in the World.
      *
      * @return a Collection of all Units.
@@ -370,14 +370,14 @@ public class World {
         return Terrain.GRASS;
     }
 
-    /**TODO: Vamos a hacer mapas específicos despues?
+    /**TODO: Vamos a hacer mapas especï¿½ficos despues?
      * Generates all the Cells of the World.
      *
      * @return Collection of Cells.
      */
     private Collection<Cell> generateCellCollection() {
 
-        Collection<Cell> cellCollection = new ArrayList<>();
+        Collection<Cell> cellCollection = new ArrayList<Cell>();
         Cell cell;
         Location cellLocation;
 
@@ -426,21 +426,5 @@ public class World {
             }
         }
         return income;
-    }
-
-    private static Integer distance(Location l1, Location l2) {
-        // Cálculos raros para adaptar la matriz a la matriz de 3 ejes:
-        Integer x1 = -l1.getY();
-        Integer x2 = -l2.getY();
-        Integer y1 = l1.getY() % 2 == 0 ? l1.getX() + l1.getY() / 2 : l1.getX() + (l1.getY() + 1) / 2;
-        Integer y2 = l2.getY() % 2 == 0 ? l2.getX() + l2.getY() / 2 : l2.getX() + (l2.getY() + 1) / 2;
-        Integer z1 = -x1 - y1;
-        Integer z2 = -x2 - y2;
-
-        Integer deltaX = Math.abs(x1 - x2);
-        Integer deltaY = Math.abs(y1 - y2);
-        Integer deltaZ = Math.abs(z1 - z2);
-
-        return Math.max(Math.max(deltaX, deltaY), deltaZ);
     }
 }

@@ -206,7 +206,7 @@ public class GameController {
     public Image getFlagImage(Player owner){
         //TODO retorno null asi no mas?
         if (owner == null){
-            return null;
+            return new Image("file:mainModule/resources/blueFlag.png", cellWidth, cellHeight, false, false);
         }
         if (owner.getId().equals(1)){
             return new Image("file:mainModule/resources/blueFlag.png", cellWidth, cellHeight, false, false);
