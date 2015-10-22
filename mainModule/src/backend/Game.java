@@ -2,6 +2,7 @@ package backend;
 
 import backend.building.Castle;
 import backend.exceptions.NullArgumentException;
+import backend.items.Item;
 import backend.units.Unit;
 import backend.units.UnitType;
 import backend.worldBuilding.Cell;
@@ -16,6 +17,7 @@ import java.util.Queue;
 
 public class Game {
     public static final Integer ATTACK_AP_COST = 2;
+    public static final Integer DIG_AP_COST = 1;
     private World world;
     private Cell selectedCell;
     private Player player1, player2;
@@ -38,7 +40,7 @@ public class Game {
         this.player1 = new Player(player1);
         this.player2 = new Player(player2);
         world = new World(worldWidth, worldHeight, this.player1, this.player2);
-        logQueue = new ArrayDeque<String>();
+        logQueue = new ArrayDeque<>();
         activePlayer = this.player1;
         selectPlayerCastle(activePlayer);
     }
@@ -68,7 +70,7 @@ public class Game {
                 if (clickedCell.getUnit().getOwner().equals(activePlayer)) {
                     setSelectedCell(clickedCell);
                 } else if (!selectedCell.equals(clickedCell)) {
-                    attackAttempt(selectedCell.getUnit(), clickedCell.getUnit());
+                    attackAttempt(selectedCell.getUnit(), clickedCell.getUnit(), selectedCell, clickedCell);
                 }
             } else {
                 //No unit and building means unit tries to capture
@@ -163,7 +165,7 @@ public class Game {
         return hasCaptured;
     }
 
-    public boolean attackAttempt(Unit attacker, Unit defender) {
+    public boolean attackAttempt(Unit attacker, Unit defender, Cell attackerCell, Cell defenderCell ) {
         boolean hasAttacked = false;
 
         if (attacker == null) {
@@ -179,7 +181,7 @@ public class Game {
         if (world.isInRange(attacker, defender)) {
             if (attacker.getActionPoints() >= ATTACK_AP_COST) {
                 attacker.spendAP(ATTACK_AP_COST);
-                world.skirmish(attacker, defender);
+                world.skirmish(attacker, defender, attackerCell, defenderCell);
                 addLog(attacker + " attacked " + defender);
                 hasAttacked = true;
             } else addLog(attacker + " has not enough energy ");
@@ -224,5 +226,31 @@ public class Game {
         }
         addLog(getActivePlayer() + " has " + getActivePlayer().getGold() + " gold and recieved " +
                 world.getPlayerIncome(getActivePlayer()));
+    }
+
+    /**
+     * Attempts to make a Unit, if there is a unit there, pick an item in the current Cell.
+     */
+    public void pickItemAttempt(){
+
+        if ( selectedCell == null ){
+            return;
+        }
+
+        if ( selectedCell.hasUnit()){
+            if ( selectedCell.getUnit().getOwner().equals(activePlayer)){
+                if ( selectedCell.getUnit().getActionPoints() >= DIG_AP_COST ){
+                    Item pickedItem = selectedCell.getItem();
+                    selectedCell.getUnit().spendAP(DIG_AP_COST);
+                    if ( pickedItem != null ){
+                        System.out.println(pickedItem.getName());
+                        Item droppedItem = selectedCell.getUnit().pickItem( pickedItem );
+                        selectedCell.addItem(droppedItem);
+                    }else{
+                        System.out.println("There is no item");
+                    }
+                }
+            }
+        }
     }
 }

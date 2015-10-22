@@ -8,6 +8,7 @@ import backend.exceptions.CellOutOfWorldException;
 import backend.exceptions.InvalidTerrainException;
 import backend.exceptions.NullArgumentException;
 import backend.exceptions.NullLocationException;
+import backend.items.Item;
 import backend.units.Unit;
 import frontend.CellUIData;
 
@@ -37,7 +38,7 @@ public class World {
         Mine mine = new Mine(20);
         getCellAt(mineLocation).addBuilding(mine);
 
-        holyGrailPossibleCells = new ArrayList<Cell>();
+        holyGrailPossibleCells = new ArrayList<>();
 
         for ( Cell cell : cells ){
             if ( cell.getTerrain() != Terrain.WATER ){
@@ -53,6 +54,7 @@ public class World {
         Random random = new Random();
         int holyGrailPosition = random.nextInt(holyGrailPossibleCells.size());
         holyGrailPossibleCells.get(holyGrailPosition).addHolyGrail();
+        System.out.println(holyGrailPossibleCells.get(holyGrailPosition).getLocation());
 
 //        for (Cell cell : cells) {
 //            System.out.println(cell.toString());
@@ -167,16 +169,38 @@ public class World {
      * @param attacker attacking Unit.
      * @param defender defending Unit.
      */
-    public void skirmish(Unit attacker, Unit defender) {
+    public void skirmish(Unit attacker, Unit defender , Cell attackerCell , Cell defenderCell ) {
         attack(attacker, defender);
         if(isInRange(defender,attacker)) {
             attack(defender, attacker);
         }
 
-        if (attacker.isDed()) removeUnit(attacker);
-        if (defender.isDed()) removeUnit(defender);
+        if (attacker.isDed()){
+            dropItemToCell(attacker, attackerCell);
+            removeUnit(attacker);
+        }
+
+        if (defender.isDed()){
+            dropItemToCell(defender, defenderCell);
+            removeUnit(defender);
+        }
     }
 
+    /**
+     * Adds the item of the unit, if they exist, to the Treasure Queue of the Cell.
+     * @param unit Unit who is dropping the items.
+     * @param cell Cells where the items are being dropped.
+     */
+    private void dropItemToCell(Unit unit, Cell cell){
+        Item item = unit.dropRune();
+        if ( item != null ){
+            cell.addItem(item);
+        }
+        item = unit.dropExtra();
+        if ( item != null ){
+            cell.addItem(item);
+        }
+    }
     /**
      * Returns true if a Unit is in range to attack another Unit.
      *
@@ -254,7 +278,7 @@ public class World {
      * @return a Collection of all Units.
      */
     public Collection<Unit> getUnits() {
-        Collection<Unit> units = new ArrayList<Unit>();
+        Collection<Unit> units = new ArrayList<>();
         Unit unit;
 
         for (Cell cell : cells) {
@@ -270,7 +294,7 @@ public class World {
      * @return a Collection of all Units from a Player.
      */
     public Collection<Unit> getUnits(Player player) {
-        Collection<Unit> units = new ArrayList<Unit>();
+        Collection<Unit> units = new ArrayList<>();
         Unit unit;
 
         for (Cell cell : cells) {
@@ -377,7 +401,7 @@ public class World {
      */
     private Collection<Cell> generateCellCollection() {
 
-        Collection<Cell> cellCollection = new ArrayList<Cell>();
+        Collection<Cell> cellCollection = new ArrayList<>();
         Cell cell;
         Location cellLocation;
 

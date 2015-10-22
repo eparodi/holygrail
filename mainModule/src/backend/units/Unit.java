@@ -4,6 +4,7 @@ import backend.*;
 import backend.exceptions.NullLocationException;
 import backend.Defense;
 import backend.items.Item;
+import backend.items.ItemType;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.worldBuilding.Terrain;
@@ -98,24 +99,26 @@ public class Unit {
         return baseAttack.getModifiedAttack(calcTerrainMod(currentTerrain), rune);
     }
 
+    /**
+     * Picks and item. If the unit already has an item in the slot, the item is dropped and returned.
+     * @param itemPicked The new item.
+     * @return the Item dropped.
+     */
     //TODO REHACER
-    public void pickItem(Item itemPicked) {
-        if (itemPicked == null) {
-            return; //make expection
-        }
-        if (itemPicked.getClass().equals(Item.class)) {
-            if (this.extra != null) {
-                dropItem(extra);
-            }
-            extra = itemPicked;
-            updateStatus();
+    public Item pickItem(Item itemPicked) {
 
-        } else if (itemPicked.getClass().equals(Item.class)) {
-            if (this.defense != null) {
-                dropItem(rune);
-            }
-            rune = itemPicked;
+        Item droppedItem = null;
+
+        if (itemPicked.getType() == ItemType.EXTRA){
+            droppedItem = this.extra;
+            this.extra = itemPicked;
+            updateStatus();
+        }else if (itemPicked.getType() == ItemType.RUNE){
+            droppedItem = this.rune;
+            this.rune = itemPicked;
         }
+
+        return droppedItem;
     }
 
     /**
@@ -129,9 +132,24 @@ public class Unit {
         actionPoints = newAP < getMaxActionPoints() ? newAP : getMaxActionPoints();
     }
 
-    //TODO implement drop
-    public Item dropItem(Item item) {
-        return null;
+    /**
+     * Makes the Unit drop its rune.
+     * @return Dropped Rune.
+     */
+    public Item dropRune() {
+        Item droppedRune = this.rune;
+        this.rune = null;
+        return droppedRune;
+    }
+
+    /**
+     * Makes the Unit drop its Extra.
+     * @return Dropped Extra.
+     */
+    public Item dropExtra() {
+        Item droppedExtra = this.extra;
+        this.extra = null;
+        return droppedExtra;
     }
 
     public Integer getHealth() {

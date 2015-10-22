@@ -66,7 +66,7 @@ public class UnitTest {
         Integer lancerHealthIni = lancer.getHealth();
         Integer archerHealthIni = archer.getHealth();
 
-        world.skirmish(archer, lancer);
+        world.skirmish(archer, lancer, null, null);
 
         assertTrue(!lancer.getHealth().equals(lancerHealthIni) && !archer.getHealth().equals(archerHealthIni));
     }

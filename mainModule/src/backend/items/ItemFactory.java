@@ -29,8 +29,8 @@ public class ItemFactory {
             return null;
         }
 
-        Item item = new Item(name,type,maxAPBonus,maxHealthBonus,slashBonus,piercingBonus,bluntBonus);
-        return item;
+        Item newItem = new Item(name,type,maxAPBonus,maxHealthBonus,slashBonus,piercingBonus,bluntBonus);
+        return newItem;
     }
 
     /**
@@ -80,7 +80,7 @@ public class ItemFactory {
                 bluntBonus = level;
         }
 
-        String name = getName(maxAPBonus,maxHealthBonus,slashBonus,piercingBonus,bluntBonus);
+        String name = getName(maxAPBonus,maxHealthBonus,slashBonus,piercingBonus,bluntBonus,type);
 
         return buildItem( name , type, maxAPBonus, maxHealthBonus, slashBonus, piercingBonus, bluntBonus);
     }
@@ -95,79 +95,85 @@ public class ItemFactory {
      * @return String with the name of the item.
      */
     private static String getName( Integer maxAPBonus, Integer maxHealthBonus, Integer slashBonus,
-                                  Integer piercingBonus, Integer bluntBonus){
+                                  Integer piercingBonus, Integer bluntBonus, ItemType type){
         String name = "";
         if ( maxAPBonus != 0 ){
             if ( maxAPBonus == 1 ){
-                name += "";
+                name += "Miser ";
             }else if ( maxAPBonus == 2 ){
-                name += "";
+                name += "Antiquus ";
             }else if ( maxAPBonus == 3 ){
-                name += "";
+                name += "Virorum ";
             }else if ( maxAPBonus == 4 ){
-                name += "";
+                name += "Magnus ";
             }else if ( maxAPBonus == 5 ){
-                name += "";
+                name += "Optimus";
             }
         }
 
         if ( maxHealthBonus != 0 ) {
             if (maxHealthBonus == 1) {
-                name += "";
+                name += "Calceus ";
             } else if (maxHealthBonus == 2) {
-                name += "";
+                name += "Gladius ";
             } else if (maxHealthBonus == 3) {
-                name += "";
+                name += "Liber ";
             } else if (maxHealthBonus == 4) {
-                name += "";
+                name += "Scutum ";
             } else if (maxHealthBonus == 5) {
-                name += "";
+                name += "Potio ";
             }
         }
 
         if ( slashBonus != 0 ) {
             if (slashBonus == 1) {
-                name += "";
+                name += "Aquae ";
             } else if (slashBonus == 2) {
-                name += "";
+                name += "Focii ";
             } else if (slashBonus == 3) {
-                name += "";
+                name += "Terrae ";
             } else if (slashBonus == 4) {
-                name += "";
+                name += "Lucis ";
             } else if (slashBonus == 5) {
-                name += "";
+                name += "Umbrae ";
             }
         }
 
         if ( piercingBonus != 0 ) {
             if (piercingBonus == 1) {
-                name += "";
+                name += "Pauperrimus ";
             } else if (piercingBonus == 2) {
-                name += "";
+                name += "Regularis ";
             } else if (piercingBonus == 3) {
-                name += "";
+                name += "Ubiqui ";
             } else if (piercingBonus == 4) {
-                name += "";
+                name += "Magnificus ";
             } else if (piercingBonus == 5) {
-                name += "";
+                name += "Omnipotens ";
             }
         }
 
         if ( bluntBonus != 0 ) {
             if (bluntBonus == 1) {
-                name += "";
+                name += "I ";
             } else if (bluntBonus == 2) {
-                name += "";
+                name += "II ";
             } else if (bluntBonus == 3) {
-                name += "";
+                name += "III ";
             } else if (bluntBonus == 4) {
-                name += "";
+                name += "IV ";
             } else if (bluntBonus == 5) {
-                name += "";
+                name += "V ";
             }
         }
 
-        //TODO create names.
+        if ( type == ItemType.RUNE ){
+            name += "Rune";
+        }
+        if ( type == ItemType.EXTRA ){
+            name += "Accesory";
+        }
+
         return name;
     }
 }

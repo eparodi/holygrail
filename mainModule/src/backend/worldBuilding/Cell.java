@@ -32,10 +32,10 @@ public class Cell {
     public Cell(Location location, Terrain terrain) {
         this.terrain = terrain;
         this.location = location;
-        this.treasures = new LinkedList<Item>();
+        this.treasures = new LinkedList<>();
 
         Random random = new Random();
-        int numberOfItems = random.nextInt() % MAX_ITEMS;
+        int numberOfItems = random.nextInt(MAX_ITEMS);
 
         for ( int i = 0 ; i <= numberOfItems ; i++ ){
             treasures.add(ItemFactory.buildRandomItem());
@@ -176,9 +176,29 @@ public class Cell {
     }
 
     /**
-     * Add the Holy Grail item to the current Cell.
+     * Adds the Holy Grail item to the current Cell.
      */
     public void addHolyGrail(){
         treasures.add(ItemFactory.buildItem("Holy Grail", ItemType.EXTRA, 0, 0, 0, 0, 0)); //TODO Check Values.
+    }
+
+    /**
+     * Get the first item in the Treasures Queue.
+     * @return First item in the Treasures Queue.
+     */
+    public Item getItem(){
+        if ( treasures.isEmpty() ){
+            return null;
+        }else{
+            return treasures.remove();
+        }
+    }
+
+    /**
+     * Adds an item to the Treasures Queue.
+     * @param addItem Item added to the Treasures Queue
+     */
+    public void addItem( Item addItem ){
+        treasures.add(addItem);
     }
 }

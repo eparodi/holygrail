@@ -22,8 +22,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-
-
 public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Pane root = new FlowPane();
@@ -79,6 +77,9 @@ public class Main extends Application {
                 }
                 if (key.getCode().equals(KeyCode.R)) {
                     game.attemptBuildUnit(UnitType.RIDER);
+                }
+                if (key.getCode().equals(KeyCode.D)) {
+                    game.pickItemAttempt();
                 }
 
                 if (key.getCode().equals(KeyCode.SPACE))
