@@ -22,12 +22,20 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.awt.*;
+import java.util.Random;
+
 public class Main extends Application {
+
     public void start(Stage primaryStage) throws Exception{
         Pane root = new FlowPane();
 
         //TO CHANGE RESOLUTION OR WORLD HEIGHT MODIFY THIS:
-        Canvas canvas = new Canvas(1600,900);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth();
+        double height = screenSize.getHeight();
+
+        Canvas canvas = new Canvas(width-100,height-100);
         final Game game = new Game(14,10,"Jorge","Marcos");
         //END OF MODIFIABLE, DONT TOUCH THE REST
 

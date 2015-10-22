@@ -251,7 +251,9 @@ public class Game {
                     if ( pickedItem != null ){
                         System.out.println(pickedItem.getName());
                         Item droppedItem = selectedCell.getUnit().pickItem( pickedItem );
-                        selectedCell.addItem(droppedItem);
+                        if ( droppedItem != null ){
+                            selectedCell.addItem(droppedItem);
+                        }
                     }else{
                         System.out.println("There is no item");
                     }
