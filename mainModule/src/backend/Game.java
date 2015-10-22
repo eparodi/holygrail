@@ -202,7 +202,13 @@ public class Game {
     }
 
     public Collection<CellUIData> getCellUIData() {
-        return world.generateCellUIData(selectedCell);
+        Collection<CellUIData> cells = world.generateCellUIData();
+        for (CellUIData cell: cells){
+            if (cell.getLocation().equals(selectedCell.getLocation())){
+                cell.selectCell();
+            }
+        }
+        return cells;
     }
 
     public Player getActivePlayer() {
