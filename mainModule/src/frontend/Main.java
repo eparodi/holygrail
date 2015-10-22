@@ -27,8 +27,8 @@ public class Main extends Application {
         Pane root = new FlowPane();
 
         //TO CHANGE RESOLUTION OR WORLD HEIGHT MODIFY THIS:
-        Canvas canvas = new Canvas(1000,600);
-        final Game game = new Game(15,10,"Jorge","Marcos");
+        Canvas canvas = new Canvas(1600,900);
+        final Game game = new Game(14,10,"Jorge","Marcos");
         //END OF MODIFIABLE, DONT TOUCH THE REST
 
         final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();

@@ -27,9 +27,10 @@ public class World {
 
         cells = generateCellCollection();
 
+        //A PARTIR DE ACA SE CREA EL MAP DE TESTEO:
         Location player1Castle = new Location(1, Math.round(worldHeight / 2));
         Location player2Castle = new Location(worldWidth - 2, Math.round(worldHeight / 2));
-        Location mineLocation = new Location(Math.round(worldWidth / 2), 0);
+        Location mineLocation = new Location(Math.round(worldWidth / 2), worldHeight - 1);
 
         Castle castle = new Castle(player1);
         getCellAt(player1Castle).addBuilding(castle);
@@ -385,7 +386,7 @@ public class World {
         if (location.getX() > 6 && location.getY() <= 4 && location.getY() >= 2){
             return Terrain.HILL;
         }
-        if (location.getX() > 5 && location.getY() <= 2){
+        if (location.getX() > 7 && location.getY() <= 2){
             return Terrain.WATER;
         }
         if (location.getX() <= 2 && location.getY() > 4){
@@ -419,13 +420,12 @@ public class World {
 
     /**
      * TODO: Otro metodo que utiliza una clase de Frontend.
-     * @param seletedCell
      * @return
      */
-    public Collection<CellUIData> generateCellUIData(Cell seletedCell) {
+    public Collection<CellUIData> generateCellUIData() {
         Collection<CellUIData> cellUIDataCollection = new ArrayList<CellUIData>();
         for (Cell cell : cells) {
-                cellUIDataCollection.add(cell.getCellUIData(cell.equals(seletedCell)));
+                cellUIDataCollection.add(cell.getCellUIData());
         }
         return cellUIDataCollection;
     }

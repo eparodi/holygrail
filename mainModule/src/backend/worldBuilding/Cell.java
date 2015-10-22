@@ -157,10 +157,9 @@ public class Cell {
     /**
      * TODO: Un método del backend que utiliza una clase del frontend??
      *
-     * @param isSelected
      * @return
      */
-    public CellUIData getCellUIData(boolean isSelected) {
+    public CellUIData getCellUIData() {
         CellUIData cellUIData;
         cellUIData = new CellUIData(location, terrain);
         if (hasBuilding()) {
@@ -168,9 +167,6 @@ public class Cell {
         }
         if (hasUnit()) {
             cellUIData.addUnitData(getUnit().getUnitType(), getUnit().getHealth(), getUnit().getMaxHealth(), getUnit().getOwner());
-        }
-        if (isSelected){
-            cellUIData.selectCell();
         }
         return cellUIData;
     }

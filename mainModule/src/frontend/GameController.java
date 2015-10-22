@@ -24,12 +24,12 @@ public class GameController {
     public GameController(Integer worldHeight, Integer worldWidth, GraphicsContext graphicsContext) {
         this.worldHeight = worldHeight;
         this.worldWidth = worldWidth;
-        cellWidth =(int) (graphicsContext.getCanvas().getWidth() / (worldWidth+0.417d));
-        cellHeight =(int) (graphicsContext.getCanvas().getHeight() / (worldHeight*0.80));
-        System.out.println(cellHeight+","+cellWidth);
+        cellWidth = (int) (graphicsContext.getCanvas().getWidth() / (worldWidth + 0.417d));
+        cellHeight = (int) (graphicsContext.getCanvas().getHeight() / (worldHeight * 0.80));
+        System.out.println(cellHeight + "," + cellWidth);
     }
 
-    public Integer getCellHeight(){
+    public Integer getCellHeight() {
         return cellHeight;
     }
 
@@ -58,7 +58,8 @@ public class GameController {
         if (gridLocation.getY() < worldHeight && gridLocation.getX() < worldWidth)
             game.actionAttempt(gridLocation);
     }
-    public void updateGraphics(GraphicsContext graphicsContext, Collection<CellUIData> cellUIDataCollection){
+
+    public void updateGraphics(GraphicsContext graphicsContext, Collection<CellUIData> cellUIDataCollection) {
         //clear the canvas
         graphicsContext.clearRect(0, 0, graphicsContext.getCanvas().getWidth(), graphicsContext.getCanvas().getHeight());
         drawCells(graphicsContext, cellUIDataCollection);
@@ -189,30 +190,30 @@ public class GameController {
         throw new NoSuchLifeImageException("No image to represent health.");
     }
 
-    public Image getOwnerMarker(Player owner){
+    public Image getOwnerMarker(Player owner) {
         //TODO retorno null asi no mas?
-        if (owner == null){
+        if (owner == null) {
             return null;
         }
-        if (owner.getId().equals(1)){
+        if (owner.getId().equals(1)) {
             return new Image("file:mainModule/resources/blueMarker.png", cellWidth, cellHeight, false, false);
-        } else if (owner.getId().equals(2)){
+        } else if (owner.getId().equals(2)) {
             return new Image("file:mainModule/resources/redMarker.png", cellWidth, cellHeight, false, false);
-        } else{
+        } else {
             throw new NoSuchPlayerException("The player " + owner.getId() + " does not exist.");
         }
     }
 
-    public Image getFlagImage(Player owner){
-        //TODO retorno null asi no mas?
-        if (owner == null){
-            return new Image("file:mainModule/resources/blueFlag.png", cellWidth, cellHeight, false, false);
+    public Image getFlagImage(Player owner) {
+        //TODO retorno null asi no mas? (es decir que no quiero imprimir ninguna imagen)
+        if (owner == null) {
+            return null;
         }
-        if (owner.getId().equals(1)){
+        if (owner.getId().equals(1)) {
             return new Image("file:mainModule/resources/blueFlag.png", cellWidth, cellHeight, false, false);
-        } else if (owner.getId().equals(2)){
+        } else if (owner.getId().equals(2)) {
             return new Image("file:mainModule/resources/redFlag.png", cellWidth, cellHeight, false, false);
-        } else{
+        } else {
             throw new NoSuchPlayerException("The player " + owner.getId() + " does not exist.");
         }
     }
