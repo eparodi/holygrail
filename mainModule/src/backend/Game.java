@@ -40,7 +40,7 @@ public class Game {
         this.player1 = new Player(player1);
         this.player2 = new Player(player2);
         world = new World(worldWidth, worldHeight, this.player1, this.player2);
-        logQueue = new ArrayDeque<>();
+        logQueue = new ArrayDeque<String>();
         activePlayer = this.player1;
         selectPlayerCastle(activePlayer);
     }
@@ -103,7 +103,7 @@ public class Game {
         //TODO precio en castillo?
         if (!castleCell.hasUnit()) {
             if (getActivePlayer().canPay(10)) {
-                Unit unitCreated = castle.buildUnit(unitType, castleCell.getTerrain(), castleCell.getLocation(), activePlayer);
+                Unit unitCreated = castle.buildUnit(unitType, world, castleCell.getLocation(), activePlayer);
                 world.addUnit(unitCreated);
                 //TODO precio en castillo?
                 activePlayer.pay(10);
@@ -143,7 +143,7 @@ public class Game {
             Integer terrainAPCost = world.getTerrainAPCost(clickedCell.getTerrain());
 
             if (unit.getActionPoints() >= terrainAPCost) {
-                world.moveUnit(unit.getLocation(), clickedCell.getLocation());
+                unit.move(clickedCell.getLocation());
                 unit.spendAP(terrainAPCost);
                 addLog(unit + " has " + unit.getActionPoints() + " AP left");
                 hasMoved = true;

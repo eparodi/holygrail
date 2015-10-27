@@ -7,6 +7,7 @@ import backend.exceptions.NullNameException;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.worldBuilding.Terrain;
+import backend.worldBuilding.World;
 
 //TODO (ToAsk) hacer con String o calses speparadas por tipo de unidad
 
@@ -26,25 +27,25 @@ public class UnitFactory {
      * @throws NoSuchUnitTypeException if the UnitType is not valid.
      */
     //Constructor: name, baseAttack, maxHealth, maxActionPoints, range, currentTerrain, preferredTerrain, location, owner
-    public static Unit buildUnit(UnitType unitType, Terrain currentTerrain, Location location, Player player) {
+    public static Unit buildUnit(UnitType unitType, World world, Location location, Player player) {
 
         Unit unit = null;
         if (unitType == null) throw new NullNameException("Null unit name");
 
         switch (unitType){
             case ARCHER:
-                unit = new Unit(UnitType.ARCHER , new Attack(1, 6, 1), new Defense(1,4,2), 10, 4, 2, Terrain.FOREST,
-                        currentTerrain, location, player);
+                unit = new Unit(UnitType.ARCHER , new Attack(1, 6, 1), new Defense(1,4,2), 10, 4, 2, world, Terrain.FOREST,
+                        location, player);
                 break;
 
             case LANCER:
-                unit = new Unit(UnitType.LANCER, new Attack(2, 2, 5), new Defense(3,2,3), 15, 5, 1, Terrain.GRASS,
-                        currentTerrain, location, player);
+                unit = new Unit(UnitType.LANCER, new Attack(2, 2, 5), new Defense(3,2,3), 15, 5, 1, world, Terrain.GRASS,
+                        location, player);
                 break;
 
             case RIDER:
-                unit = new Unit(UnitType.RIDER, new Attack(3, 2, 4), new Defense(2,4,1), 15, 7, 1, Terrain.GRASS,
-                        currentTerrain, location, player);
+                unit = new Unit(UnitType.RIDER, new Attack(3, 2, 4), new Defense(2,4,1), 15, 7, 1, world,  Terrain.GRASS,
+                        location, player);
                 break;
         }
 

@@ -39,7 +39,7 @@ public class World {
         Mine mine = new Mine(20);
         getCellAt(mineLocation).addBuilding(mine);
 
-        holyGrailPossibleCells = new ArrayList<>();
+        holyGrailPossibleCells = new ArrayList<Cell>();
 
         for ( Cell cell : cells ){
             if ( cell.getTerrain() != Terrain.WATER ){
@@ -121,23 +121,6 @@ public class World {
         }
     }
 
-    /**TODO: POR QUE USA GETCELLAT.ADDUNIT Y REMOVEUNIT SI WORLD YA TIENE ESTOS METODOS?
-     * Moves a Unit from the initialLocation Cell to the finalLocation Cell.
-     *
-     * @param initialLocation initial Location of the Unit.
-     * @param finalLocation final Location of the Unit.
-     * @see
-     */
-    public void moveUnit(Location initialLocation, Location finalLocation) {
-        Unit auxUnit = getCellAt(initialLocation).getUnit();
-
-        auxUnit.setCurrentTerrain(getTerrainAt(finalLocation));
-        auxUnit.setLocation(finalLocation);
-
-        getCellAt(initialLocation).removeUnit();
-        getCellAt(finalLocation).addUnit(auxUnit);
-    }
-
     /**
      * Captures a Building moving a Unit to the Building Location, and setting the ownership of the building to the
      * owner of the Unit.
@@ -149,7 +132,7 @@ public class World {
         if (unit == null) throw new NullArgumentException("null unit parameter");
         if (buildingLocation == null) throw new NullArgumentException("null location parameter");
 
-        moveUnit(unit.getLocation(), buildingLocation);
+        unit.move(buildingLocation);
         getCellAt(buildingLocation).getBuilding().setOwner(unit.getOwner());
     }
 
@@ -279,7 +262,7 @@ public class World {
      * @return a Collection of all Units.
      */
     public Collection<Unit> getUnits() {
-        Collection<Unit> units = new ArrayList<>();
+        Collection<Unit> units = new ArrayList<Unit>();
         Unit unit;
 
         for (Cell cell : cells) {
@@ -295,7 +278,7 @@ public class World {
      * @return a Collection of all Units from a Player.
      */
     public Collection<Unit> getUnits(Player player) {
-        Collection<Unit> units = new ArrayList<>();
+        Collection<Unit> units = new ArrayList<Unit>();
         Unit unit;
 
         for (Cell cell : cells) {
@@ -402,7 +385,7 @@ public class World {
      */
     private Collection<Cell> generateCellCollection() {
 
-        Collection<Cell> cellCollection = new ArrayList<>();
+        Collection<Cell> cellCollection = new ArrayList<Cell>();
         Cell cell;
         Location cellLocation;
 

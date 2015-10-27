@@ -6,6 +6,7 @@ import backend.units.UnitType;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.worldBuilding.Terrain;
+import backend.worldBuilding.World;
 
 public class Castle extends Building {
 
@@ -29,8 +30,8 @@ public class Castle extends Building {
      * @param player Owner of the Unit.
      * @return A new Unit.
      */
-    public Unit buildUnit(UnitType unitType, Terrain terrain, Location location, Player player) {
-        return UnitFactory.buildUnit(unitType, terrain, location, player);
+    public Unit buildUnit(UnitType unitType, World world, Location location, Player player) {
+        return UnitFactory.buildUnit(unitType, world, location, player);
     }
 
 }
