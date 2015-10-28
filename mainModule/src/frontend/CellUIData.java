@@ -57,7 +57,6 @@ public class CellUIData {
         this.health = health;
         this.maxHealth = maxHealth;
         this.owner = owner;
-
     }
 
     public boolean isSelected() {

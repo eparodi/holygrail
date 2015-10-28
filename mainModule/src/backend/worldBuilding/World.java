@@ -420,15 +420,16 @@ public class World {
 
     /**
      * TODO: Otro metodo que utiliza una clase de Frontend.
-     * @return
      */
     public Collection<CellUIData> generateCellUIData() {
-        Collection<CellUIData> cellUIDataCollection = new ArrayList<CellUIData>();
+        Collection<CellUIData> cellUIDataCollection = new ArrayList<>();
         for (Cell cell : cells) {
                 cellUIDataCollection.add(cell.getCellUIData());
         }
         return cellUIDataCollection;
     }
+
+
 
     /**
      * Returns the Player gold income.

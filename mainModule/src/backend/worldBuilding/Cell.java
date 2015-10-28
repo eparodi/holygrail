@@ -8,15 +8,14 @@ import backend.items.Item;
 import backend.items.ItemFactory;
 import backend.items.ItemType;
 import backend.units.Unit;
+import backend.Entity;
 import frontend.CellUIData;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 
-public class Cell {
-    Location location;
+public class Cell extends Entity{
     Unit localUnit;
     Building building;
     Queue<Item> treasures;
@@ -30,13 +29,11 @@ public class Cell {
      * @param terrain Terrain of the Cell.
      */
     public Cell(Location location, Terrain terrain) {
+        super(location);
         this.terrain = terrain;
-        this.location = location;
         this.treasures = new LinkedList<>();
-
         Random random = new Random();
         int numberOfItems = random.nextInt(MAX_ITEMS);
-
         for ( int i = 0 ; i <= numberOfItems ; i++ ){
             treasures.add(ItemFactory.buildRandomItem());
         }
@@ -56,7 +53,7 @@ public class Cell {
 
     @Override
     public int hashCode() {
-        return location.hashCode();
+       return super.hashCode();
     }
 
     /**
@@ -82,9 +79,6 @@ public class Cell {
      *
      * @return location of the cell.
      */
-    public Location getLocation() {
-        return location;
-    }
 
     /**
      * Returns the Building of the Cell.
@@ -120,7 +114,7 @@ public class Cell {
      * @throws CellIsOccupiedException if the Cell is occupied by a unit.
      */
     public void addUnit(Unit unit) {
-        if (hasUnit()) throw new CellIsOccupiedException("Cell at " + location.toString() + " has a unit already");
+        if (hasUnit()) throw new CellIsOccupiedException("Cell at " + super.toString() + " has a unit already");
         localUnit = unit;
     }
 
@@ -132,7 +126,7 @@ public class Cell {
      */
     public void addBuilding(Building building) {
         if (!(this.building == null))
-            throw new CellIsOccupiedException("Cell at " + location.toString() + " has a building already");
+            throw new CellIsOccupiedException("Cell at " + super.toString() + " has a building already");
         this.building = building;
     }
 
@@ -143,33 +137,16 @@ public class Cell {
      */
     public void removeUnit() {
         if (!hasUnit()) {
-            throw new CellIsEmptyException("Cell at " + location.toString() + " is empty");
+            throw new CellIsEmptyException("Cell at " + super.toString() + " is empty");
         }
         localUnit = null;
     }
 
     public String toString() {
-        return "Cell at " + ((location == null) ? "null location" : location.toString()) +
-                "terrain type: " + terrain + " unit: " + ((localUnit == null) ? "no unit" : localUnit.toString()) +
+        return "Cell at " + super.toString() + "terrain type: " + terrain + " unit: " + ((localUnit == null) ? "no unit" : localUnit.toString()) +
                 "building: " + ((building == null) ? "no building" : building.toString());
     }
 
-    /**
-     * TODO: Un método del backend que utiliza una clase del frontend??
-     *
-     * @return
-     */
-    public CellUIData getCellUIData() {
-        CellUIData cellUIData;
-        cellUIData = new CellUIData(location, terrain);
-        if (hasBuilding()) {
-            cellUIData.addBuildingData(getBuilding().getBuildingType(), getBuilding().getOwner());
-        }
-        if (hasUnit()) {
-            cellUIData.addUnitData(getUnit().getUnitType(), getUnit().getHealth(), getUnit().getMaxHealth(), getUnit().getOwner());
-        }
-        return cellUIData;
-    }
 
     /**
      * Adds the Holy Grail item to the current Cell.
@@ -196,5 +173,17 @@ public class Cell {
      */
     public void addItem( Item addItem ){
         treasures.add(addItem);
+    }
+
+    public CellUIData getCellUIData() {
+        CellUIData cellUIData;
+        cellUIData = new CellUIData(super.getLocation(), terrain);
+        if (hasBuilding()) {
+            cellUIData.addBuildingData(getBuilding().getBuildingType(), getBuilding().getOwner());
+        }
+        if (hasUnit()) {
+            cellUIData.addUnitData(getUnit().getUnitType(), getUnit().getHealth(), getUnit().getMaxHealth(), getUnit().getOwner());
+        }
+        return cellUIData;
     }
 }
