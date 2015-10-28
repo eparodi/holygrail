@@ -8,3 +8,6 @@ import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.worldBuilding.Terrain;
 
+public abstract class UnitPredecesor{
+
+}

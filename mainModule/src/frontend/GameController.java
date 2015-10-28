@@ -218,7 +218,3 @@ public class GameController {
         }
     }
 }
-
-enum Direction {
-    UP, DOWN, LEFT, RIGHT
-}

@@ -1,6 +1,7 @@
 package frontend;
 
 import backend.units.UnitType;
+import backend.units.UnitType;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.worldBuilding.Terrain;
@@ -66,4 +67,5 @@ public class CellUIData {
     public void selectCell() {
         isSelected = true;
     }
+
 }
