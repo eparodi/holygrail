@@ -9,16 +9,14 @@ import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.worldBuilding.Terrain;
 
-public class Unit {
-    static Integer nextId = 0;
+public class Unit extends UnitPredecesor{
 
-    Player owner;
-    private Integer id;
+    //Player owner;
     private UnitType unitType;
     private Terrain preferredTerrain;
 
     private Terrain currentTerrain;
-    private Location location;
+    //private Location location;
 
     private Attack baseAttack = null;
     private Defense defense = null;
@@ -31,27 +29,22 @@ public class Unit {
     private Item extra = null;
     private Item rune = null;
 
-    private Integer health;
-    private Integer maxHealth;
-    private Integer actionPoints;
-    private Integer maxActionPoints;
+
     private Integer range;
+
 
     public Unit(UnitType unitType, Attack baseAttack, Defense defense, Integer maxHealth, Integer maxActionPoints, Integer range,
                 Terrain currentTerrain, Terrain preferredTerrain, Location location, Player owner) {
+
+        super(owner,location,maxActionPoints,maxHealth);
         this.unitType = unitType;
         this.baseAttack = baseAttack;
         this.defense = defense;
-        this.maxHealth = maxHealth;
-        this.maxActionPoints = maxActionPoints;
+
         this.range = range;
         this.currentTerrain = currentTerrain;
         this.preferredTerrain = preferredTerrain;
-        this.health = maxHealth;
-        this.actionPoints = maxActionPoints;
-        this.location = location;
-        this.id = getNextId();
-        this.owner = owner;
+
     }
 
     /**TODO: Remover Printf's
@@ -62,9 +55,9 @@ public class Unit {
     public void receiveDamage(Attack attack) {
         System.out.println("calcTerrainMod(defendersTerrain) = " + calcTerrainMod(currentTerrain));
         Integer damageDealt = defense.getDamageDealt(attack, calcTerrainMod(currentTerrain));
-        health -= damageDealt;
+        super.reduceHealth(damageDealt);
         System.out.println("damageDealt = " + damageDealt);
-        System.out.println("health = " + health);
+        System.out.println("health = " + super.getHealth());
     }
 
     /**
@@ -74,9 +67,6 @@ public class Unit {
      * @return Double value with the Terrain modifier.
      */
     public Double calcTerrainMod(Terrain targetTerrain) {
-        // This will have to be extended to use a list of terrains?
-        // Maybe a ranking of prefered terrains, with the first one getting the
-        // biggest mod & viceversa
         Double mod = 1D;
         if (targetTerrain.equals(preferredTerrain))
             mod = 1.5D;
@@ -105,6 +95,7 @@ public class Unit {
      * @return the Item dropped.
      */
     //TODO REHACER
+    @Deprecated
     public Item pickItem(Item itemPicked) {
 
         Item droppedItem = null;
@@ -125,11 +116,11 @@ public class Unit {
      * Updates the Health and Action Points, adding the bonuses from Items.
      */
     public void updateStatus() {
-        Integer newHealth = health + extra.getMaxHealthBonus();
-        health = newHealth < getMaxHealth() ? newHealth : getMaxHealth();
+        Integer newHealth = super.getHealth() + extra.getMaxHealthBonus();
+        reduceHealth(newHealth < getMaxHealth() ? newHealth : getMaxHealth());
 
-        Integer newAP = actionPoints + extra.getMaxAPBonus();
-        actionPoints = newAP < getMaxActionPoints() ? newAP : getMaxActionPoints();
+        Integer newAP = getActionPoints() + extra.getMaxAPBonus();
+        setActionPoints(newAP < getMaxActionPoints() ? newAP : getMaxActionPoints());
     }
 
     /**
@@ -152,92 +143,39 @@ public class Unit {
         return droppedExtra;
     }
 
-    public Integer getHealth() {
-        return health < 0 ? 0 : health;
-    }
-
+    @Override
     public Integer getMaxHealth() {
         if (extra != null) {
-            return maxHealth + extra.getMaxHealthBonus();
+            return super.getMaxHealth() + extra.getMaxHealthBonus();
         }
-        return maxHealth;
+        return  super.getMaxHealth();
     }
 
-    public Integer getActionPoints() {
-        return actionPoints;
-    }
-
+    @Override
     public Integer getMaxActionPoints() {
         if (extra != null) {
-            return maxActionPoints + extra.getMaxAPBonus();
+            return super.getMaxActionPoints() + extra.getMaxAPBonus();
         }
-        return maxActionPoints;
-    }
-
-    public void setLocation(Location location) {
-        if (location == null) throw new NullLocationException(this.toString() + " received a null location");
-        this.location = location;
+        return super.getMaxActionPoints();
     }
 
     public void setCurrentTerrain(Terrain terrain) {
         this.currentTerrain = terrain;
     }
 
-    /**
-     * Refills the Unit Action Points.
-     */
-    public void refillAP() {
-        this.actionPoints = this.maxActionPoints;
-    }
-
     public Integer getRange() {
         return range;
-    }
-
-    public Integer getNextId() {
-        Integer aux = nextId;
-        nextId++;
-        return aux;
-    }
-
-    public Player getOwner() {
-        return owner;
     }
 
     public Terrain getCurrentTerrain() {
         return currentTerrain;
     }
 
-    /**
-     * Returns true if the unit has died.
-     * @return true if the unit is dead, false if it's alive.
-     */
-    public boolean isDed() {
-        return getHealth() == 0;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
     public UnitType getUnitType() {
         return unitType;
     }
 
-    /**
-     * Spends an amount of the Unit Action Points.
-     * @param actionPointsSpent ap spent.
-     */
-    public void spendAP(Integer actionPointsSpent) {
-        actionPoints -= actionPointsSpent;
-        if (actionPoints < 0) throw new IllegalStateException(this + " is using more AP than it has");
-    }
-
     public String toString() {
         return getUnitType() + " " + getId();
-    }
-
-    public Integer getId() {
-        return id;
     }
 }

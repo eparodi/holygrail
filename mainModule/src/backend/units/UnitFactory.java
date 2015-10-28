@@ -29,9 +29,9 @@ public class UnitFactory{
         break;
 
         case RIDER:
-        unit = new Unit(UnitType.RIDER, new Attack(3, 2, 4), new Defense(2,4,1), 15, 7, 1, Terrain.GRASS,
-        currentTerrain, location, player);
-        break;
+            unit = new Unit(UnitType.RIDER, new Attack(3, 2, 4), new Defense(2,4,1), 15, 7, 1, Terrain.GRASS,
+            currentTerrain, location, player);
+            break;
         }
 
 
