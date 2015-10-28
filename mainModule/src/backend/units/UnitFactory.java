@@ -16,6 +16,20 @@ import backend.worldBuilding.World;
  */
 public class UnitFactory {
 
+    public static Archer buildArcher(UnitType unitType, World world, Location location, Player player) {
+        return new Archer(world, location, player);
+    }
+
+    public static Lancer buildLancer(UnitType unitType, World world, Location location, Player player) {
+        return new Lancer(world, location, player);
+    }
+
+    public static Rider buildRider(UnitType unitType, World world, Location location, Player player) {
+        return new Rider(world, location, player);
+    }
+
+
+
     /**
      * Creates a new Unit.
      * @param unitType       the type of the Unit.
@@ -27,6 +41,7 @@ public class UnitFactory {
      * @throws NoSuchUnitTypeException if the UnitType is not valid.
      */
     //Constructor: name, baseAttack, maxHealth, maxActionPoints, range, currentTerrain, preferredTerrain, location, owner
+    @Deprecated
     public static Unit buildUnit(UnitType unitType, World world, Location location, Player player) {
 
         Unit unit = null;
