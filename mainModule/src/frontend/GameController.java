@@ -5,7 +5,7 @@ import backend.exceptions.*;
 import backend.units.UnitType;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
-import backend.worldBuilding.Terrain;
+import backend.terrain.Terrain;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -137,7 +137,7 @@ public class GameController {
     }
 
     public Image getTerrainImage(Terrain terrain) {
-        switch (terrain) {
+        switch (terrain.getTerrainType()) {
             case GRASS:
                 return new Image("file:mainModule/resources/cellGrass.png", cellWidth, cellHeight, false, false);
 
@@ -217,8 +217,4 @@ public class GameController {
             throw new NoSuchPlayerException("The player " + owner.getId() + " does not exist.");
         }
     }
-}
-
-enum Direction {
-    UP, DOWN, LEFT, RIGHT
 }

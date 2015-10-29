@@ -7,7 +7,7 @@ import backend.items.Item;
 import backend.items.ItemType;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
-import backend.worldBuilding.Terrain;
+import backend.terrain.Terrain;
 
 public class Unit {
     static Integer nextId = 0;

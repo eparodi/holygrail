@@ -9,6 +9,9 @@ import backend.exceptions.InvalidTerrainException;
 import backend.exceptions.NullArgumentException;
 import backend.exceptions.NullLocationException;
 import backend.items.Item;
+import backend.terrain.Terrain;
+import backend.terrain.TerrainFactory;
+import backend.terrain.TerrainType;
 import backend.units.Unit;
 import frontend.CellUIData;
 
@@ -42,7 +45,7 @@ public class World {
         holyGrailPossibleCells = new ArrayList<>();
 
         for ( Cell cell : cells ){
-            if ( cell.getTerrain() != Terrain.WATER ){
+            if ( cell.canRecieveItem()){
                 Location cellLocation = cell.getLocation();
                 if ( distance(cellLocation, player1Castle) > 5 && distance(cellLocation,player2Castle) > 5){
                     if ( cellLocation != mineLocation ){
@@ -237,6 +240,7 @@ public class World {
         return Math.max(Math.max(deltaX, deltaY), deltaZ);
     }
 
+    @Deprecated
     /** TODO: Est� bien que este m�todo lo tenga el world, o tal vez cada Cell deber�a tener su APCost, y calcularlo segun el terrain?
      * Returns the Terrain action points cost used to move a unit through it.
      *
@@ -244,19 +248,6 @@ public class World {
      * @return Integer value of the action points cost.
      */
     public Integer getTerrainAPCost(Terrain terrain) {
-        switch (terrain) {
-            case GRASS:
-                return 1;
-            case HILL:
-                return 3;
-            case FOREST:
-                return 2;
-            //TODO (ToAsk) esta bien si water tiene costo alto o hacemos celdas no pisables?
-            case WATER:
-                return 20;
-            case MOUNTAIN:
-                return 20;
-        }
         throw new InvalidTerrainException(terrain + " does not have a cost");
     }
 
@@ -381,18 +372,18 @@ public class World {
     //TODO: change, it's only for testing terrains
     public Terrain loadTerrain(Location location) {
         if (location.getX() <= 2 && location.getY() <= 4 && location.getY() > 2){
-            return Terrain.FOREST;
+            return TerrainFactory.buildForestTerrain();
         }
         if (location.getX() > 6 && location.getY() <= 4 && location.getY() >= 2){
-            return Terrain.HILL;
+            return TerrainFactory.buildHillTerrain();
         }
         if (location.getX() > 7 && location.getY() <= 2){
-            return Terrain.WATER;
+            return TerrainFactory.buildWaterTerrain();
         }
         if (location.getX() <= 2 && location.getY() > 4){
-            return Terrain.GRASS;
+            return TerrainFactory.buildGrassTerrain();
         }
-        return Terrain.GRASS;
+        return TerrainFactory.buildGrassTerrain();
     }
 
     /**TODO: Vamos a hacer mapas espec�ficos despues?
@@ -423,7 +414,7 @@ public class World {
      * @return
      */
     public Collection<CellUIData> generateCellUIData() {
-        Collection<CellUIData> cellUIDataCollection = new ArrayList<CellUIData>();
+        Collection<CellUIData> cellUIDataCollection = new ArrayList<>();
         for (Cell cell : cells) {
                 cellUIDataCollection.add(cell.getCellUIData());
         }

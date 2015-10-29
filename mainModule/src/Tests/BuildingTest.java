@@ -1,11 +1,12 @@
 package Tests;
 
 import backend.building.Castle;
+import backend.terrain.TerrainFactory;
 import backend.units.Unit;
 import backend.units.UnitType;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
-import backend.worldBuilding.Terrain;
+import backend.terrain.Terrain;
 import backend.worldBuilding.World;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +30,7 @@ public class BuildingTest {
         Castle castle = new Castle(p1);
         world.addBuilding(castle, new Location(0,0));
 
-        Unit unit = castle.buildUnit(UnitType.LANCER, Terrain.FOREST, new Location(1,1), p1);
+        Unit unit = castle.buildUnit(UnitType.LANCER, TerrainFactory.buildHillTerrain(), new Location(1,1), p1);
 
         assertTrue(unit.getUnitType().equals(UnitType.LANCER));
         assertTrue(unit.getLocation().equals(new Location(1,1)));

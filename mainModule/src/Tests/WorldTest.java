@@ -1,10 +1,7 @@
 package Tests;
 
 import backend.units.Unit;
-import backend.units.UnitFactory;
-import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
-import backend.worldBuilding.Terrain;
 import backend.worldBuilding.World;
 import org.junit.Before;
 

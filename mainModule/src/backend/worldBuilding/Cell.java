@@ -7,11 +7,11 @@ import backend.exceptions.CellIsOccupiedException;
 import backend.items.Item;
 import backend.items.ItemFactory;
 import backend.items.ItemType;
+import backend.terrain.Terrain;
 import backend.units.Unit;
 import frontend.CellUIData;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 
@@ -196,5 +196,10 @@ public class Cell {
      */
     public void addItem( Item addItem ){
         treasures.add(addItem);
+    }
+
+    public boolean canRecieveItem(){
+        if(treasures.size() >= MAX_ITEMS) return false;
+        else return getTerrain().canRecieveItem();
     }
 }

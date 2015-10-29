@@ -3,7 +3,7 @@ package frontend;
 import backend.units.UnitType;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
-import backend.worldBuilding.Terrain;
+import backend.terrain.Terrain;
 
 
 public class CellUIData {
