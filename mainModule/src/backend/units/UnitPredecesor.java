@@ -81,5 +81,8 @@ public abstract class UnitPredecesor extends Entity{
         return getHealth() == 0;
     }
 
+    public String toString() {
+        return "Generic" + " " + getId();
+    }
 
 }

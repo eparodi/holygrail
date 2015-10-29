@@ -16,7 +16,6 @@ public class Unit extends UnitPredecesor{
     private Terrain preferredTerrain;
 
     private Terrain currentTerrain;
-    //private Location location;
 
     private Attack baseAttack = null;
     private Defense defense = null;
