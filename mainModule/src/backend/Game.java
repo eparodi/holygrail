@@ -1,5 +1,6 @@
 package backend;
 
+import backend.building.Building;
 import backend.building.Castle;
 import backend.exceptions.NullArgumentException;
 import backend.items.Item;
@@ -19,7 +20,7 @@ public class Game {
     public static final Integer ATTACK_AP_COST = 2;
     public static final Integer DIG_AP_COST = 1;
     private World world;
-    private Cell selectedCell;
+    private Location selectedLocation;
     private Player player1, player2;
     private Player activePlayer;
     private Queue<String> logQueue;
@@ -52,44 +53,85 @@ public class Game {
             addLog(player + "lost, he has no more buildings");
             return false;
         }
-        else selectedCell = world.getCellAt(world.getBuildingLocation(world.getPlayerCastle(player)));
+        else selectedLocation = world.getCellAt(world.getBuildingLocation(world.getPlayerCastle(player)));
         return true;
     }
 
-    public void actionAttempt(Location location) {
-        actionAttempt(world.getCellAt(location));
-    }
-
-    public void actionAttempt(Cell clickedCell) {
-        if (selectedCell == null) {
-            selectedCell = clickedCell;
+    public void actionAttempt(Location clickedLocation) {
+        if (selectedLocation == null) {
+            selectedLocation = clickedLocation;
             return;
         }
-        if (selectedCell.hasUnit()) {
-            if (clickedCell.hasUnit()) {
-                if (clickedCell.getUnit().getOwner().equals(activePlayer)) {
-                    setSelectedCell(clickedCell);
-                } else if (!selectedCell.equals(clickedCell)) {
-                    attackAttempt(selectedCell.getUnit(), clickedCell.getUnit(), selectedCell, clickedCell);
+        if (isUnitOnLocation(selectedLocation)) {
+            if (isUnitOnLocation(clickedLocation)) {
+                if (world.getUnitAt(clickedLocation).getOwner().equals(activePlayer)) {
+                    setSelectedLocation(clickedLocation);
+                } else if (!selectedLocation.equals(clickedLocation)) {
+                    attackAttempt(world.getUnitAt(selectedLocation), world.getUnitAt(clickedLocation), selectedLocation, clickedCell);
                 }
             } else {
                 //No unit and building means unit tries to capture
-                //getOwner() can be null if its a neutral mine
+                //getOwnerID() can be null if its a neutral mine
                 if (clickedCell.hasBuilding() &&
                         (clickedCell.getBuilding().getOwner() == null || !clickedCell.getBuilding().getOwner().equals(activePlayer))) {
-                    captureAttempt(selectedCell.getUnit(), clickedCell);
+                    captureAttempt(selectedLocation.getUnit(), clickedCell);
                     //TODO: CODIGO REPETIDO
-                    selectedCell = clickedCell;
-                } else if (selectedCell.getUnit().getOwner().equals(activePlayer)) { //Fixes bug that can move opponents units
-                    moveAttempt(selectedCell.getUnit(), clickedCell);
-                    selectedCell = clickedCell;
+                    selectedLocation = clickedCell;
+                } else if (selectedLocation.getUnit().getOwner().equals(activePlayer)) { //Fixes bug that can move opponents units
+                    moveAttempt(selectedLocation.getUnit(), clickedCell);
+                    selectedLocation = clickedCell;
                 }
             }
         } else {
             //building is selected
-            selectedCell = clickedCell;
+            selectedLocation = clickedCell;
         }
-        addLog(getSelectedCell().toString());
+    }
+
+    private boolean isUnitOnLocation(Location selectedLocation) {
+        for (Unit unit:world.getUnits()){
+            if(unit.getLocation().equals(selectedLocation)) return true;
+        }
+        return false;
+    }
+
+    private boolean isBuildingOnLocation(Location selectedLocation) {
+        for (Building building:world.getBuildings()){
+            if(building.getLocation().equals(selectedLocation)) return true;
+        }
+        return false;
+    }
+
+    public void actionAttempt(Cell clickedCell) {
+        addLog(getSelectedLocation().toString());
+        if (selectedLocation == null) {
+            selectedLocation = clickedCell;
+            return;
+        }
+        if (selectedLocation.hasUnit()) {
+            if (clickedCell.hasUnit()) {
+                if (clickedCell.getUnit().getOwner().equals(activePlayer)) {
+                    setSelectedLocation(clickedCell);
+                } else if (!selectedLocation.equals(clickedCell)) {
+                    attackAttempt(selectedLocation.getUnit(), clickedCell.getUnit(), selectedLocation, clickedCell);
+                }
+            } else {
+                //No unit and building means unit tries to capture
+                //getOwnerID() can be null if its a neutral mine
+                if (clickedCell.hasBuilding() &&
+                        (clickedCell.getBuilding().getOwner() == null || !clickedCell.getBuilding().getOwner().equals(activePlayer))) {
+                    captureAttempt(selectedLocation.getUnit(), clickedCell);
+                    //TODO: CODIGO REPETIDO
+                    selectedLocation = clickedCell;
+                } else if (selectedLocation.getUnit().getOwner().equals(activePlayer)) { //Fixes bug that can move opponents units
+                    moveAttempt(selectedLocation.getUnit(), clickedCell);
+                    selectedLocation = clickedCell;
+                }
+            }
+        } else {
+            //building is selected
+            selectedLocation = clickedCell;
+        }
         printLog();
     }
 
@@ -165,7 +207,7 @@ public class Game {
         return hasCaptured;
     }
 
-    public boolean attackAttempt(Unit attacker, Unit defender, Cell attackerCell, Cell defenderCell ) {
+    public boolean attackAttempt(Unit attacker, Unit defender) {
         boolean hasAttacked = false;
 
         if (attacker == null) {
@@ -189,12 +231,12 @@ public class Game {
         return hasAttacked;
     }
 
-    private void setSelectedCell(Cell cell) {
-        selectedCell = cell;
+    private void setSelectedLocation(Location location) {
+        selectedLocation = location;
     }
 
-    public Cell getSelectedCell() {
-        return selectedCell;
+    public Cell getSelectedLocation() {
+        return selectedLocation;
     }
 
     public void printLog() {
@@ -203,10 +245,11 @@ public class Game {
         }
     }
 
-    public Collection<CellUIData> getCellUIData() {
+    @Deprecated
+       public Collection<CellUIData> getCellUIData() {
         Collection<CellUIData> cells = world.generateCellUIData();
         for (CellUIData cell: cells){
-            if (cell.getLocation().equals(selectedCell.getLocation())){
+            if (cell.getLocation().equals(selectedLocation.getLocation())){
                 cell.selectCell();
             }
         }
@@ -239,20 +282,20 @@ public class Game {
      */
     public void pickItemAttempt(){
 
-        if ( selectedCell == null ){
+        if ( selectedLocation == null ){
             return;
         }
 
-        if ( selectedCell.hasUnit()){
-            if ( selectedCell.getUnit().getOwner().equals(activePlayer)){
-                if ( selectedCell.getUnit().getActionPoints() >= DIG_AP_COST ){
-                    Item pickedItem = selectedCell.getItem();
-                    selectedCell.getUnit().spendAP(DIG_AP_COST);
+        if ( selectedLocation.hasUnit()){
+            if ( selectedLocation.getUnit().getOwner().equals(activePlayer)){
+                if ( selectedLocation.getUnit().getActionPoints() >= DIG_AP_COST ){
+                    Item pickedItem = selectedLocation.getItem();
+                    selectedLocation.getUnit().spendAP(DIG_AP_COST);
                     if ( pickedItem != null ){
                         System.out.println(pickedItem.getName());
-                        Item droppedItem = selectedCell.getUnit().pickItem( pickedItem );
+                        Item droppedItem = selectedLocation.getUnit().pickItem( pickedItem );
                         if ( droppedItem != null ){
-                            selectedCell.addItem(droppedItem);
+                            selectedLocation.addItem(droppedItem);
                         }
                     }else{
                         System.out.println("There is no item");

@@ -1,23 +1,39 @@
 package backend.building;
 
+import backend.worldBuilding.Cell;
+import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
+
+import java.rmi.registry.LocateRegistry;
 
 /**
  * This class is the logic base to create all the constructions. Each building has its type and a player who is
  * the owner.
  */
 
-public abstract class Building {
-    String buildingType;
+public abstract class Building{
+    BuildingType buildingType;
     Player owner = null;
-    Integer perTurnGoldIncome;
+    Income income;
+    Location location;
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public Building(BuildingType buildingType, Player owner, Income income, Location location){
+        this.buildingType = buildingType;
+        this.owner = owner;
+        this.income = income;
+        this.location = location;
+    }
 
     /**
      * Returns the gold this building generates.
      * @return The amount of gold the player receive from this building per turn.
      */
-    public Integer getPerTurnGoldIncome(){
-        return perTurnGoldIncome;
+    public Integer getIncome(){
+        return income.giveIncome();
     }
 
     /**
@@ -40,7 +56,7 @@ public abstract class Building {
      * Returns the type of building.
      * @return the type of the building.
      */
-    public String getBuildingType(){
+    public BuildingType getBuildingType(){
         return buildingType;
     }
 

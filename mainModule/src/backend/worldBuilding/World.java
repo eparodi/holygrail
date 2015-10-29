@@ -11,15 +11,18 @@ import backend.exceptions.NullLocationException;
 import backend.items.Item;
 import backend.terrain.Terrain;
 import backend.terrain.TerrainFactory;
-import backend.terrain.TerrainType;
 import backend.units.Unit;
 import frontend.CellUIData;
+import sun.rmi.server.UnicastServerRef;
 
 import java.util.*;
 
 public class World {
     Collection<Cell> cells;
-    List<Cell> holyGrailPossibleCells;
+    Collection<Unit> units;
+    Collection<Building> buildings;
+
+
     Integer worldWidth, worldHeight;
 
 
@@ -29,6 +32,9 @@ public class World {
         this.worldWidth = worldWidth;
 
         cells = generateCellCollection();
+        units = new ArrayList<>();
+        buildings = new ArrayList<>();
+
 
         //A PARTIR DE ACA SE CREA EL MAP DE TESTEO:
         Location player1Castle = new Location(1, Math.round(worldHeight / 2));
@@ -39,10 +45,10 @@ public class World {
         getCellAt(player1Castle).addBuilding(castle);
         castle = new Castle(player2);
         getCellAt(player2Castle).addBuilding(castle);
-        Mine mine = new Mine(20);
+        Mine mine = new Mine();
         getCellAt(mineLocation).addBuilding(mine);
 
-        holyGrailPossibleCells = new ArrayList<>();
+        List<Cell> holyGrailPossibleCells = new ArrayList<>();
 
         for ( Cell cell : cells ){
             if ( cell.canRecieveItem()){
@@ -162,6 +168,7 @@ public class World {
      * @param attacker attacking Unit.
      * @param defender defending Unit.
      */
+    @Deprecated
     private void attack(Unit attacker, Unit defender) {
             Attack attack = attacker.getAttack();
             defender.receiveDamage(attack);
@@ -173,12 +180,13 @@ public class World {
      * @param attacker attacking Unit.
      * @param defender defending Unit.
      */
-    public void skirmish(Unit attacker, Unit defender , Cell attackerCell , Cell defenderCell ) {
+    @Deprecated
+    public void skirmish(Unit attacker, Unit defender) {
         attack(attacker, defender);
         if(isInRange(defender,attacker)) {
             attack(defender, attacker);
         }
-
+        attacker.attack(defender);
         if (attacker.isDed()){
             dropItemToCell(attacker, attackerCell);
             removeUnit(attacker);
@@ -264,19 +272,12 @@ public class World {
         throw new CellOutOfWorldException("No cell exists at " + location.toString());
     }
 
-    /**TODO: Para qu� usamos esto?
+    /**
      * Returns a Collection with all the Units in the World.
      *
      * @return a Collection of all Units.
      */
     public Collection<Unit> getUnits() {
-        Collection<Unit> units = new ArrayList<>();
-        Unit unit;
-
-        for (Cell cell : cells) {
-            unit = cell.getUnit();
-            if (!(unit == null)) units.add(unit);
-        }
         return units;
     }
 
@@ -435,11 +436,22 @@ public class World {
             if(cell.hasBuilding()){
                 if(cell.getBuilding().getOwner() != null){
                     if(cell.getBuilding().getOwner().equals(player)){
-                        income+=cell.getBuilding().getPerTurnGoldIncome();
+                        income+=cell.getBuilding().getIncome();
                     }
                 }
             }
         }
         return income;
+    }
+
+    public Collection<Building> getBuildings() {
+        return buildings;
+    }
+
+    public Unit getUnitAt(Location location) {
+        for (Unit unit: units){
+            if(unit.getLocation().equals(location))return unit;
+        }
+        throw new NoSuchElementException("No unit in units with that location: " + location);
     }
 }

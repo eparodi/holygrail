@@ -2,6 +2,7 @@ package frontend;
 
 import backend.Game;
 import backend.units.UnitType;
+import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -23,6 +24,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.awt.*;
+import java.io.*;
 import java.util.Random;
 
 public class Main extends Application {
@@ -96,7 +98,8 @@ public class Main extends Application {
             }
         });
 
-
+        saveLocation("asdasd",new Location(1000,2000));
+        System.out.println("loadLocation = " + loadLocation("asdasd"));
 
         primaryStage.setTitle("El Santo Grial");
         primaryStage.setScene(scene);
@@ -105,5 +108,40 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public static void saveLocation(String path, Location location){
+        try
+        {
+            FileOutputStream fileOut =
+                    new FileOutputStream(path);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(location);
+            out.close();
+            fileOut.close();
+        }catch(IOException i)
+        {
+            i.printStackTrace();
+        }
+    }
+
+    public static Location loadLocation(String path){
+        Location location = null;
+        try
+        {
+            FileInputStream fileIn = new FileInputStream(path);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            location = (Location) in.readObject();
+            in.close();
+            fileIn.close();
+        }catch(IOException i)
+        {
+            i.printStackTrace();
+        }catch(ClassNotFoundException c)
+        {
+            System.out.println("Employee class not found");
+            c.printStackTrace();
+        }
+        return location;
     }
 }

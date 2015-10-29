@@ -18,7 +18,6 @@ import java.util.Random;
 public class Cell {
     Location location;
     Unit localUnit;
-    Building building;
     Queue<Item> treasures;
     private final static int MAX_ITEMS = 5;
     Terrain terrain;
@@ -86,14 +85,6 @@ public class Cell {
         return location;
     }
 
-    /**
-     * Returns the Building of the Cell.
-     *
-     * @return building in cell.
-     */
-    public Building getBuilding() {
-        return building;
-    }
 
     /**
      * Returns true if there is a Unit in the Cell.
@@ -102,15 +93,6 @@ public class Cell {
      */
     public boolean hasUnit() {
         return !(localUnit == null);
-    }
-
-    /**
-     * Returns true if there is a Building in the Cell.
-     *
-     * @return true if there is a Building, if not it returns false.
-     */
-    public boolean hasBuilding(){
-        return !(building == null);
     }
 
     /**
@@ -163,10 +145,10 @@ public class Cell {
         CellUIData cellUIData;
         cellUIData = new CellUIData(location, terrain);
         if (hasBuilding()) {
-            cellUIData.addBuildingData(getBuilding().getBuildingType(), getBuilding().getOwner());
+            cellUIData.addBuildingData(getBuilding().getBuildingType(), getBuilding().getOwner().getId());
         }
         if (hasUnit()) {
-            cellUIData.addUnitData(getUnit().getUnitType(), getUnit().getHealth(), getUnit().getMaxHealth(), getUnit().getOwner());
+            cellUIData.addUnitData(getUnit().getUnitType(), getUnit().getHealth(), getUnit().getMaxHealth(), getUnit().getOwner().getId());
         }
         return cellUIData;
     }

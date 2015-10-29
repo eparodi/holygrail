@@ -47,7 +47,7 @@ public abstract class Terrain {
         Integer baseApCost=baseCost;
         while (baseApCost >0){
             totalApCost++;
-            baseApCost -= Math.min(unitSpeed, maxSpeed)*(unitEndurance - enduranceCost);
+            baseApCost -= Math.min(unitSpeed, maxSpeed)*Math.max(1, (unitEndurance - enduranceCost));
         }
 
         return totalApCost;

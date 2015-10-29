@@ -26,7 +26,7 @@ public class GameTest {
         game.attemptBuildUnit(UnitType.ARCHER);
         game.actionAttempt(new Location(2, Math.round(20 / 2)));
 
-        assertTrue(game.getSelectedCell().getUnit().getUnitType().equals(UnitType.LANCER));
+        assertTrue(game.getSelectedLocation().getUnit().getUnitType().equals(UnitType.LANCER));
     }
 
     @Test
@@ -34,7 +34,7 @@ public class GameTest {
     public void test2() {
         game.attemptBuildUnit(UnitType.LANCER);
 
-        assertTrue(game.getSelectedCell().hasUnit());
+        assertTrue(game.getSelectedLocation().hasUnit());
     }
 
     @Test
@@ -44,7 +44,7 @@ public class GameTest {
         game.attemptBuildUnit(UnitType.LANCER);
         game.actionAttempt(new Location(2, 10));
 
-        assertTrue(game.getSelectedCell().hasUnit());
+        assertTrue(game.getSelectedLocation().hasUnit());
 
 
     }

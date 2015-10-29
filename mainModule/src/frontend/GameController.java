@@ -1,14 +1,20 @@
 package frontend;
 
 import backend.Game;
+import backend.building.Building;
+import backend.building.BuildingType;
+import backend.building.Income;
 import backend.exceptions.*;
+import backend.units.Unit;
 import backend.units.UnitType;
+import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.terrain.Terrain;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class GameController {
@@ -74,18 +80,18 @@ public class GameController {
             }
 
             if (cellUIData.getBuildingType() != null) {
-                drawBuilding(graphicsContext, cellUIData.getBuildingType(), cellUIData.getLocation(), cellUIData.getOwner());
+                drawBuilding(graphicsContext, cellUIData.getBuildingType(), cellUIData.getLocation(), cellUIData.getOwnerID());
             }
             if (cellUIData.getUnitType() != null) {
-                drawUnit(graphicsContext, cellUIData.getUnitType(), cellUIData.getLocation(), cellUIData.getOwner());
+                drawUnit(graphicsContext, cellUIData.getUnitType(), cellUIData.getLocation(), cellUIData.getOwnerID());
                 drawLife(graphicsContext, cellUIData.getHealth(), cellUIData.getMaxHealth(), cellUIData.getLocation());
             }
         }
     }
 
-    private void drawBuilding(GraphicsContext graphicsContext, String buildingType, Location location, Player owner) {
+    private void drawBuilding(GraphicsContext graphicsContext, BuildingType buildingType, Location location, Integer ownerID) {
         Image image = getBuildingImage(buildingType);
-        Image flag = getFlagImage(owner);
+        Image flag = getFlagImage(ownerID);
         Location drawLocation = gridLocationToDrawLocation(location);
         graphicsContext.drawImage(image, drawLocation.getX(), drawLocation.getY());
         graphicsContext.drawImage(flag, drawLocation.getX(), drawLocation.getY());
@@ -103,9 +109,9 @@ public class GameController {
         graphicsContext.drawImage(image, drawLocation.getX(), drawLocation.getY());
     }
 
-    private void drawUnit(GraphicsContext graphicsContext, UnitType unitType, Location location, Player owner) {
+    private void drawUnit(GraphicsContext graphicsContext, UnitType unitType, Location location, Integer ownerID) {
         Image image = getUnitImage(unitType);
-        Image ownerMarker = getOwnerMarker(owner);
+        Image ownerMarker = getOwnerMarker(ownerID);
         Location drawLocation = gridLocationToDrawLocation(location);
         graphicsContext.drawImage(ownerMarker, drawLocation.getX(), drawLocation.getY());
         graphicsContext.drawImage(image, drawLocation.getX(), drawLocation.getY());
@@ -127,12 +133,16 @@ public class GameController {
         return drawLocation;
     }
 
-    public Image getBuildingImage(String buildingType) {
+    public Image getBuildingImage(BuildingType buildingType) {
         if (buildingType == null) throw new NullArgumentException("Null building type in image");
-        if (buildingType.equals("Castle"))
-            return new Image("file:mainModule/resources/Castle.png", cellWidth, cellHeight, false, false);
-        if (buildingType.equals("Mine"))
-            return new Image("file:mainModule/resources/mine.png", cellWidth, cellHeight, false, false);
+
+        switch (buildingType){
+            case MINE:
+                return new Image("file:mainModule/resources/mine.png", cellWidth, cellHeight, false, false);
+            case CASTLE:
+                return new Image("file:mainModule/resources/Castle.png", cellWidth, cellHeight, false, false);
+
+        }
         throw new RuntimeException("No image for that building type: " + buildingType);
     }
 
@@ -190,31 +200,44 @@ public class GameController {
         throw new NoSuchLifeImageException("No image to represent health.");
     }
 
-    public Image getOwnerMarker(Player owner) {
+    public Image getOwnerMarker(Integer ownerID) {
         //TODO retorno null asi no mas?
-        if (owner == null) {
+        if (ownerID == null) {
             return null;
         }
-        if (owner.getId().equals(1)) {
+        if (ownerID == 1) {
             return new Image("file:mainModule/resources/blueMarker.png", cellWidth, cellHeight, false, false);
-        } else if (owner.getId().equals(2)) {
+        } else if (ownerID == 2) {
             return new Image("file:mainModule/resources/redMarker.png", cellWidth, cellHeight, false, false);
         } else {
-            throw new NoSuchPlayerException("The player " + owner.getId() + " does not exist.");
+            throw new NoSuchPlayerException("The player " + ownerID + " does not exist.");
         }
     }
 
-    public Image getFlagImage(Player owner) {
+    public Image getFlagImage(Integer ownerID) {
         //TODO retorno null asi no mas? (es decir que no quiero imprimir ninguna imagen)
-        if (owner == null) {
+        if (ownerID == null) {
             return null;
         }
-        if (owner.getId().equals(1)) {
+        if (ownerID==1) {
             return new Image("file:mainModule/resources/blueFlag.png", cellWidth, cellHeight, false, false);
-        } else if (owner.getId().equals(2)) {
+        } else if (ownerID==2) {
             return new Image("file:mainModule/resources/redFlag.png", cellWidth, cellHeight, false, false);
         } else {
-            throw new NoSuchPlayerException("The player " + owner.getId() + " does not exist.");
+            throw new NoSuchPlayerException("The player " + ownerID + " does not exist.");
         }
     }
+
+
+    public Collection<EntityUI> getCellUIData(Collection<Cell> cells, Collection<Unit> units
+            , Collection<Building> buildings) {
+        Collection<CellUIData> UIcells = new ArrayList<>();
+        for (CellUIData cell: cells){
+            if (cell.getLocation().equals(selectedCell.getLocation())){
+                cell.selectCell();
+            }
+        }
+        return cells;
+    }
+
 }

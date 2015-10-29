@@ -1,18 +1,24 @@
 package frontend;
 
+import backend.building.BuildingType;
+import backend.building.Income;
 import backend.units.UnitType;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.terrain.Terrain;
 
-
+@Deprecated
 public class CellUIData {
     private Location location;
+
+
     private Terrain terrain;
-    private Integer health, maxHealth;
+
+    private Integer health, maxHealth;//health/
     private UnitType unitType;
-    private String buildingType;
-    private Player owner;
+    private BuildingType buildingType;
+    private Integer ownerID;
+
     private boolean isSelected;
 
     public UnitType getUnitType() {
@@ -35,11 +41,11 @@ public class CellUIData {
         return maxHealth;
     }
 
-    public Player getOwner() {
-        return owner;
+    public Integer getOwnerID() {
+        return ownerID;
     }
 
-    public String getBuildingType() {
+    public BuildingType getBuildingType() {
         return buildingType;
     }
 
@@ -47,16 +53,16 @@ public class CellUIData {
         this.location = location;
         this.terrain = terrain;
     }
-    public void addBuildingData(String buildingType, Player owner){
+    public void addBuildingData(BuildingType buildingType, Integer ownerID){
         this.buildingType = buildingType;
-        this.owner = owner;
+        this.ownerID = ownerID;
     }
 
-    public void addUnitData(UnitType unitType, Integer health, Integer maxHealth, Player owner) {
+    public void addUnitData(UnitType unitType, Integer health, Integer maxHealth, Integer ownerID) {
         this.unitType = unitType;
         this.health = health;
         this.maxHealth = maxHealth;
-        this.owner = owner;
+        this.ownerID = ownerID;
 
     }
 

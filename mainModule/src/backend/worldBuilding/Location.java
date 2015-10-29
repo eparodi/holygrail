@@ -3,7 +3,9 @@
 package backend.worldBuilding;
 
 
-public class Location {
+import java.io.Serializable;
+
+public class Location implements Serializable {
     private Integer x;
     private Integer y;
 
