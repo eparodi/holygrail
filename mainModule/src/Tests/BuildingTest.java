@@ -1,17 +1,5 @@
 package Tests;
 
-import backend.building.Castle;
-import backend.units.Unit;
-import backend.units.UnitType;
-import backend.worldBuilding.Location;
-import backend.worldBuilding.Player;
-import backend.worldBuilding.Terrain;
-import backend.worldBuilding.World;
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.*;
-
 public class BuildingTest {
 //    Player p1;
 //    Player p2;

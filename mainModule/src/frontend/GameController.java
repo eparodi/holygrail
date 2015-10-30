@@ -3,14 +3,20 @@ package frontend;
 import backend.Game;
 import backend.building.Building;
 import backend.building.BuildingType;
-import backend.building.Income;
+import backend.building.Castle;
 import backend.exceptions.*;
+import backend.terrain.Hill;
 import backend.units.Unit;
 import backend.units.UnitType;
 import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
-import backend.worldBuilding.Player;
 import backend.terrain.Terrain;
+import frontend.buildings.CastleUI;
+import frontend.buildings.MineUI;
+import frontend.terrain.*;
+import frontend.units.ArcherUI;
+import frontend.units.LancerUI;
+import frontend.units.RiderUI;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -23,13 +29,15 @@ public class GameController {
     Integer worldHeight;
     Integer worldWidth;
 
+    Game game;
     //    /**
 //     * @param cellHeight    The height of the cell in pixels
 //     * @param cellWidth     The width of the cell in pixels
 //     */
-    public GameController(Integer worldHeight, Integer worldWidth, GraphicsContext graphicsContext) {
-        this.worldHeight = worldHeight;
-        this.worldWidth = worldWidth;
+    public GameController(GraphicsContext graphicsContext, Game game) {
+        this.game = game;
+        this.worldHeight = game.getWorldHeight();
+        this.worldWidth = game.getWorldWidth();
         cellWidth = (int) (graphicsContext.getCanvas().getWidth() / (worldWidth + 0.417d));
         cellHeight = (int) (graphicsContext.getCanvas().getHeight() / (worldHeight * 0.80));
         System.out.println(cellHeight + "," + cellWidth);
@@ -65,26 +73,49 @@ public class GameController {
             game.actionAttempt(gridLocation);
     }
 
-    public void updateGraphics(GraphicsContext graphicsContext, Collection<CellUIData> cellUIDataCollection) {
+    public void updateGraphics(GraphicsContext graphicsContext) {
         //clear the canvas
         graphicsContext.clearRect(0, 0, graphicsContext.getCanvas().getWidth(), graphicsContext.getCanvas().getHeight());
-        drawCells(graphicsContext, cellUIDataCollection);
+        drawCells(graphicsContext);
+
     }
 
-    public void drawCells(GraphicsContext graphicsContext, Collection<CellUIData> cellUIDataCollection) {
-        for (CellUIData cellUIData : cellUIDataCollection) {
-            drawTerrain(graphicsContext, cellUIData.getTerrain(), cellUIData.getLocation());
+    public void drawCells(GraphicsContext graphicsContext) {
+        for (Cell cell: game.getCells()){
+            switch (cell.getTerrain().getTerrainType()){
+                case WATER:
+                    new WaterUI(gridLocationToDrawLocation(cell.getLocation()),cellHeight,cellWidth).drawMe(graphicsContext);
+                case GRASS:
+                    new GrassUI(gridLocationToDrawLocation(cell.getLocation()),cellHeight,cellWidth).drawMe(graphicsContext);
+                case HILL:
+                    new HillUI(gridLocationToDrawLocation(cell.getLocation()),cellHeight,cellWidth).drawMe(graphicsContext);
+                case MOUNTAIN:
+                    new MountainUI(gridLocationToDrawLocation(cell.getLocation()),cellHeight,cellWidth).drawMe(graphicsContext);
+                case FOREST:
+                    new ForestUI(gridLocationToDrawLocation(cell.getLocation()),cellHeight,cellWidth).drawMe(graphicsContext);
 
-            if (cellUIData.isSelected()) {
-                drawCellSelection(graphicsContext, cellUIData.getLocation());
             }
+        }
 
-            if (cellUIData.getBuildingType() != null) {
-                drawBuilding(graphicsContext, cellUIData.getBuildingType(), cellUIData.getLocation(), cellUIData.getOwnerID());
+        for(Building building: game.getBuildings()){
+            switch (building.getBuildingType()){
+                case MINE:
+                    new MineUI(gridLocationToDrawLocation(building.getLocation()),cellHeight,cellWidth,building.getOwner())
+                            .drawMe(graphicsContext);
+                case CASTLE:
+                    new CastleUI(gridLocationToDrawLocation(building.getLocation()),cellHeight,cellWidth,building.getOwner())
+                            .drawMe(graphicsContext);
             }
-            if (cellUIData.getUnitType() != null) {
-                drawUnit(graphicsContext, cellUIData.getUnitType(), cellUIData.getLocation(), cellUIData.getOwnerID());
-                drawLife(graphicsContext, cellUIData.getHealth(), cellUIData.getMaxHealth(), cellUIData.getLocation());
+        }
+
+        for(Unit unit: game.getUnits()){
+            switch (unit.getUnitType()){
+                case ARCHER:
+                    new ArcherUI(gridLocationToDrawLocation(unit.getLocation()),cellHeight,cellWidth,unit.getOwner().getId());
+                case RIDER:
+                    new RiderUI(gridLocationToDrawLocation(unit.getLocation()),cellHeight,cellWidth,unit.getOwner().getId());
+                case LANCER:
+                    new LancerUI(gridLocationToDrawLocation(unit.getLocation()),cellHeight,cellWidth,unit.getOwner().getId());
             }
         }
     }
@@ -229,15 +260,5 @@ public class GameController {
     }
 
 
-    public Collection<EntityUI> getCellUIData(Collection<Cell> cells, Collection<Unit> units
-            , Collection<Building> buildings) {
-        Collection<CellUIData> UIcells = new ArrayList<>();
-        for (CellUIData cell: cells){
-            if (cell.getLocation().equals(selectedCell.getLocation())){
-                cell.selectCell();
-            }
-        }
-        return cells;
-    }
 
 }

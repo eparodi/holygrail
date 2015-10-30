@@ -39,6 +39,8 @@ public class Main extends Application {
 
         Canvas canvas = new Canvas(width-100,height-100);
         final Game game = new Game(14,10,"Jorge","Marcos");
+
+
         //END OF MODIFIABLE, DONT TOUCH THE REST
 
         final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
@@ -65,28 +67,28 @@ public class Main extends Application {
 
 
         root.getChildren().add(canvas);
+        final GameController gameController = new GameController(graphicsContext,game);
 
-        final GameController gameController = new GameController(game.getWorldHeight(),game.getWorldWidth(),graphicsContext);
 
-        gameController.updateGraphics(graphicsContext, game.getCellUIData());
+        gameController.updateGraphics(graphicsContext);
         canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
                 gameController.attemptAction(game, e.getX(), e.getY());
-                gameController.updateGraphics(graphicsContext, game.getCellUIData());
+                gameController.updateGraphics(graphicsContext);
             }
         });
 
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent key) {
                 if (key.getCode().equals(KeyCode.A)) {
-                    game.attemptBuildUnit(UnitType.ARCHER);
+                    game.attemptBuildArcher();
                 }
                 if (key.getCode().equals(KeyCode.L)) {
-                    game.attemptBuildUnit(UnitType.LANCER);
+                    game.attemptBuildLancer();
                 }
                 if (key.getCode().equals(KeyCode.R)) {
-                    game.attemptBuildUnit(UnitType.RIDER);
+                    game.attemptBuildRider();
                 }
                 if (key.getCode().equals(KeyCode.D)) {
                     game.pickItemAttempt();
@@ -94,7 +96,7 @@ public class Main extends Application {
 
                 if (key.getCode().equals(KeyCode.SPACE))
                     game.endTurn();
-                gameController.updateGraphics(graphicsContext, game.getCellUIData());
+                gameController.updateGraphics(graphicsContext);
             }
         });
 

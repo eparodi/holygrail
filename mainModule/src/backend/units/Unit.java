@@ -1,33 +1,30 @@
 package backend.units;
 
 import backend.*;
+import backend.exceptions.NullArgumentException;
 import backend.exceptions.NullLocationException;
 import backend.Defense;
 import backend.items.Item;
 import backend.items.ItemType;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
-import backend.worldBuilding.Terrain;
+import backend.terrain.Terrain;
 import backend.worldBuilding.World;
 
 public class Unit {
+    public static final Integer ATTACK_AP_COST = 2;
+    public static final Integer DIG_AP_COST = 1;
     static Integer nextId = 0;
 
     private Player owner;
     private Integer id;
     private UnitType unitType;
-    private Terrain preferredTerrain;
 
     private World world;
     private Location location;
 
     private Attack baseAttack = null;
     private Defense defense = null;
-
-    /*
-    private Extra extra = null;
-    private Rune rune = null;
-    */
 
     private Item extra = null;
     private Item rune = null;
@@ -37,9 +34,12 @@ public class Unit {
     private Integer actionPoints;
     private Integer maxActionPoints;
     private Integer range;
+    private Integer endurance;
+    private Integer speed;
 
-    public Unit(UnitType unitType, Attack baseAttack, Defense defense, Integer maxHealth, Integer maxActionPoints, Integer range,
-                World world, Terrain preferredTerrain, Location location, Player owner) {
+
+    public Unit(UnitType unitType, Attack baseAttack, Defense defense, Integer maxHealth, Integer maxActionPoints,
+                Integer range, World world, Location location, Player owner, Integer endurance, Integer speed) {
         this.unitType = unitType;
         this.baseAttack = baseAttack;
         this.defense = defense;
@@ -47,12 +47,13 @@ public class Unit {
         this.maxActionPoints = maxActionPoints;
         this.range = range;
         this.world = world;
-        this.preferredTerrain = preferredTerrain;
         this.health = maxHealth;
         this.actionPoints = maxActionPoints;
         this.location = location;
         this.id = getNextId();
         this.owner = owner;
+        this.endurance = endurance;
+        this.speed = speed;
     }
 
 
@@ -111,9 +112,10 @@ public class Unit {
         System.out.println("attackerTerrain = " + getCurrentTerrain());
         System.out.println("baseAttack = " + baseAttack);
         System.out.println("baseAttack.getModifiedAttack(calcTerrainMod(attackerTerrain)) = "
-                + baseAttack.getModifiedAttack(calcTerrainMod(getCurrentTerrain()), rune));
-        return baseAttack.getModifiedAttack(calcTerrainMod(getCurrentTerrain()), rune);
+                + baseAttack.getModifiedAttack(getCurrentTerrain(), rune));
+        return baseAttack.getModifiedAttack(getCurrentTerrain(), rune);
     }
+
 
     public Terrain getCurrentTerrain() {
         return world.getTerrainAt(location);
@@ -123,9 +125,15 @@ public class Unit {
         return id;
     }
 
-    //TODO (ToAsk) Unit should verify if he can move or is game that will verify (I think Unit should do it)
-    public void move(Location finalLocation) {
+    public boolean move(Location finalLocation) {
+        if(finalLocation == null) throw new NullArgumentException("null final position");
+        if(world.isUnitOnLocation(finalLocation)) return false;
+        Integer cost =world.getTerrainAt(finalLocation).getApCost(speed,endurance);
+        if(cost > actionPoints) return false;
+
+        spendAP(cost);
         this.location = finalLocation;
+        return true;
     }
 
     /**
@@ -144,11 +152,34 @@ public class Unit {
      * @param attack Attack to receive.
      */
     public void receiveDamage(Attack attack) {
-        System.out.println("calcTerrainMod(defendersTerrain) = " + calcTerrainMod(getCurrentTerrain()));
-        Integer damageDealt = defense.getDamageDealt(attack, calcTerrainMod(getCurrentTerrain()));
-        health -= damageDealt;
+        Integer damageDealt = defense.getDamageDealt(attack, getCurrentTerrain());
         System.out.println("damageDealt = " + damageDealt);
         System.out.println("health = " + health);
+        health -= damageDealt;
+        if(isDed()) world.removeUnit(this);
+    }
+    /**
+     * Returns true if a Unit is in range to attack another Unit.
+     *
+     * @param unit defending Unit.
+     * @return true if the Distance between two Units is less or equals to the attacking range of the attacker Unit.
+     */
+    public boolean isInRange(Unit unit) {
+        return unit.getLocation().distance(unit.getLocation()) <= range;
+    }
+
+    public boolean attack(Unit unit) {
+        if(actionPoints >= ATTACK_AP_COST){
+            if(isInRange(unit)) unit.receiveDamage(this.getAttack());
+            unit.counterAttack(this);
+            spendAP(ATTACK_AP_COST);
+            return true;
+        }
+        return false;
+    }
+
+    public void counterAttack(Unit unit){
+        if(isInRange(unit)) unit.receiveDamage(this.getAttack());
     }
 
     /**
@@ -158,16 +189,6 @@ public class Unit {
      * @return Double value with the Terrain modifier.
      */
     //TODO implement new terrain modifier method
-    @Deprecated
-    public Double calcTerrainMod(Terrain targetTerrain) {
-        // This will have to be extended to use a list of terrains?
-        // Maybe a ranking of prefered terrains, with the first one getting the
-        // biggest mod & viceversa
-        Double mod = 1D;
-        if (targetTerrain.equals(preferredTerrain))
-            mod = 1.5D;
-        return mod;
-    }
 
     /**
      * Picks and item. If the unit already has an item in the slot, the item is dropped and returned.
@@ -251,5 +272,19 @@ public class Unit {
         nextId++;
         return aux;
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Unit unit = (Unit) o;
+
+        return unit.getId().equals( this.getId());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getId().hashCode();
+    }
 }

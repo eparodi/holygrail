@@ -16,6 +16,7 @@ public abstract class UnitUI extends EntityUI {
         if (cellHeight == null) throw new NullArgumentException("null cellHeight");
         if (cellWidth== null) throw new NullArgumentException("null cellWidth");
 
+        //TODO: Divide into classes
         switch (ownerID) {
             case 1:
                 markerImage = new Image("file:mainModule/resources/blueMarker.png", cellWidth, cellHeight, false, false);

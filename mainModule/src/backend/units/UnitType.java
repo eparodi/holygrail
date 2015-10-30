@@ -1,5 +1,5 @@
 package backend.units;
 
 public enum UnitType {
-    ARCHER, LANCER, RIDER
+    ARCHER , LANCER , RIDER
 }

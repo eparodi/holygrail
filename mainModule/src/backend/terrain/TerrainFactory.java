@@ -1,5 +1,5 @@
 package backend.terrain;
-
+@Deprecated
 public abstract class TerrainFactory {
     public static Forest buildForestTerrain(){
         return new Forest();

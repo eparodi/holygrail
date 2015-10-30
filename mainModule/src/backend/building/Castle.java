@@ -1,5 +1,6 @@
 package backend.building;
 
+import backend.units.Archer;
 import backend.units.Unit;
 import backend.units.UnitFactory;
 import backend.units.UnitType;
@@ -14,22 +15,7 @@ public class Castle extends ProductionBuilding {
      *
      * @param owner Owner of the Castle.
      */
-    public Castle(Player owner) {
-        super(BuildingType.CASTLE,owner,new CastleIncome());
+    public Castle(Player owner, Location location) {
+        super(BuildingType.CASTLE,owner,new CastleIncome(),location);
     }
-
-    /**
-     * Creates a Unit.
-     *
-     * @param unitType Type of the Unit.
-     * @param terrain Current terrain of the Castle Cell.
-     * @param location Location of the Unit.
-     * @param player Owner of the Unit.
-     * @return A new Unit.
-     */
-    @Deprecated
-    public Unit buildUnit(UnitType unitType, Terrain terrain, Location location, Player player) {
-        return UnitFactory.buildUnit(unitType, terrain, location, player);
-    }
-
 }

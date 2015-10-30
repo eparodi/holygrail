@@ -1,15 +1,14 @@
 package backend.building;
 
+import backend.worldBuilding.Location;
+
 /**
  * This class represents the logic form of a Mine.
  */
 public class Mine extends Building{
 
-    /**
-     * Creates a Mine object. Its type is "Mine".
-     * @param gold The gold per turn that this Mine object generates.
-     */
-    public Mine(){
-        super(BuildingType.MINE, null, new MineIncome());
+
+    public Mine(Location location){
+        super(BuildingType.MINE, null, new MineIncome(),location);
     }
 }
