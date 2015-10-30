@@ -33,13 +33,19 @@ public class World implements Serializable {
 
 
         //A PARTIR DE ACA SE CREA EL MAP DE TESTEO:
-        Location player1Castle = new Location(1, Math.round(worldHeight / 2));
-        Location player2Castle = new Location(worldWidth - 2, Math.round(worldHeight / 2));
-        Location mineLocation = new Location(Math.round(worldWidth / 2), worldHeight - 1);
+        Location player1Castle = new Location(2, 2);
+        Location player2Castle = new Location(14, 9);
+        Location mineLocation = new Location(1,8);
+        Location mineLocation2 = new Location(14,0);
+        Location mineLocation3 = new Location(6,3);
+        Location mineLocation4 = new Location(10,6);
 
         buildings.add(new Castle(player1, player1Castle));
         buildings.add(new Castle(player2, player2Castle));
         buildings.add(new Mine(mineLocation));
+        buildings.add(new Mine(mineLocation2));
+        buildings.add(new Mine(mineLocation3));
+        buildings.add(new Mine(mineLocation4));
 
         ArrayList<Cell> holyGrailPossibleCells = new ArrayList<Cell>();
 
@@ -225,17 +231,24 @@ public class World implements Serializable {
 
     //TODO: change, it's only for testing terrains
     public Terrain loadTerrain(Location location) {
-        if (location.getX() <= 2 && location.getY() <= 4 && location.getY() > 2) {
-            return new Forest();
-        }
-        if (location.getX() > 6 && location.getY() <= 4 && location.getY() >= 2) {
-            return new Hill();
-        }
-        if (location.getX() > 7 && location.getY() <= 2) {
+
+        if (location.getX() >= 5 && location.getX() < 10 && location.getY() > 3 && location.getY() <= 8
+                || (location.getY() == 3 && (location.getX() == 8 || location.getX() == 9))
+                || (location.getY() == 2 && (location.getX()==9 || location.getX()==10))) {
             return new Water();
         }
-        if (location.getX() <= 2 && location.getY() > 4) {
-            return new Grass();
+        if ((location.getY()<4 && location.getX()>8)) {
+            return new Forest();
+        }
+        if ((location.getX() == 0 && location.getY() <= 7) || (location.getX() < 6 && location.getY() == 0)
+                || (location.getX() == 1 && location.getY() < 3) || (location.getX()==1 &&(location.getY()==6 || location.getY()==7))
+                || (location.getX()>10 && location.getY()==10)|| (location.getX()==15 && location.getY()>3)
+                || (location.getX()>=10 && location.getY()==9 && location.getX()!=14 && location.getX()!=13)) {
+            return new Mountain();
+        }
+        if ((location.getX() < 5 && location.getX()>=0 &&  location.getY() <= 10 && location.getY() > 5)
+                || (location.getX()==2 && location.getY()==6) || (location.getX()==2 && location.getY()==7)) {
+            return new Hill();
         }
         return new Grass();
     }

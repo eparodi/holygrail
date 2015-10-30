@@ -37,7 +37,7 @@ public class Main extends Application {
 
     public void start(Stage primaryStage) throws Exception{
 
-        final Game game = new Game(14,10,"Jorge","Sergio");
+        final Game game = new Game(16,11,"Jorge","Sergio");
         //END OF MODIFIABLE, DONT TOUCH THE REST
 
 
@@ -83,7 +83,7 @@ public class Main extends Application {
         });
         menuItemLoadGame.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
-                gameController.loadGame("defaultGame");
+                gameController.loadGame("default");
                 gameController.updateGraphics(graphicsContext);
             }
         });
@@ -92,13 +92,21 @@ public class Main extends Application {
         MenuItem menuItemGame1 = new MenuItem("Classic");
         menuItemGame1.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
-                gameController.loadGame("game1");
+                gameController.loadGame("mainModule/src/saves/game1");
                 gameController.updateGraphics(graphicsContext);
             }
         });
 
+        MenuItem menuItemGame2 = new MenuItem("Battle for the lake");
+        menuItemGame2.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+                gameController.loadGame("mainModule/src/saves/game2");
+                gameController.updateGraphics(graphicsContext);
+            }
+        });
 
-        mainMenu.getMenus().addAll(menuFile);
+        mainMenu.getMenus().addAll(menuFile,menuStartNewGame);
+        menuStartNewGame.getItems().addAll(menuItemGame1,menuItemGame2);
         menuFile.getItems().addAll(menuItemExit, menuItemLoadGame, menuItemSaveGame);
         root.getChildren().add(mainMenu);
 
@@ -121,7 +129,5 @@ public class Main extends Application {
 
         return scene;
     }
-
-
 
 }
