@@ -15,25 +15,25 @@ public class ProductionBuilding extends Building implements Serializable {
     }
 
     public void buildLancer(World world){
-        owner.pay(UNIT_COST);
-        world.addUnit(new Lancer(world,getLocation(),owner));
+        getOwner().pay(UNIT_COST);
+        world.addUnit(new Lancer(world,getLocation(), getOwner()));
     }
 
     public boolean canBuild(World world) {
         if(world.isUnitOnLocation(getLocation())){
             return false;
         }
-        if(!owner.canPay(UNIT_COST)){
+        if(! getOwner().canPay(UNIT_COST)){
             return false;
         }
         return true;
     }
     public void buildArcher(World world){
-        owner.pay(UNIT_COST);
-        world.addUnit(new Archer(world,getLocation(),owner));
+        getOwner().pay(UNIT_COST);
+        world.addUnit(new Archer(world,getLocation(), getOwner()));
     }
     public void buildRider(World world){
-            owner.pay(UNIT_COST);
-            world.addUnit(new Rider(world,getLocation(),owner));
+        getOwner().pay(UNIT_COST);
+            world.addUnit(new Rider(world,getLocation(), getOwner()));
     }
 }

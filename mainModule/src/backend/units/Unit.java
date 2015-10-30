@@ -15,7 +15,7 @@ import backend.worldBuilding.Cell;
 import java.io.Serializable;
 import java.util.LinkedList;
 
-public class Unit extends Entity implements Serializable {
+public class Unit extends OwneableEntitty implements Serializable {
     public static final Integer ATTACK_AP_COST = 2;
     public static final Integer DIG_AP_COST = 1;
     static Integer nextId = 0;
@@ -44,7 +44,7 @@ public class Unit extends Entity implements Serializable {
 
     public Unit(UnitType unitType, Attack baseAttack, Defense defense, Integer maxHealth, Integer maxActionPoints,
                 Integer range, World world, Location location, Player owner, Integer endurance, Integer speed) {
-        super(location);
+        super(location,owner);
         this.unitType = unitType;
         this.baseAttack = baseAttack;
         this.defense = defense;
@@ -54,7 +54,6 @@ public class Unit extends Entity implements Serializable {
         this.world = world;
         this.health = maxHealth;
         this.actionPoints = maxActionPoints;
-        //this.location = location;
         this.id = getNextId();
         this.owner = owner;
         this.endurance = endurance;
@@ -235,7 +234,6 @@ public class Unit extends Entity implements Serializable {
             currentCell.addItem(i);
         }
     }
-
 
     /**
      * Refills the Unit Action Points.

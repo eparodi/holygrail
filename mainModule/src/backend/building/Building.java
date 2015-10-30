@@ -1,6 +1,7 @@
 package backend.building;
 
 import backend.Entity;
+import backend.OwneableEntitty;
 import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
@@ -13,9 +14,8 @@ import java.rmi.registry.LocateRegistry;
  * the owner.
  */
 
-public abstract class Building extends Entity implements Serializable{
+public abstract class Building extends OwneableEntitty implements Serializable{
     BuildingType buildingType;
-    Player owner = null;
     Income income;
 
     @Override
@@ -24,9 +24,8 @@ public abstract class Building extends Entity implements Serializable{
     }
 
     public Building(BuildingType buildingType, Player owner, Income income, Location location){
-        super(location);
+        super(location,owner);
         this.buildingType = buildingType;
-        this.owner = owner;
         this.income = income;
     }
 
@@ -36,22 +35,6 @@ public abstract class Building extends Entity implements Serializable{
      */
     public Integer getIncome(){
         return income.giveIncome();
-    }
-
-    /**
-     * Returns the owner of the building.
-     * @return The player who owns the Building.
-     */
-    public Player getOwner() {
-        return owner;
-    }
-
-    /**
-     * Sets the owner of the building.
-     * @param owner The Player who will own the building.
-     */
-    public void setOwner(Player owner) {
-        this.owner = owner;
     }
 
     /**
@@ -67,6 +50,6 @@ public abstract class Building extends Entity implements Serializable{
      * @return the String representation of the object.
      */
     public String toString(){
-        return buildingType + " from " + owner + "; ";
+        return buildingType + " from " + getOwner() + "; ";
     }
 }
