@@ -48,7 +48,7 @@ public class World {
         Mine mine = new Mine();
         getCellAt(mineLocation).addBuilding(mine);
 
-        List<Cell> holyGrailPossibleCells = new ArrayList<>();
+        holyGrailPossibleCells = new ArrayList<>();
 
         for ( Cell cell : cells ){
             if ( cell.canRecieveItem()){
@@ -168,7 +168,6 @@ public class World {
      * @param attacker attacking Unit.
      * @param defender defending Unit.
      */
-    @Deprecated
     private void attack(Unit attacker, Unit defender) {
             Attack attack = attacker.getAttack();
             defender.receiveDamage(attack);
@@ -248,14 +247,27 @@ public class World {
         return Math.max(Math.max(deltaX, deltaY), deltaZ);
     }
 
-    @Deprecated
     /** TODO: Est� bien que este m�todo lo tenga el world, o tal vez cada Cell deber�a tener su APCost, y calcularlo segun el terrain?
      * Returns the Terrain action points cost used to move a unit through it.
      *
      * @param terrain terrain to ask cost.
      * @return Integer value of the action points cost.
      */
+    @Deprecated
     public Integer getTerrainAPCost(Terrain terrain) {
+        switch (terrain.getTerrainType()) {
+            case GRASS:
+                return 1;
+            case HILL:
+                return 3;
+            case FOREST:
+                return 2;
+            //TODO (ToAsk) esta bien si water tiene costo alto o hacemos celdas no pisables?
+            case WATER:
+                return 20;
+            case MOUNTAIN:
+                return 20;
+        }
         throw new InvalidTerrainException(terrain + " does not have a cost");
     }
 
@@ -272,7 +284,7 @@ public class World {
         throw new CellOutOfWorldException("No cell exists at " + location.toString());
     }
 
-    /**
+    /**TODO: Para qu� usamos esto?
      * Returns a Collection with all the Units in the World.
      *
      * @return a Collection of all Units.
@@ -394,7 +406,7 @@ public class World {
      */
     private Collection<Cell> generateCellCollection() {
 
-        Collection<Cell> cellCollection = new ArrayList<>();
+        Collection<Cell> cellCollection = new ArrayList<Cell>();
         Cell cell;
         Location cellLocation;
 
