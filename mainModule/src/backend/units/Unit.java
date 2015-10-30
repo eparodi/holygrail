@@ -286,4 +286,14 @@ public class Unit implements Serializable {
     public int hashCode() {
         return this.getId().hashCode();
     }
+
+    public boolean hasHolyGrail(){
+        for ( Item i : itemSlots ){
+            if ( i.isHolyGrail() ){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

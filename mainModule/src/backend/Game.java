@@ -46,7 +46,7 @@ public class Game implements Serializable {
     }
 
     public void startNewGame() {
-        logQueue = new ArrayDeque<String>();
+        logQueue = new ArrayDeque<>();
         activePlayer = this.player1;
         selectPlayerCastle(activePlayer);
     }
@@ -80,12 +80,12 @@ public class Game implements Serializable {
                 //No unit and building means unit tries to capture
                 //getOwnerID() can be null if its a neutral mine
                 //TODO: add building.hasOwner()
-                if (world.isBuildingOnLocation(clickedLocation) &&
-                        (world.getBuildingAt(clickedLocation).getOwner() == null ||
-                                !world.getBuildingAt(clickedLocation).getOwner().equals(activePlayer))) {
-                    captureAttempt(selectedUnit, clickedLocation);
-                    //TODO: CODIGO REPETIDO
-                } else if (selectedUnit.getOwner().equals(activePlayer)) { //Fixes bug that can move opponents units
+                if ( world.isBuildingOnLocation(clickedLocation)){
+                    Building currentBuilding = world.getBuildingAt(clickedLocation);
+                    if ( currentBuilding.getOwner() == null || !(currentBuilding.getOwner().equals(activePlayer))){
+                        captureAttempt(selectedUnit,clickedLocation);
+                    }
+                }else if (selectedUnit.getOwner().equals(activePlayer)) { //Fixes bug that can move opponents units
                     moveAttempt(selectedUnit, clickedLocation);
                 }
                 selectedLocation = clickedLocation;
@@ -222,12 +222,18 @@ public class Game implements Serializable {
         world.refillUnitsAP(getActivePlayer());
 
         getActivePlayer().addGold(world.getPlayerIncome(getActivePlayer()));
+
+        Unit selectedUnit = world.getUnitAt(world.getPlayerCastle(activePlayer).getLocation());
+        if ( selectedUnit.hasHolyGrail() ){
+
+        }
+
         activateNextPlayer();
         if (!selectPlayerCastle(getActivePlayer())) {
             addLog("The game has ended, please do not move anything");
             activateNextPlayer();
         }
-        addLog(getActivePlayer() + " has " + getActivePlayer().getGold() + " gold and recieved " +
+        addLog(getActivePlayer() + " has " + getActivePlayer().getGold() + " gold and received " +
                 world.getPlayerIncome(getActivePlayer()));
     }
 
