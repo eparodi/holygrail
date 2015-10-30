@@ -106,22 +106,6 @@ public class World implements Serializable {
         }
     }
 
-    /**
-     * Adds the item of the unit, if they exist, to the Treasure Queue of the Cell.
-     *
-     * @param unit Unit who is dropping the items.
-     * @param cell Cells where the items are being dropped.
-     */
-    private void dropItemToCell(Unit unit, Cell cell) {
-        Item item = unit.dropRune();
-        if (item != null) {
-            cell.addItem(item);
-        }
-        item = unit.dropExtra();
-        if (item != null) {
-            cell.addItem(item);
-        }
-    }
 
     public boolean isUnitOnLocation(Location selectedLocation) {
         for (Unit unit : units) {

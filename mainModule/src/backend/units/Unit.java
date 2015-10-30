@@ -10,8 +10,10 @@ import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.terrain.Terrain;
 import backend.worldBuilding.World;
+import backend.worldBuilding.Cell;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 
 public class Unit implements Serializable {
     public static final Integer ATTACK_AP_COST = 2;
@@ -113,8 +115,8 @@ public class Unit implements Serializable {
         System.out.println("attackerTerrain = " + getCurrentTerrain());
         System.out.println("baseAttack = " + baseAttack);
         System.out.println("baseAttack.getModifiedAttack(calcTerrainMod(attackerTerrain)) = "
-                + baseAttack.getModifiedAttack(getCurrentTerrain(), rune));
-        return baseAttack.getModifiedAttack(getCurrentTerrain(), rune);
+                + baseAttack.getModifiedAttack(getCurrentTerrain(), itemSlots));
+        return baseAttack.getModifiedAttack(getCurrentTerrain(), itemSlots);
     }
 
 
@@ -198,9 +200,6 @@ public class Unit implements Serializable {
 
     /**
      * Picks and item. If the unit already has an item in the slot, the item is dropped and returned.
-     *
-     * @param itemPicked The new item.
-     * @return the Item dropped.
      */
     //TODO REHACER
     public void pickItem(){

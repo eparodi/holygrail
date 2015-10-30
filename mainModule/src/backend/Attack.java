@@ -4,6 +4,7 @@ import backend.items.Item;
 import backend.terrain.Terrain;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 
 public class Attack implements Serializable {
     Integer slashDamage, piercingDamage, bluntDamage;
