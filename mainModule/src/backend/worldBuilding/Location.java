@@ -60,7 +60,6 @@ public class Location implements Serializable {
      * @return Integer value with distance between locations.
      */
     public Integer distance(Location location) {
-        // C?lculos raros para adaptar la matriz a la matriz de 3 ejes:
         Integer x1 = -this.getY();
         Integer x2 = -location.getY();
         Integer y1 = this.getY() % 2 == 0 ? this.getX() + this.getY() / 2 : this.getX() + (this.getY() + 1) / 2;

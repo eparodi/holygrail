@@ -15,7 +15,7 @@ import backend.worldBuilding.Cell;
 import java.io.Serializable;
 import java.util.LinkedList;
 
-public class Unit implements Serializable {
+public class Unit extends Entity implements Serializable {
     public static final Integer ATTACK_AP_COST = 2;
     public static final Integer DIG_AP_COST = 1;
     static Integer nextId = 0;
@@ -25,7 +25,7 @@ public class Unit implements Serializable {
     private UnitType unitType;
 
     private World world;
-    private Location location;
+    //private Location location;
 
     private Attack baseAttack = null;
     private Defense defense = null;
@@ -44,6 +44,7 @@ public class Unit implements Serializable {
 
     public Unit(UnitType unitType, Attack baseAttack, Defense defense, Integer maxHealth, Integer maxActionPoints,
                 Integer range, World world, Location location, Player owner, Integer endurance, Integer speed) {
+        super(location);
         this.unitType = unitType;
         this.baseAttack = baseAttack;
         this.defense = defense;
@@ -53,22 +54,13 @@ public class Unit implements Serializable {
         this.world = world;
         this.health = maxHealth;
         this.actionPoints = maxActionPoints;
-        this.location = location;
+        //this.location = location;
         this.id = getNextId();
         this.owner = owner;
         this.endurance = endurance;
         this.speed = speed;
     }
 
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        if (location == null) throw new NullLocationException(this.toString() + " received a null location");
-        this.location = location;
-    }
 
     public UnitType getUnitType() {
         return unitType;
@@ -94,7 +86,7 @@ public class Unit implements Serializable {
         return maxActionPoints;
     }
 
-
+    //TODO: nobody?
     public Integer getRange() {
         return range;
     }
@@ -121,7 +113,7 @@ public class Unit implements Serializable {
 
 
     public Terrain getCurrentTerrain() {
-        return world.getTerrainAt(location);
+        return world.getTerrainAt(getLocation());
     }
 
     public Integer getId() {
@@ -133,10 +125,10 @@ public class Unit implements Serializable {
         if(world.isUnitOnLocation(finalLocation)) return false;
         Integer cost =world.getTerrainAt(finalLocation).getApCost(speed,endurance);
         if(cost > actionPoints) return false;
-        if(location.distance(finalLocation) != 1) return false;
+        if(getLocation().distance(finalLocation) != 1) return false;
 
         spendAP(cost);
-        this.location = finalLocation;
+        setLocation(finalLocation);
         return true;
     }
 
@@ -173,7 +165,7 @@ public class Unit implements Serializable {
      * @return true if the Distance between two Units is less or equals to the attacking range of the attacker Unit.
      */
     public boolean isInRange(Unit unit) {
-        return unit.getLocation().distance(location) <= range;
+        return unit.getLocation().distance(getLocation()) <= range;
     }
 
     public boolean attack(Unit unit) {
@@ -209,7 +201,7 @@ public class Unit implements Serializable {
         Item droppedItem = null;
         if ( actionPoints >= DIG_AP_COST ){
             actionPoints -= DIG_AP_COST;
-            Cell dugCell = world.getCellAt(this.location);
+            Cell dugCell = world.getCellAt(getLocation());
             Item itemPicked = dugCell.getItem();
             if ( itemPicked != null){
                 System.out.println("Item: " + itemPicked.getName());
@@ -238,7 +230,7 @@ public class Unit implements Serializable {
      * Makes the Unit drop its Items.
      */
     public void dropItems() {
-        Cell currentCell = world.getCellAt(location);
+        Cell currentCell = world.getCellAt(getLocation());
         for ( Item i : itemSlots ){
             currentCell.addItem(i);
         }

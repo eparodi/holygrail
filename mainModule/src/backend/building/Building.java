@@ -1,5 +1,6 @@
 package backend.building;
 
+import backend.Entity;
 import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
@@ -12,21 +13,21 @@ import java.rmi.registry.LocateRegistry;
  * the owner.
  */
 
-public abstract class Building implements Serializable{
+public abstract class Building extends Entity implements Serializable{
     BuildingType buildingType;
     Player owner = null;
     Income income;
-    Location location;
 
-    public Location getLocation() {
-        return location;
+    @Override
+    public void setLocation(Location location){
+        throw new UnsupportedOperationException();
     }
 
     public Building(BuildingType buildingType, Player owner, Income income, Location location){
+        super(location);
         this.buildingType = buildingType;
         this.owner = owner;
         this.income = income;
-        this.location = location;
     }
 
     /**

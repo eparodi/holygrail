@@ -5,14 +5,14 @@ import backend.items.Item;
 import backend.items.ItemFactory;
 import backend.items.ItemType;
 import backend.terrain.Terrain;
-
+import backend.Entity;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 
-public class Cell implements Serializable {
-    private Location location;
+public class Cell extends Entity {
+
     private Queue<Item> treasures;
     private final static int MAX_ITEMS = 5;
     private Terrain terrain;
@@ -24,9 +24,9 @@ public class Cell implements Serializable {
      * @param terrain Terrain of the Cell.
      */
     public Cell(Location location, Terrain terrain) {
+        super(location);
         this.terrain = terrain;
-        this.location = location;
-        this.treasures = new LinkedList<Item>();
+        this.treasures = new LinkedList<>();
 
         Random random = new Random();
         int numberOfItems = random.nextInt(MAX_ITEMS);
@@ -50,7 +50,7 @@ public class Cell implements Serializable {
 
     @Override
     public int hashCode() {
-        return location.hashCode();
+        return super.getLocation().hashCode();
     }
 
     /**
@@ -68,11 +68,12 @@ public class Cell implements Serializable {
      * @return location of the cell.
      */
     public Location getLocation() {
-        return location;
+        return super.getLocation();
     }
 
     public String toString() {
-        return "Cell at " + ((location == null) ? "null location" : location.toString()) + "terrain type: " + terrain;
+       // return "Cell at " + ((location == null) ? "null location" : location.toString()) + "terrain type: " + terrain;
+        return  super.getLocation().toString() + "terrain type: " + terrain;
     }
 
     /**
@@ -103,7 +104,9 @@ public class Cell implements Serializable {
     }
 
     public boolean canRecieveItem(){
-        if(treasures.size() >= MAX_ITEMS) return false;
-        else return getTerrain().canRecieveItem();
+        if(treasures.size() >= MAX_ITEMS)
+            return false;
+        else
+            return getTerrain().canRecieveItem();
     }
 }

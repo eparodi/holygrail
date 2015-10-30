@@ -16,11 +16,11 @@ public class ProductionBuilding extends Building implements Serializable {
 
     public void buildLancer(World world){
         owner.pay(UNIT_COST);
-        world.addUnit(new Lancer(world,location,owner));
+        world.addUnit(new Lancer(world,getLocation(),owner));
     }
 
     public boolean canBuild(World world) {
-        if(world.isUnitOnLocation(location)){
+        if(world.isUnitOnLocation(getLocation())){
             return false;
         }
         if(!owner.canPay(UNIT_COST)){
@@ -30,10 +30,10 @@ public class ProductionBuilding extends Building implements Serializable {
     }
     public void buildArcher(World world){
         owner.pay(UNIT_COST);
-        world.addUnit(new Archer(world,location,owner));
+        world.addUnit(new Archer(world,getLocation(),owner));
     }
     public void buildRider(World world){
             owner.pay(UNIT_COST);
-            world.addUnit(new Rider(world,location,owner));
+            world.addUnit(new Rider(world,getLocation(),owner));
     }
 }
