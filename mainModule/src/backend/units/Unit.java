@@ -130,6 +130,7 @@ public class Unit {
         if(world.isUnitOnLocation(finalLocation)) return false;
         Integer cost =world.getTerrainAt(finalLocation).getApCost(speed,endurance);
         if(cost > actionPoints) return false;
+        if(location.distance(finalLocation) != 1) return false;
 
         spendAP(cost);
         this.location = finalLocation;

@@ -9,12 +9,13 @@ import javafx.scene.image.Image;
 
 public abstract class UnitUI extends EntityUI {
     Image markerImage;
+    Image lifeImage;
 
-    public UnitUI(Location drawLocation, Image image, Integer ownerID, Integer cellHeight, Integer cellWidth) {
+    public UnitUI(Location drawLocation, Image image, Integer ownerID, Double lifeRatio, Integer cellHeight, Integer cellWidth) {
         super(drawLocation, image);
         if (ownerID == null) throw new NullArgumentException("null ownerID");
         if (cellHeight == null) throw new NullArgumentException("null cellHeight");
-        if (cellWidth== null) throw new NullArgumentException("null cellWidth");
+        if (cellWidth == null) throw new NullArgumentException("null cellWidth");
 
         //TODO: Divide into classes
         switch (ownerID) {
@@ -27,6 +28,21 @@ public abstract class UnitUI extends EntityUI {
             default:
                 throw new NoSuchPlayerException("No player with id " + ownerID);
         }
+
+        //TODO: fix this, put all un a map in a new class (view photo in Whatsapp group)
+        if (lifeRatio == 1d) {
+            lifeImage = new Image("file:mainModule/resources/life100.png", cellWidth, cellHeight, false, false);
+        } else if (lifeRatio >= 0.8d) {
+            lifeImage = new Image("file:mainModule/resources/life80.png", cellWidth, cellHeight, false, false);
+        } else if (lifeRatio >= 0.6d) {
+            lifeImage = new Image("file:mainModule/resources/life60.png", cellWidth, cellHeight, false, false);
+        } else if (lifeRatio >= 0.4d) {
+            lifeImage = new Image("file:mainModule/resources/life40.png", cellWidth, cellHeight, false, false);
+        } else if (lifeRatio >= 0.2d) {
+            lifeImage = new Image("file:mainModule/resources/life20.png", cellWidth, cellHeight, false, false);
+        } else {
+            lifeImage = new Image("file:mainModule/resources/lifeMin.png", cellWidth, cellHeight, false, false);
+        }
     }
 
     @Override
@@ -35,5 +51,6 @@ public abstract class UnitUI extends EntityUI {
 
         graphicsContext.drawImage(markerImage, drawLocation.getX(), drawLocation.getY());
         super.drawMe(graphicsContext);
+        graphicsContext.drawImage(lifeImage, drawLocation.getX(), drawLocation.getY());
     }
 }

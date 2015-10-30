@@ -120,13 +120,16 @@ public class GameController {
         for (Unit unit : game.getUnits()) {
             switch (unit.getUnitType()) {
                 case ARCHER:
-                    new ArcherUI(gridLocationToDrawLocation(unit.getLocation()), cellHeight, cellWidth, unit.getOwner().getId()).drawMe(graphicsContext);
+                    new ArcherUI(gridLocationToDrawLocation(unit.getLocation()), cellHeight, cellWidth,
+                            unit.getOwner().getId(), (double) unit.getHealth()/unit.getMaxHealth()).drawMe(graphicsContext);
                     break;
                 case RIDER:
-                    new RiderUI(gridLocationToDrawLocation(unit.getLocation()), cellHeight, cellWidth, unit.getOwner().getId()).drawMe(graphicsContext);
+                    new RiderUI(gridLocationToDrawLocation(unit.getLocation()), cellHeight, cellWidth,
+                            unit.getOwner().getId(), (double) unit.getHealth()/unit.getMaxHealth()).drawMe(graphicsContext);
                     break;
                 case LANCER:
-                    new LancerUI(gridLocationToDrawLocation(unit.getLocation()), cellHeight, cellWidth, unit.getOwner().getId()).drawMe(graphicsContext);
+                    new LancerUI(gridLocationToDrawLocation(unit.getLocation()), cellHeight, cellWidth,
+                            unit.getOwner().getId(), (double) unit.getHealth()/unit.getMaxHealth()).drawMe(graphicsContext);
                     break;
             }
         }
