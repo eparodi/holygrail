@@ -25,7 +25,7 @@ public class Game {
     private Queue<String> logQueue;
 
     public Game(Integer worldWidth, Integer worldHeight, String player1, String player2) {
-        startNewGame(worldWidth,worldHeight,player1,player2);
+        startNewGame(worldWidth, worldHeight, player1, player2);
     }
 
     public Integer getWorldHeight() {
@@ -48,11 +48,10 @@ public class Game {
     private boolean selectPlayerCastle(Player player) {
         //Searches the castle from the first player and selects the cell where it is located
         //#Building needs location
-        if(world.getPlayerCastle(player) == null){
+        if (world.getPlayerCastle(player) == null) {
             addLog(player + "lost, he has no more buildings");
             return false;
-        }
-        else selectedLocation = world.getPlayerCastle(player).getLocation();
+        } else selectedLocation = world.getPlayerCastle(player).getLocation();
         return true;
     }
 
@@ -61,12 +60,13 @@ public class Game {
             selectedLocation = clickedLocation;
             return;
         }
-        Unit selectedUnit;
+
         if (world.isUnitOnLocation(selectedLocation)) {
-            selectedUnit = world.getUnitAt(selectedLocation);
+            Unit selectedUnit = world.getUnitAt(selectedLocation);
             if (world.isUnitOnLocation(clickedLocation)) {
                 if (world.getUnitAt(clickedLocation).getOwner().equals(activePlayer)) {
                     setSelectedLocation(clickedLocation);
+                    System.out.println("location: " + selectedLocation);
                 } else if (!selectedLocation.equals(clickedLocation)) {
                     attackAttempt(selectedUnit, world.getUnitAt(clickedLocation));
                 }
@@ -90,27 +90,29 @@ public class Game {
         }
     }
 
-    public boolean attemptBuildArcher(){
+    public boolean attemptBuildArcher() {
         Castle castle = world.getPlayerCastle(activePlayer);
-        if( castle.canBuild(world)){
+        if (castle.canBuild(world)) {
             castle.buildArcher(world);
             addLog("Archer Built");
             return true;
         }
         return false;
     }
-    public boolean attemptBuildRider(){
+
+    public boolean attemptBuildRider() {
         Castle castle = world.getPlayerCastle(activePlayer);
-        if( castle.canBuild(world)){
+        if (castle.canBuild(world)) {
             castle.buildRider(world);
             addLog("Rider Built");
             return true;
         }
         return false;
     }
-    public boolean attemptBuildLancer(){
+
+    public boolean attemptBuildLancer() {
         Castle castle = world.getPlayerCastle(activePlayer);
-        if( castle.canBuild(world)){
+        if (castle.canBuild(world)) {
             castle.buildLancer(world);
             addLog("Lancer Built");
             return true;
@@ -190,14 +192,15 @@ public class Game {
         }
     }
 
-    public Collection<Unit> getUnits(){
+    public Collection<Unit> getUnits() {
         return world.getUnits();
     }
-    public Collection<Building> getBuildings(){
+
+    public Collection<Building> getBuildings() {
         return world.getBuildings();
     }
 
-    public Collection<Cell> getCells(){
+    public Collection<Cell> getCells() {
         return world.getCells();
     }
 
@@ -214,7 +217,7 @@ public class Game {
 
         getActivePlayer().addGold(world.getPlayerIncome(getActivePlayer()));
         activateNextPlayer();
-        if(! selectPlayerCastle(getActivePlayer())) {
+        if (!selectPlayerCastle(getActivePlayer())) {
             addLog("The game has ended, please do not move anything");
             activateNextPlayer();
         }
@@ -225,9 +228,9 @@ public class Game {
     /**
      * Attempts to make a Unit, if there is a unit there, pick an item in the current Cell.
      */
-    public void pickItemAttempt(){
+    public void pickItemAttempt() {
 
-        if ( selectedLocation == null ){
+        if (selectedLocation == null) {
             return;
         }
 //TODO: Unit needs this behaviour

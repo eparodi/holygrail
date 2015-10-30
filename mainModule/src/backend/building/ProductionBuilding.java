@@ -21,8 +21,12 @@ public class ProductionBuilding extends Building {
     }
 
     public boolean canBuild(World world) {
-        if(world.isUnitOnLocation(location)) return false;
-        if(owner.canPay(UNIT_COST)) return false;
+        if(world.isUnitOnLocation(location)){
+            return false;
+        }
+        if(!owner.canPay(UNIT_COST)){
+            return false;
+        }
         return true;
     }
     public void buildArcher(World world){

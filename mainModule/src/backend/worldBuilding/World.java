@@ -29,8 +29,8 @@ public class World {
         this.worldWidth = worldWidth;
 
         cells = generateCellCollection();
-        units = new ArrayList<>();
-        buildings = new ArrayList<>();
+        units = new ArrayList<Unit>();
+        buildings = new ArrayList<Building>();
 
 
         //A PARTIR DE ACA SE CREA EL MAP DE TESTEO:
@@ -38,11 +38,11 @@ public class World {
         Location player2Castle = new Location(worldWidth - 2, Math.round(worldHeight / 2));
         Location mineLocation = new Location(Math.round(worldWidth / 2), worldHeight - 1);
 
-        buildings.add( new Castle(player1,player1Castle));
-        buildings.add( new Castle(player2,player2Castle));
-        buildings.add( new Mine(mineLocation));
+        buildings.add(new Castle(player1, player1Castle));
+        buildings.add(new Castle(player2, player2Castle));
+        buildings.add(new Mine(mineLocation));
 
-        ArrayList<Cell> holyGrailPossibleCells = new ArrayList<>();
+        ArrayList<Cell> holyGrailPossibleCells = new ArrayList<Cell>();
 
         for (Cell cell : cells) {
             if (cell.canRecieveItem()) {
@@ -170,8 +170,8 @@ public class World {
      * @return a Collection of all Units from a Player.
      */
     public Collection<Unit> getUnits(Player player) {
-        Collection<Unit> playerUnits = new ArrayList<>();
-        for (Unit unit: units) {
+        Collection<Unit> playerUnits = new ArrayList<Unit>();
+        for (Unit unit : units) {
             if (unit.getOwner().equals(player)) playerUnits.add(unit);
         }
         return playerUnits;
@@ -185,9 +185,13 @@ public class World {
      */
     //TODO (ToAsk) how to recognize castle without enum
     public Castle getPlayerCastle(Player player) {
-        if (player == null) throw new NullArgumentException("player is null");
+        if (player == null) {
+            throw new NullArgumentException("player is null");
+        }
         for (Building building : buildings) {
-            if (building == null) throw new NullPointerException("null building in buildings");
+            if (building == null) {
+                throw new NullPointerException("null building in buildings");
+            }
             if (building.getOwner() != null) {
                 if (building.getOwner().equals(player)) {
                     if (building.getBuildingType().equals(BuildingType.CASTLE)) {
@@ -309,8 +313,9 @@ public class World {
         }
         throw new NoSuchElementException("No unit in units with that location: " + location);
     }
+
     public Building getBuildingAt(Location location) {
-        for (Building building: buildings) {
+        for (Building building : buildings) {
             if (building.getLocation().equals(location)) return building;
         }
         throw new NoSuchElementException("No building in buildings with that location: " + location);

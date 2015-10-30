@@ -94,8 +94,9 @@ public class Main extends Application {
                     game.pickItemAttempt();
                 }
 
-                if (key.getCode().equals(KeyCode.SPACE))
+                if (key.getCode().equals(KeyCode.SPACE)) {
                     game.endTurn();
+                }
                 gameController.updateGraphics(graphicsContext);
             }
         });

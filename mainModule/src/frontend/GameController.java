@@ -30,6 +30,7 @@ public class GameController {
     Integer worldWidth;
 
     Game game;
+
     //    /**
 //     * @param cellHeight    The height of the cell in pixels
 //     * @param cellWidth     The width of the cell in pixels
@@ -55,18 +56,6 @@ public class GameController {
         game.actionAttempt(location);
     }
 
-    public Location drawLocationToGridLocation(Integer x, Integer y) {
-        Location gridLocation = new Location(0, 0);
-
-        Double auxY = Math.floor(y / (((double) 3 / 4) * cellHeight));
-        Double auxX = auxY.intValue() % 2 == 0 ? Math.floor(x / cellWidth) : Math.floor((x - cellWidth / 2) / cellWidth);
-
-        gridLocation.setY(auxY.intValue());
-        gridLocation.setX(auxX.intValue());
-
-        return gridLocation;
-    }
-
     public void attemptAction(Game game, double drawX, double drawY) {
         Location gridLocation = drawLocationToGridLocation((int) drawX, (int) drawY);
         if (gridLocation.getY() < worldHeight && gridLocation.getX() < worldWidth)
@@ -81,77 +70,70 @@ public class GameController {
     }
 
     public void drawCells(GraphicsContext graphicsContext) {
-        for (Cell cell: game.getCells()){
-            switch (cell.getTerrain().getTerrainType()){
+        drawTerrain(graphicsContext);
+        drawSelectedCell(graphicsContext);
+        drawBuidings(graphicsContext);
+        drawUnits(graphicsContext);
+
+    }
+
+    public void drawTerrain(GraphicsContext graphicsContext) {
+        for (Cell cell : game.getCells()) {
+            switch (cell.getTerrain().getTerrainType()) {
                 case WATER:
-                    new WaterUI(gridLocationToDrawLocation(cell.getLocation()),cellHeight,cellWidth).drawMe(graphicsContext);
+                    new WaterUI(gridLocationToDrawLocation(cell.getLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
+                    break;
                 case GRASS:
-                    new GrassUI(gridLocationToDrawLocation(cell.getLocation()),cellHeight,cellWidth).drawMe(graphicsContext);
+                    new GrassUI(gridLocationToDrawLocation(cell.getLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
+                    break;
                 case HILL:
-                    new HillUI(gridLocationToDrawLocation(cell.getLocation()),cellHeight,cellWidth).drawMe(graphicsContext);
+                    new HillUI(gridLocationToDrawLocation(cell.getLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
+                    break;
                 case MOUNTAIN:
-                    new MountainUI(gridLocationToDrawLocation(cell.getLocation()),cellHeight,cellWidth).drawMe(graphicsContext);
+                    new MountainUI(gridLocationToDrawLocation(cell.getLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
+                    break;
                 case FOREST:
-                    new ForestUI(gridLocationToDrawLocation(cell.getLocation()),cellHeight,cellWidth).drawMe(graphicsContext);
+                    new ForestUI(gridLocationToDrawLocation(cell.getLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
+                    break;
+
 
             }
         }
+    }
 
-        for(Building building: game.getBuildings()){
-            switch (building.getBuildingType()){
+    public void drawBuidings(GraphicsContext graphicsContext) {
+        for (Building building : game.getBuildings()) {
+            switch (building.getBuildingType()) {
                 case MINE:
-                    new MineUI(gridLocationToDrawLocation(building.getLocation()),cellHeight,cellWidth,building.getOwner())
+                    new MineUI(gridLocationToDrawLocation(building.getLocation()), cellHeight, cellWidth, building.getOwner())
                             .drawMe(graphicsContext);
+                    break;
                 case CASTLE:
-                    new CastleUI(gridLocationToDrawLocation(building.getLocation()),cellHeight,cellWidth,building.getOwner())
+                    new CastleUI(gridLocationToDrawLocation(building.getLocation()), cellHeight, cellWidth, building.getOwner())
                             .drawMe(graphicsContext);
+                    break;
             }
         }
+    }
 
-        for(Unit unit: game.getUnits()){
-            switch (unit.getUnitType()){
+    public void drawUnits(GraphicsContext graphicsContext) {
+        for (Unit unit : game.getUnits()) {
+            switch (unit.getUnitType()) {
                 case ARCHER:
-                    new ArcherUI(gridLocationToDrawLocation(unit.getLocation()),cellHeight,cellWidth,unit.getOwner().getId());
+                    new ArcherUI(gridLocationToDrawLocation(unit.getLocation()), cellHeight, cellWidth, unit.getOwner().getId()).drawMe(graphicsContext);
+                    break;
                 case RIDER:
-                    new RiderUI(gridLocationToDrawLocation(unit.getLocation()),cellHeight,cellWidth,unit.getOwner().getId());
+                    new RiderUI(gridLocationToDrawLocation(unit.getLocation()), cellHeight, cellWidth, unit.getOwner().getId()).drawMe(graphicsContext);
+                    break;
                 case LANCER:
-                    new LancerUI(gridLocationToDrawLocation(unit.getLocation()),cellHeight,cellWidth,unit.getOwner().getId());
+                    new LancerUI(gridLocationToDrawLocation(unit.getLocation()), cellHeight, cellWidth, unit.getOwner().getId()).drawMe(graphicsContext);
+                    break;
             }
         }
     }
 
-    private void drawBuilding(GraphicsContext graphicsContext, BuildingType buildingType, Location location, Integer ownerID) {
-        Image image = getBuildingImage(buildingType);
-        Image flag = getFlagImage(ownerID);
-        Location drawLocation = gridLocationToDrawLocation(location);
-        graphicsContext.drawImage(image, drawLocation.getX(), drawLocation.getY());
-        graphicsContext.drawImage(flag, drawLocation.getX(), drawLocation.getY());
-    }
-
-    public void drawCellSelection(GraphicsContext graphicsContext, Location location) {
-        Image image = new Image("file:mainModule/resources/cellSelected.png", cellWidth, cellHeight, false, false);
-        Location drawLocation = gridLocationToDrawLocation(location);
-        graphicsContext.drawImage(image, drawLocation.getX(), drawLocation.getY());
-    }
-
-    public void drawLife(GraphicsContext graphicsContext, Integer health, Integer maxHealth, Location location) {
-        Image image = getLifebarImage(health, maxHealth);
-        Location drawLocation = gridLocationToDrawLocation(location);
-        graphicsContext.drawImage(image, drawLocation.getX(), drawLocation.getY());
-    }
-
-    private void drawUnit(GraphicsContext graphicsContext, UnitType unitType, Location location, Integer ownerID) {
-        Image image = getUnitImage(unitType);
-        Image ownerMarker = getOwnerMarker(ownerID);
-        Location drawLocation = gridLocationToDrawLocation(location);
-        graphicsContext.drawImage(ownerMarker, drawLocation.getX(), drawLocation.getY());
-        graphicsContext.drawImage(image, drawLocation.getX(), drawLocation.getY());
-    }
-
-    public void drawTerrain(GraphicsContext graphicsContext, Terrain terrain, Location location) {
-        Image image = getTerrainImage(terrain);
-        Location drawLocation = gridLocationToDrawLocation(location);
-        graphicsContext.drawImage(image, drawLocation.getX(), drawLocation.getY());
+    public void drawSelectedCell(GraphicsContext graphicsContext){
+        new SelectedCellUI(gridLocationToDrawLocation(game.getSelectedLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
     }
 
     public Location gridLocationToDrawLocation(Location gridLocation) {
@@ -164,101 +146,17 @@ public class GameController {
         return drawLocation;
     }
 
-    public Image getBuildingImage(BuildingType buildingType) {
-        if (buildingType == null) throw new NullArgumentException("Null building type in image");
+    public Location drawLocationToGridLocation(Integer x, Integer y) {
+        Location gridLocation = new Location(0, 0);
 
-        switch (buildingType){
-            case MINE:
-                return new Image("file:mainModule/resources/mine.png", cellWidth, cellHeight, false, false);
-            case CASTLE:
-                return new Image("file:mainModule/resources/Castle.png", cellWidth, cellHeight, false, false);
+        Double auxY = Math.floor(y / (((double) 3 / 4) * cellHeight));
+        Double auxX = auxY.intValue() % 2 == 0 ? Math.floor(x / cellWidth) : Math.floor((x - cellWidth / 2) / cellWidth);
 
-        }
-        throw new RuntimeException("No image for that building type: " + buildingType);
+        gridLocation.setY(auxY.intValue());
+        gridLocation.setX(auxX.intValue());
+
+        return gridLocation;
     }
-
-    public Image getTerrainImage(Terrain terrain) {
-        switch (terrain.getTerrainType()) {
-            case GRASS:
-                return new Image("file:mainModule/resources/cellGrass.png", cellWidth, cellHeight, false, false);
-
-            case MOUNTAIN:
-                return new Image("file:mainModule/resources/cellMountain.png", cellWidth, cellHeight, false, false);
-
-            case FOREST:
-                return new Image("file:mainModule/resources/cellForest.png", cellWidth, cellHeight, false, false);
-
-            case WATER:
-                return new Image("file:mainModule/resources/cellWater.png", cellWidth, cellHeight, false, false);
-
-            case HILL:
-                return new Image("file:mainModule/resources/cellHill.png", cellWidth, cellHeight, false, false);
-        }
-        throw new InvalidTerrainException("No image for that terrain");
-    }
-
-    public Image getUnitImage(UnitType unitType) {
-        if (unitType == null) throw new NullArgumentException("Null unit unitName in image");
-        switch (unitType) {
-            case ARCHER:
-                return new Image("file:mainModule/resources/archer.png", cellWidth, cellHeight, false, false);
-
-            case LANCER:
-                return new Image("file:mainModule/resources/lancer.png", cellWidth, cellHeight, false, false);
-
-            case RIDER:
-                return new Image("file:mainModule/resources/rider.png", cellWidth, cellHeight, false, false);
-            default:
-                throw new NoSuchUnitTypeException("No image for that unit: " + unitType);
-        }
-    }
-
-    public Image getLifebarImage(Integer health, Integer maxHealth) {
-        Double lifePercentage = health.doubleValue() / maxHealth.doubleValue();
-        if (lifePercentage == 1.0) {
-            return new Image("file:mainModule/resources/life100.png", cellWidth, cellHeight, false, false);
-        } else if (lifePercentage >= 0.8 && lifePercentage < 1.0) {
-            return new Image("file:mainModule/resources/life80.png", cellWidth, cellHeight, false, false);
-        } else if (lifePercentage >= 0.6 && lifePercentage < 0.8) {
-            return new Image("file:mainModule/resources/life60.png", cellWidth, cellHeight, false, false);
-        } else if (lifePercentage >= 0.4 && lifePercentage < 0.6) {
-            return new Image("file:mainModule/resources/life40.png", cellWidth, cellHeight, false, false);
-        } else if (lifePercentage >= 0.2 && lifePercentage < 0.4) {
-            return new Image("file:mainModule/resources/life20.png", cellWidth, cellHeight, false, false);
-        } else if (lifePercentage > 0.0 && lifePercentage < 0.2) {
-            return new Image("file:mainModule/resources/lifeMin.png", cellWidth, cellHeight, false, false);
-        }
-        throw new NoSuchLifeImageException("No image to represent health.");
-    }
-
-    public Image getOwnerMarker(Integer ownerID) {
-        //TODO retorno null asi no mas?
-        if (ownerID == null) {
-            return null;
-        }
-        if (ownerID == 1) {
-            return new Image("file:mainModule/resources/blueMarker.png", cellWidth, cellHeight, false, false);
-        } else if (ownerID == 2) {
-            return new Image("file:mainModule/resources/redMarker.png", cellWidth, cellHeight, false, false);
-        } else {
-            throw new NoSuchPlayerException("The player " + ownerID + " does not exist.");
-        }
-    }
-
-    public Image getFlagImage(Integer ownerID) {
-        //TODO retorno null asi no mas? (es decir que no quiero imprimir ninguna imagen)
-        if (ownerID == null) {
-            return null;
-        }
-        if (ownerID==1) {
-            return new Image("file:mainModule/resources/blueFlag.png", cellWidth, cellHeight, false, false);
-        } else if (ownerID==2) {
-            return new Image("file:mainModule/resources/redFlag.png", cellWidth, cellHeight, false, false);
-        } else {
-            throw new NoSuchPlayerException("The player " + ownerID + " does not exist.");
-        }
-    }
-
 
 
 }
