@@ -32,7 +32,6 @@ public class World implements Serializable {
         buildings = new ArrayList<Building>();
 
 
-        //A PARTIR DE ACA SE CREA EL MAP DE TESTEO:
         Location player1Castle = new Location(2, 2);
         Location player2Castle = new Location(14, 9);
         Location mineLocation = new Location(1,8);
@@ -46,6 +45,8 @@ public class World implements Serializable {
         buildings.add(new Mine(mineLocation2));
         buildings.add(new Mine(mineLocation3));
         buildings.add(new Mine(mineLocation4));
+
+
 
         ArrayList<Cell> holyGrailPossibleCells = new ArrayList<Cell>();
 
@@ -251,7 +252,9 @@ public class World implements Serializable {
             return new Hill();
         }
         return new Grass();
+
     }
+
 
     /**
      * TODO: Vamos a hacer mapas espec�ficos despues?

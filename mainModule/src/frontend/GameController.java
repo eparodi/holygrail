@@ -161,7 +161,7 @@ public class GameController {
             fileIn.close();
         }catch(IOException i)
         {
-            i.printStackTrace();
+            System.out.println("Game not found or old version");
         }catch(ClassNotFoundException c)
         {
             System.out.println("game class not found");

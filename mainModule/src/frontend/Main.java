@@ -35,9 +35,9 @@ import java.util.Random;
 
 public class Main extends Application {
 
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
 
-        final Game game = new Game(16,11,"Jorge","Sergio");
+        final Game game = new Game(16, 11, "Jorge", "Sergio");
         //END OF MODIFIABLE, DONT TOUCH THE REST
 
 
@@ -53,17 +53,17 @@ public class Main extends Application {
         launch(args);
     }
 
-    public static Scene loadGameUI(final GameController gameController){
+    public static Scene loadGameUI(final GameController gameController) {
         Pane root = new FlowPane();
 
         double width = Screen.getPrimary().getVisualBounds().getWidth();
         double height = Screen.getPrimary().getVisualBounds().getHeight();
 
-        Canvas canvas = new Canvas(width-100,height-100);
-        gameController.addCanvasSize(canvas.getHeight(),canvas.getWidth());
+        Canvas canvas = new Canvas(width - 100, height - 100);
+        gameController.addCanvasSize(canvas.getHeight(), canvas.getWidth());
 
         final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
-        Scene scene=new Scene(root, canvas.getWidth(), canvas.getHeight());
+        Scene scene = new Scene(root, canvas.getWidth(), canvas.getHeight());
 
         final MenuBar mainMenu = new MenuBar();
         Menu menuFile = new Menu("File");
@@ -92,7 +92,7 @@ public class Main extends Application {
         MenuItem menuItemGame1 = new MenuItem("Classic");
         menuItemGame1.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
-                gameController.loadGame("mainModule/src/saves/game1");
+                gameController.loadGame("mainModule/src/saves/classic");
                 gameController.updateGraphics(graphicsContext);
             }
         });
@@ -100,13 +100,38 @@ public class Main extends Application {
         MenuItem menuItemGame2 = new MenuItem("Battle for the lake");
         menuItemGame2.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
-                gameController.loadGame("mainModule/src/saves/game2");
+                gameController.loadGame("mainModule/src/saves/battle_for_the_lake");
                 gameController.updateGraphics(graphicsContext);
             }
         });
 
-        mainMenu.getMenus().addAll(menuFile,menuStartNewGame);
-        menuStartNewGame.getItems().addAll(menuItemGame1,menuItemGame2);
+
+        MenuItem menuItemGame3 = new MenuItem("Treasure Island");
+        menuItemGame3.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+                gameController.loadGame("mainModule/src/saves/treasure_island");
+                gameController.updateGraphics(graphicsContext);
+            }
+        });
+
+        MenuItem menuItemGame4 = new MenuItem("Hidden Castle");
+        menuItemGame4.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+                gameController.loadGame("mainModule/src/saves/hidden_castle");
+                gameController.updateGraphics(graphicsContext);
+            }
+        });
+
+        MenuItem menuItemGame5 = new MenuItem("King of the hill");
+        menuItemGame5.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+                gameController.loadGame("mainModule/src/saves/king_of_the_hill");
+                gameController.updateGraphics(graphicsContext);
+            }
+        });
+
+        mainMenu.getMenus().addAll(menuFile, menuStartNewGame);
+        menuStartNewGame.getItems().addAll(menuItemGame2, menuItemGame3, menuItemGame4, menuItemGame5);
         menuFile.getItems().addAll(menuItemExit, menuItemLoadGame, menuItemSaveGame);
         root.getChildren().add(mainMenu);
 

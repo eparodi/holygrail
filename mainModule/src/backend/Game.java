@@ -8,6 +8,7 @@ import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.worldBuilding.World;
+import javafx.scene.control.Alert;
 
 import java.io.Serializable;
 import java.util.ArrayDeque;
@@ -24,11 +25,6 @@ public class Game implements Serializable {
     public Game(Integer worldWidth, Integer worldHeight, String player1, String player2) {
         loadPlayers(player1,player2);
         world = new World(worldWidth, worldHeight, this.player1, this.player2);
-        startNewGame();
-    }
-
-    public Game(World world, String player1,String player2){
-        loadPlayers(player1,player2);
         startNewGame();
     }
 
@@ -126,11 +122,6 @@ public class Game implements Serializable {
         return false;
     }
 
-    //currentSelected to null
-    public void deselect() {
-        //TODO implement
-    }
-
     private void addLog(String msg) {
         logQueue.add(msg);
     }
@@ -223,11 +214,17 @@ public class Game implements Serializable {
 
         getActivePlayer().addGold(world.getPlayerIncome(getActivePlayer()));
 
-        Unit selectedUnit = world.getUnitAt(world.getPlayerCastle(activePlayer).getLocation());
-        if ( selectedUnit.hasHolyGrail() ){
+        if(world.isUnitOnLocation(world.getPlayerCastle(activePlayer).getLocation())) {
+            Unit selectedUnit = world.getUnitAt(world.getPlayerCastle(activePlayer).getLocation());
+            if (selectedUnit.hasHolyGrail()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Game Message");
+                alert.setHeaderText("Congratulations");
+                alert.setContentText("You have won!, do not try to move any more units please, start new game");
 
+                alert.showAndWait();
+            }
         }
-
         activateNextPlayer();
         if (!selectPlayerCastle(getActivePlayer())) {
             addLog("The game has ended, please do not move anything");
