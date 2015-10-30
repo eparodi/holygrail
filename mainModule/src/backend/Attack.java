@@ -29,18 +29,22 @@ public class Attack implements Serializable {
      * @param rune       item.
      * @return Attack with 3 types of damage.
      */
-    public Attack getModifiedAttack(Terrain terrain, Item rune) {
+    public Attack getModifiedAttack(Terrain terrain, LinkedList<Item> items ) {
         Attack modifiedAttack;
+        int slashDamage = this.slashDamage;
+        int piercingDamage = this.piercingDamage;
+        int bluntDamage = this.bluntDamage;
 
-        if (rune == null) {
-            modifiedAttack = new Attack((int) Math.round(slashDamage * terrain.getSlashBonus()),
-                    (int) Math.round(piercingDamage * terrain.getPiercingBonus()),
-                    (int) Math.round(bluntDamage * terrain.getBluntBonus()));
-        } else {
-            modifiedAttack = new Attack((int) Math.round((slashDamage + rune.getSlashBonus()) * terrain.getSlashBonus()),
-                    (int) Math.round((piercingDamage + rune.getPiercingBonus()) * terrain.getPiercingBonus()),
-                    (int) Math.round((bluntDamage + rune.getBluntBonus()) * terrain.getBluntBonus()));
+        for ( Item i : items ){
+            slashDamage += i.getSlashBonus();
+            piercingDamage += i.getPiercingBonus();
+            bluntDamage += i.getBluntBonus();
         }
+
+        modifiedAttack = new Attack((int) Math.round(slashDamage * terrain.getSlashBonus()),
+                (int) Math.round(piercingDamage * terrain.getPiercingBonus()),
+                (int) Math.round(bluntDamage * terrain.getBluntBonus()));
+
         return modifiedAttack;
     }
 

@@ -28,8 +28,8 @@ public class Unit implements Serializable {
     private Attack baseAttack = null;
     private Defense defense = null;
 
-    private Item extra = null;
-    private Item rune = null;
+    private LinkedList<Item> itemSlots = new LinkedList<Item>();
+    private final int SLOT_NUMBER = 2 ;
 
     private Integer health;
     private Integer maxHealth;
@@ -77,22 +77,21 @@ public class Unit implements Serializable {
     }
 
     public Integer getMaxHealth() {
-        if (extra != null) {
-            return maxHealth + extra.getMaxHealthBonus();
+        int maxHealth = this.maxHealth;
+        for ( Item i : itemSlots ){
+            maxHealth += i.getMaxHealthBonus();
         }
         return maxHealth;
     }
 
-    public Integer getActionPoints() {
-        return actionPoints;
-    }
-
     public Integer getMaxActionPoints() {
-        if (extra != null) {
-            return maxActionPoints + extra.getMaxAPBonus();
+        int maxActionPoints = this.maxActionPoints;
+        for ( Item i : itemSlots ){
+            maxActionPoints += i.getMaxAPBonus();
         }
         return maxActionPoints;
     }
+
 
     public Integer getRange() {
         return range;
@@ -159,8 +158,12 @@ public class Unit implements Serializable {
         System.out.println("damageDealt = " + damageDealt);
         System.out.println("health = " + health);
         health -= damageDealt;
-        if(isDed()) world.removeUnit(this);
+        if(isDed()){
+            dropItems();
+            world.removeUnit(this);
+        }
     }
+	
     /**
      * Returns true if a Unit is in range to attack another Unit.
      *
@@ -200,54 +203,46 @@ public class Unit implements Serializable {
      * @return the Item dropped.
      */
     //TODO REHACER
-    public Item pickItem(Item itemPicked) {
+    public void pickItem(){
 
         Item droppedItem = null;
-
-        if (itemPicked.getType() == ItemType.EXTRA) {
-            droppedItem = this.extra;
-            this.extra = itemPicked;
-            updateStatus();
-        } else if (itemPicked.getType() == ItemType.RUNE) {
-            droppedItem = this.rune;
-            this.rune = itemPicked;
+        if ( actionPoints >= DIG_AP_COST ){
+            actionPoints -= DIG_AP_COST;
+            Cell dugCell = world.getCellAt(this.location);
+            Item itemPicked = dugCell.getItem();
+            if ( itemPicked != null){
+                System.out.println("Item: " + itemPicked.getName());
+                if ( itemSlots.size() == SLOT_NUMBER ){
+                    droppedItem = itemSlots.remove();
+                }
+                itemSlots.add(itemPicked);
+                updateStatus(itemPicked);
+                dugCell.addItem(droppedItem);
+            }
         }
-
-        return droppedItem;
     }
 
     /**
      * Updates the Health and Action Points, adding the bonuses from Items.
      */
-    public void updateStatus() {
-        Integer newHealth = health + extra.getMaxHealthBonus();
+    public void updateStatus( Item item ) {
+        Integer newHealth = health + item.getMaxHealthBonus();
         health = newHealth < getMaxHealth() ? newHealth : getMaxHealth();
 
-        Integer newAP = actionPoints + extra.getMaxAPBonus();
+        Integer newAP = actionPoints + item.getMaxAPBonus();
         actionPoints = newAP < getMaxActionPoints() ? newAP : getMaxActionPoints();
     }
 
     /**
-     * Makes the Unit drop its rune.
-     *
-     * @return Dropped Rune.
+     * Makes the Unit drop its Items.
      */
-    public Item dropRune() {
-        Item droppedRune = this.rune;
-        this.rune = null;
-        return droppedRune;
+    public void dropItems() {
+        Cell currentCell = world.getCellAt(location);
+        for ( Item i : itemSlots ){
+            currentCell.addItem(i);
+        }
     }
 
-    /**
-     * Makes the Unit drop its Extra.
-     *
-     * @return Dropped Extra.
-     */
-    public Item dropExtra() {
-        Item droppedExtra = this.extra;
-        this.extra = null;
-        return droppedExtra;
-    }
 
     /**
      * Refills the Unit Action Points.

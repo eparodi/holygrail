@@ -225,28 +225,17 @@ public class Game implements Serializable {
     /**
      * Attempts to make a Unit, if there is a unit there, pick an item in the current Cell.
      */
-    public void pickItemAttempt() {
+	public void pickItemAttempt() {
 
         if (selectedLocation == null) {
             return;
         }
-//TODO: Unit needs this behaviour
-//        if ( world.isUnitOnLocation(selectedLocation)){
-//            if ( world.getUnitAt(selectedLocation).getOwner().equals(activePlayer)){
-//                if ( world.getUnitAt(selectedLocation).getActionPoints() >= world.Di ){
-//                    Item pickedItem = selectedLocation.getItem();
-//                    selectedLocation.getUnit().spendAP(DIG_AP_COST);
-//                    if ( pickedItem != null ){
-//                        System.out.println(pickedItem.getName());
-//                        Item droppedItem = selectedLocation.getUnit().pickItem( pickedItem );
-//                        if ( droppedItem != null ){
-//                            selectedLocation.addItem(droppedItem);
-//                        }
-//                    }else{
-//                        System.out.println("There is no item");
-//                    }
-//                }
-//            }
-//        }
+        if ( world.isUnitOnLocation(selectedLocation) ){
+            Unit currentUnit = world.getUnitAt(selectedLocation);
+            if ( currentUnit.getOwner().equals(activePlayer) ){
+                currentUnit.pickItem();
+            }
+        }
+    }
     }
 }
