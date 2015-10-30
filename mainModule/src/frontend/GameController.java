@@ -2,21 +2,9 @@ package frontend;
 
 import backend.Game;
 import backend.building.Building;
-import backend.building.BuildingType;
-import backend.building.Castle;
-import backend.exceptions.*;
-import backend.terrain.Hill;
 import backend.units.Unit;
-import backend.units.UnitType;
 import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
-import backend.terrain.Terrain;
-import frontend.buildings.CastleUI;
-import frontend.buildings.MineUI;
-import frontend.terrain.*;
-import frontend.units.ArcherUI;
-import frontend.units.LancerUI;
-import frontend.units.RiderUI;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -85,63 +73,44 @@ public class GameController {
 
     public void drawTerrain(GraphicsContext graphicsContext) {
         for (Cell cell : game.getCells()) {
-            switch (cell.getTerrain().getTerrainType()) {
-                case WATER:
-                    new WaterUI(gridLocationToDrawLocation(cell.getLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
-                    break;
-                case GRASS:
-                    new GrassUI(gridLocationToDrawLocation(cell.getLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
-                    break;
-                case HILL:
-                    new HillUI(gridLocationToDrawLocation(cell.getLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
-                    break;
-                case MOUNTAIN:
-                    new MountainUI(gridLocationToDrawLocation(cell.getLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
-                    break;
-                case FOREST:
-                    new ForestUI(gridLocationToDrawLocation(cell.getLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
-                    break;
-
-
-            }
+            new TerrainUI(gridLocationToDrawLocation(cell.getLocation()), cell, cellHeight, cellWidth).drawMe(graphicsContext);
+//            switch (cell.getTerrain().getTerrainType()) {
+//                case WATER:
+//                    new WaterUI(gridLocationToDrawLocation(cell.getLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
+//                    break;
+//                case GRASS:
+//                    new GrassUI(gridLocationToDrawLocation(cell.getLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
+//                    break;
+//                case HILL:
+//                    new HillUI(gridLocationToDrawLocation(cell.getLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
+//                    break;
+//                case MOUNTAIN:
+//                    new MountainUI(gridLocationToDrawLocation(cell.getLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
+//                    break;
+//                case FOREST:
+//                    new ForestUI(gridLocationToDrawLocation(cell.getLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
+//                    break;
+//
+//
+//            }
         }
     }
 
     public void drawBuidings(GraphicsContext graphicsContext) {
         for (Building building : game.getBuildings()) {
-            switch (building.getBuildingType()) {
-                case MINE:
-                    new MineUI(gridLocationToDrawLocation(building.getLocation()), cellHeight, cellWidth, building.getOwner())
-                            .drawMe(graphicsContext);
-                    break;
-                case CASTLE:
-                    new CastleUI(gridLocationToDrawLocation(building.getLocation()), cellHeight, cellWidth, building.getOwner())
-                            .drawMe(graphicsContext);
-                    break;
-            }
+            new BuildingUI(gridLocationToDrawLocation(building.getLocation()), building, cellHeight, cellWidth).drawMe(graphicsContext);
+
         }
     }
 
     public void drawUnits(GraphicsContext graphicsContext) {
         for (Unit unit : game.getUnits()) {
-            switch (unit.getUnitType()) {
-                case ARCHER:
-                    new ArcherUI(gridLocationToDrawLocation(unit.getLocation()), cellHeight, cellWidth,
-                            unit.getOwner().getId(), (double) unit.getHealth() / unit.getMaxHealth()).drawMe(graphicsContext);
-                    break;
-                case RIDER:
-                    new RiderUI(gridLocationToDrawLocation(unit.getLocation()), cellHeight, cellWidth,
-                            unit.getOwner().getId(), (double) unit.getHealth() / unit.getMaxHealth()).drawMe(graphicsContext);
-                    break;
-                case LANCER:
-                    new LancerUI(gridLocationToDrawLocation(unit.getLocation()), cellHeight, cellWidth,
-                            unit.getOwner().getId(), (double) unit.getHealth() / unit.getMaxHealth()).drawMe(graphicsContext);
-                    break;
-            }
+            new UnitUI(gridLocationToDrawLocation(unit.getLocation()), unit, cellHeight, cellWidth).drawMe(graphicsContext);
+
         }
     }
 
-    public void drawSelectedCell(GraphicsContext graphicsContext) {
+    public void drawSelectedCell(GraphicsContext graphicsContext){
         new SelectedCellUI(gridLocationToDrawLocation(game.getSelectedLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
     }
 
