@@ -30,7 +30,7 @@ public class Unit implements Serializable {
     private Attack baseAttack = null;
     private Defense defense = null;
 
-    private LinkedList<Item> itemSlots = new LinkedList<Item>();
+    private LinkedList<Item> itemSlots = new LinkedList<>();
     private final int SLOT_NUMBER = 2 ;
 
     private Integer health;
@@ -173,14 +173,16 @@ public class Unit implements Serializable {
      * @return true if the Distance between two Units is less or equals to the attacking range of the attacker Unit.
      */
     public boolean isInRange(Unit unit) {
-        return unit.getLocation().distance(unit.getLocation()) <= range;
+        return unit.getLocation().distance(location) <= range;
     }
 
     public boolean attack(Unit unit) {
         if(actionPoints >= ATTACK_AP_COST){
-            if(isInRange(unit)) unit.receiveDamage(this.getAttack());
-            unit.counterAttack(this);
-            spendAP(ATTACK_AP_COST);
+            if(isInRange(unit)){
+                spendAP(ATTACK_AP_COST);
+                unit.receiveDamage(this.getAttack());
+                unit.counterAttack(this);
+            }
             return true;
         }
         return false;
