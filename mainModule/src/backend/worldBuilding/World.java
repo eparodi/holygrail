@@ -12,9 +12,10 @@ import backend.terrain.*;
 import backend.units.Unit;
 import frontend.terrain.ForestUI;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class World {
+public class World implements Serializable {
     Collection<Cell> cells;
     Collection<Unit> units;
     Collection<Building> buildings;

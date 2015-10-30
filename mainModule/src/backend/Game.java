@@ -9,11 +9,12 @@ import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.worldBuilding.World;
 
+import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Queue;
 
-public class Game {
+public class Game implements Serializable {
     private World world;
     private Location selectedLocation;
     private Player player1, player2;

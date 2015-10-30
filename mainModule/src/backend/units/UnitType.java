@@ -1,5 +1,7 @@
 package backend.units;
 
-public enum UnitType {
+import java.io.Serializable;
+
+public enum UnitType implements Serializable {
     ARCHER , LANCER , RIDER
 }

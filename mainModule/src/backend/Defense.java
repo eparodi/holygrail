@@ -3,7 +3,9 @@ package backend;
 import backend.Attack;
 import backend.terrain.Terrain;
 
-public class Defense {
+import java.io.Serializable;
+
+public class Defense implements Serializable {
     Integer slashResist, piercingResist, bluntResist;
 
     /**

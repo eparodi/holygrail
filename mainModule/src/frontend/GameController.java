@@ -19,7 +19,10 @@ import frontend.units.LancerUI;
 import frontend.units.RiderUI;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -35,13 +38,20 @@ public class GameController {
 //     * @param cellHeight    The height of the cell in pixels
 //     * @param cellWidth     The width of the cell in pixels
 //     */
-    public GameController(GraphicsContext graphicsContext, Game game) {
+    public GameController(Game game) {
         this.game = game;
+        initialize();
+    }
+
+    private void initialize() {
         this.worldHeight = game.getWorldHeight();
         this.worldWidth = game.getWorldWidth();
-        cellWidth = (int) (graphicsContext.getCanvas().getWidth() / (worldWidth + 0.417d));
-        cellHeight = (int) (graphicsContext.getCanvas().getHeight() / (worldHeight * 0.80));
         System.out.println(cellHeight + "," + cellWidth);
+    }
+
+    public void addCanvasSize(double canvasHeight, double canvasWidth) {
+        cellWidth = (int) (canvasWidth / (worldWidth + 0.417d));
+        cellHeight = (int) (canvasHeight / (worldHeight * 0.80));
     }
 
     public Integer getCellHeight() {
@@ -52,11 +62,7 @@ public class GameController {
         return cellWidth;
     }
 
-    public void selectCell(Game game, Location location) {
-        game.actionAttempt(location);
-    }
-
-    public void attemptAction(Game game, double drawX, double drawY) {
+    public void attemptAction(double drawX, double drawY) {
         Location gridLocation = drawLocationToGridLocation((int) drawX, (int) drawY);
         if (gridLocation.getY() < worldHeight && gridLocation.getX() < worldWidth)
             game.actionAttempt(gridLocation);
@@ -121,21 +127,21 @@ public class GameController {
             switch (unit.getUnitType()) {
                 case ARCHER:
                     new ArcherUI(gridLocationToDrawLocation(unit.getLocation()), cellHeight, cellWidth,
-                            unit.getOwner().getId(), (double) unit.getHealth()/unit.getMaxHealth()).drawMe(graphicsContext);
+                            unit.getOwner().getId(), (double) unit.getHealth() / unit.getMaxHealth()).drawMe(graphicsContext);
                     break;
                 case RIDER:
                     new RiderUI(gridLocationToDrawLocation(unit.getLocation()), cellHeight, cellWidth,
-                            unit.getOwner().getId(), (double) unit.getHealth()/unit.getMaxHealth()).drawMe(graphicsContext);
+                            unit.getOwner().getId(), (double) unit.getHealth() / unit.getMaxHealth()).drawMe(graphicsContext);
                     break;
                 case LANCER:
                     new LancerUI(gridLocationToDrawLocation(unit.getLocation()), cellHeight, cellWidth,
-                            unit.getOwner().getId(), (double) unit.getHealth()/unit.getMaxHealth()).drawMe(graphicsContext);
+                            unit.getOwner().getId(), (double) unit.getHealth() / unit.getMaxHealth()).drawMe(graphicsContext);
                     break;
             }
         }
     }
 
-    public void drawSelectedCell(GraphicsContext graphicsContext){
+    public void drawSelectedCell(GraphicsContext graphicsContext) {
         new SelectedCellUI(gridLocationToDrawLocation(game.getSelectedLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
     }
 
@@ -159,6 +165,60 @@ public class GameController {
         gridLocation.setX(auxX.intValue());
 
         return gridLocation;
+    }
+
+    public void saveGame(String path) {
+        try {
+            FileOutputStream fileOut =
+                    new FileOutputStream(path);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(game);
+            out.close();
+            fileOut.close();
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+    }
+
+    public Game loadGame(String path){
+        Game game = null;
+        try
+        {
+            FileInputStream fileIn = new FileInputStream(path);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            game = (Game) in.readObject();
+            in.close();
+            fileIn.close();
+        }catch(IOException i)
+        {
+            i.printStackTrace();
+        }catch(ClassNotFoundException c)
+        {
+            System.out.println("game class not found");
+            c.printStackTrace();
+        }
+        this.game = game;
+        initialize();
+        return game;
+    }
+
+    public void keyPressed(KeyEvent key) {
+        if (key.getCode().equals(KeyCode.A)) {
+            game.attemptBuildArcher();
+        }
+        if (key.getCode().equals(KeyCode.L)) {
+            game.attemptBuildLancer();
+        }
+        if (key.getCode().equals(KeyCode.R)) {
+            game.attemptBuildRider();
+        }
+        if (key.getCode().equals(KeyCode.D)) {
+            game.pickItemAttempt();
+        }
+
+        if (key.getCode().equals(KeyCode.SPACE)) {
+            game.endTurn();
+        }
     }
 
 

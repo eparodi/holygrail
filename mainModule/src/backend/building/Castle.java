@@ -1,14 +1,11 @@
 package backend.building;
 
-import backend.units.Archer;
-import backend.units.Unit;
-import backend.units.UnitFactory;
-import backend.units.UnitType;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
-import backend.terrain.Terrain;
 
-public class Castle extends ProductionBuilding {
+import java.io.Serializable;
+
+public class Castle extends ProductionBuilding implements Serializable {
 
     /**
      * Constructs a Castle Building, owned by certain Player.

@@ -1,6 +1,8 @@
 package backend.terrain;
 
-public class Water extends Terrain {
+import java.io.Serializable;
+
+public class Water extends Terrain implements Serializable {
     public Water(){
         super(TerrainType.WATER,2.0,2.2,1.9,1,5);
 

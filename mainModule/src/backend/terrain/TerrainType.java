@@ -1,5 +1,7 @@
 package backend.terrain;
 
-public enum TerrainType {
+import java.io.Serializable;
+
+public enum TerrainType implements Serializable {
     GRASS, HILL, FOREST, WATER, MOUNTAIN
 }

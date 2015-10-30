@@ -11,7 +11,9 @@ import backend.worldBuilding.Player;
 import backend.terrain.Terrain;
 import backend.worldBuilding.World;
 
-public class Unit {
+import java.io.Serializable;
+
+public class Unit implements Serializable {
     public static final Integer ATTACK_AP_COST = 2;
     public static final Integer DIG_AP_COST = 1;
     static Integer nextId = 0;

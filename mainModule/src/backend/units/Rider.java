@@ -7,10 +7,9 @@ import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.worldBuilding.World;
 
-/**
- * Created by Pedro on 28/10/2015.
- */
-public class Rider extends Unit{
+import java.io.Serializable;
+
+public class Rider extends Unit implements Serializable {
 
     public Rider(World world, Location location, Player owner){
         super(UnitType.RIDER, new Attack(3, 2, 4), new Defense(2,4,1), 15, 7, 1, world, location, owner,5,5);

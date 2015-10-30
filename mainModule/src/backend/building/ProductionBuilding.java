@@ -5,10 +5,9 @@ import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.worldBuilding.World;
 
-/**
- * Created by Julian Benitez on 10/29/2015.
- */
-public class ProductionBuilding extends Building {
+import java.io.Serializable;
+
+public class ProductionBuilding extends Building implements Serializable {
     public static final Integer UNIT_COST = 10;
 
     public ProductionBuilding(BuildingType buildingType, Player owner, Income income, Location location) {

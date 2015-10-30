@@ -5,11 +5,13 @@ import backend.items.Item;
 import backend.items.ItemFactory;
 import backend.items.ItemType;
 import backend.terrain.Terrain;
+
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 
-public class Cell {
+public class Cell implements Serializable {
     private Location location;
     private Queue<Item> treasures;
     private final static int MAX_ITEMS = 5;

@@ -3,7 +3,9 @@ package backend;
 import backend.items.Item;
 import backend.terrain.Terrain;
 
-public class Attack {
+import java.io.Serializable;
+
+public class Attack implements Serializable {
     Integer slashDamage, piercingDamage, bluntDamage;
 
     /**

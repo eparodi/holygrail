@@ -1,6 +1,8 @@
 package backend.items;
 
-public class Item {
+import java.io.Serializable;
+
+public class Item implements Serializable {
 	private String name = "Default";
     private ItemType type;
     private Integer maxAPBonus = 0, maxHealthBonus = 0; //for Extra Type

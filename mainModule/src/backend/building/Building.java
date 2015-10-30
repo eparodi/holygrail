@@ -4,6 +4,7 @@ import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 
+import java.io.Serializable;
 import java.rmi.registry.LocateRegistry;
 
 /**
@@ -11,7 +12,7 @@ import java.rmi.registry.LocateRegistry;
  * the owner.
  */
 
-public abstract class Building{
+public abstract class Building implements Serializable{
     BuildingType buildingType;
     Player owner = null;
     Income income;

@@ -1,8 +1,9 @@
 package backend.items;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class ItemFactory {
+public class ItemFactory implements Serializable {
 
     private final static int MAX_ITEM_TYPES = ItemType.values().length;
     private final static ItemType[] ITEM_TYPES = ItemType.values();
@@ -29,8 +30,7 @@ public class ItemFactory {
             return null;
         }
 
-        Item newItem = new Item(name,type,maxAPBonus,maxHealthBonus,slashBonus,piercingBonus,bluntBonus);
-        return newItem;
+        return new Item(name,type,maxAPBonus,maxHealthBonus,slashBonus,piercingBonus,bluntBonus);
     }
 
     /**

@@ -1,9 +1,8 @@
 package backend.building;
 
-/**
- * Created by Julian Benitez on 10/29/2015.
- */
-public class MineIncome implements Income {
+import java.io.Serializable;
+
+public class MineIncome implements Income,Serializable {
 
     @Override
     public Integer giveIncome() {

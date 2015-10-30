@@ -2,7 +2,9 @@ package backend.terrain;
 
 import backend.exceptions.NullArgumentException;
 
-public abstract class Terrain {
+import java.io.Serializable;
+
+public abstract class Terrain implements Serializable {
     private static final Integer baseCost=10;
     private TerrainType terrainType;
 

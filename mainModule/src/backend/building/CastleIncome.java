@@ -1,9 +1,8 @@
 package backend.building;
 
-/**
- * Created by Julian Benitez on 10/29/2015.
- */
-public class CastleIncome implements Income {
+import java.io.Serializable;
+
+public class CastleIncome implements Income, Serializable {
 
     @Override
     public Integer giveIncome() {

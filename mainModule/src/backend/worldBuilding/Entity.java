@@ -2,7 +2,9 @@ package backend.worldBuilding;
 
 import backend.worldBuilding.Location;
 
-public abstract class Entity {
+import java.io.Serializable;
+
+public abstract class Entity implements Serializable {
     private Location gridLocation;
 
     public Entity(){
