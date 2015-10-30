@@ -5,12 +5,10 @@ import backend.building.BuildingType;
 import backend.building.Castle;
 import backend.building.Mine;
 import backend.exceptions.CellOutOfWorldException;
-import backend.exceptions.InvalidTerrainException;
 import backend.exceptions.NullArgumentException;
 import backend.items.Item;
 import backend.terrain.*;
 import backend.units.Unit;
-import frontend.terrain.ForestUI;
 
 import java.util.*;
 

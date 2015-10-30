@@ -1,34 +1,32 @@
 package frontend;
 
 import backend.exceptions.NullArgumentException;
+import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
+import frontend.EntityUI;
+import frontend.GameController;
+import frontend.ImageManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public abstract class EntityUI {
+/**
+ * Created by Julian Benitez on 10/29/2015.
+ */
+public class TerrainUI {
     protected Location drawLocation;
     protected Image image;
     protected ImageManager imageManager = new ImageManager();
 
-    /**
-     *
-     * @param drawLocation Entity screen coordinates
-     * @param image the image to draw
-     */
-    public EntityUI(Location drawLocation, Image image) {
+    public TerrainUI(Location drawLocation, Cell cell, Integer cellHeight, Integer cellWidth) {
+//        super(drawLocation, new Image(imageManager.getTerrainImage(cell.getTerrain()), cellWidth, cellHeight, false, false));
         this.drawLocation = drawLocation;
-        this.image = image;
+        this.image = new Image(imageManager.getTerrainImage(cell.getTerrain()), cellWidth, cellHeight, false, false);
         if(drawLocation == null)throw new NullArgumentException("null drawLocation");
-        if(image == null)throw new NullArgumentException("null image");
     }
 
-
-    /**
-     *
-     * @param graphicsContext
-     */
     public void drawMe(GraphicsContext graphicsContext){
         if(graphicsContext == null) throw new NullArgumentException("null graphics context");
+
         graphicsContext.drawImage(image,drawLocation.getX(),drawLocation.getY());
     }
 }
