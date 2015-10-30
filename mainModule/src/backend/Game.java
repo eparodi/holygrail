@@ -22,7 +22,19 @@ public class Game implements Serializable {
     private Queue<String> logQueue;
 
     public Game(Integer worldWidth, Integer worldHeight, String player1, String player2) {
-        startNewGame(worldWidth, worldHeight, player1, player2);
+        loadPlayers(player1,player2);
+        world = new World(worldWidth, worldHeight, this.player1, this.player2);
+        startNewGame();
+    }
+
+    public Game(World world, String player1,String player2){
+        loadPlayers(player1,player2);
+        startNewGame();
+    }
+
+    public void loadPlayers(String player1, String player2){
+        this.player1 = new Player(player1);
+        this.player2 = new Player(player2);
     }
 
     public Integer getWorldHeight() {
@@ -33,10 +45,7 @@ public class Game implements Serializable {
         return world.getWorldWidth();
     }
 
-    public void startNewGame(Integer worldWidth, Integer worldHeight, String player1, String player2) {
-        this.player1 = new Player(player1);
-        this.player2 = new Player(player2);
-        world = new World(worldWidth, worldHeight, this.player1, this.player2);
+    public void startNewGame() {
         logQueue = new ArrayDeque<String>();
         activePlayer = this.player1;
         selectPlayerCastle(activePlayer);

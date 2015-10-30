@@ -2,6 +2,8 @@ package frontend;
 
 import backend.Game;
 import backend.building.Building;
+import backend.exceptions.NullArgumentException;
+import backend.exceptions.NullLocationException;
 import backend.units.Unit;
 import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
@@ -19,7 +21,8 @@ public class GameController {
     Integer cellWidth;
     Integer worldHeight;
     Integer worldWidth;
-
+    Integer canvasHeight;
+    Integer canvasWidth;
     Game game;
 
     //    /**
@@ -37,17 +40,15 @@ public class GameController {
         System.out.println(cellHeight + "," + cellWidth);
     }
 
-    public void addCanvasSize(double canvasHeight, double canvasWidth) {
-        cellWidth = (int) (canvasWidth / (worldWidth + 0.417d));
-        cellHeight = (int) (canvasHeight / (worldHeight * 0.80));
+    public void resetCellSize(){
+        cellWidth = (int) (this.canvasWidth / (worldWidth + 0.417d));
+        cellHeight = (int) (this.canvasHeight / (worldHeight * 0.80));
     }
 
-    public Integer getCellHeight() {
-        return cellHeight;
-    }
-
-    public Integer getCellWidth() {
-        return cellWidth;
+    public void addCanvasSize(Double canvasHeight, Double canvasWidth) {
+        this.canvasHeight = canvasHeight.intValue();
+        this.canvasWidth = canvasWidth.intValue();
+        resetCellSize();
     }
 
     public void attemptAction(double drawX, double drawY) {
@@ -116,7 +117,7 @@ public class GameController {
 
     public Location gridLocationToDrawLocation(Location gridLocation) {
         Location drawLocation = new Location(0, 0);
-
+        if(gridLocation == null) throw new NullArgumentException("null location");
         drawLocation.setX(gridLocation.getY() % 2 == 0 ? gridLocation.getX() * cellWidth :
                 gridLocation.getX() * cellWidth + cellWidth / 2); // Depende de fila par/impar
         drawLocation.setY(gridLocation.getY() * (cellHeight - cellHeight / 4));
@@ -167,7 +168,9 @@ public class GameController {
             c.printStackTrace();
         }
         this.game = game;
+        if(game == null) throw new NullLocationException(path + " is an invalid map");
         initialize();
+        resetCellSize();
         return game;
     }
 
