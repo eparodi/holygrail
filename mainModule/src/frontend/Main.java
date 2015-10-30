@@ -5,14 +5,18 @@ import backend.units.UnitType;
 import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.*;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -23,6 +27,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import javax.swing.event.TreeModelEvent;
 import java.awt.*;
 import java.io.*;
 import java.util.Random;
@@ -50,19 +55,17 @@ public class Main extends Application {
         //TODO ARREGLAR LA VENTANA Y PONER EVENTOS
 
         MenuBar mainMenu = new MenuBar();
-        Menu menuNew = new Menu("Nueva Partida");
-        menuNew.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
+        Menu menuFile = new Menu("File");
+        MenuItem menuItemExit = new MenuItem("Exit");
+        mainMenu.getMenus().addAll(menuFile);
+        menuFile.getItems().add(menuItemExit);
+        root.getChildren().add(mainMenu);
+
+        menuItemExit.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+                System.exit(0);
             }
         });
-        Menu menuSave = new Menu("Guardar Partida");
-        Menu menuLoad = new Menu("Cargar Partida");
-        Menu menuExit = new Menu("Salir");
-        mainMenu.getMenus().addAll(menuNew, menuSave, menuLoad, menuExit);
-        VBox topContainer = new VBox();
-        topContainer.getChildren().add(mainMenu);
-        root.getChildren().add(topContainer);
         //TERMINA MENU
 
 

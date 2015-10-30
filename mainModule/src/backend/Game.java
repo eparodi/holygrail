@@ -3,15 +3,11 @@ package backend;
 import backend.building.Building;
 import backend.building.Castle;
 import backend.exceptions.NullArgumentException;
-import backend.items.Item;
 import backend.units.Unit;
-import backend.units.UnitType;
 import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.worldBuilding.World;
-import com.sun.javafx.geom.AreaOp;
-import frontend.CellUIData;
 
 import java.util.ArrayDeque;
 import java.util.Collection;
