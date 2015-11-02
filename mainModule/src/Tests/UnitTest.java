@@ -84,6 +84,5 @@ public class UnitTest {
 //
 //        world.removeUnit(archer2);
 //
-//        //TODO ver si hacemos armor pickupeable
 //    }
 }

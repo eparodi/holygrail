@@ -85,16 +85,11 @@ public class Unit extends OwneableEntitty implements Serializable {
         return maxActionPoints;
     }
 
-    //TODO: nobody?
-    public Integer getRange() {
-        return range;
-    }
-
     public Player getOwner() {
         return owner;
     }
 
-    /**TODO: Sacar Printf's.
+    /**
      * Returns an Attack dealt by the Unit, considering his Runes, and the Terrain modifier.
      *
      * @return modified Attack.
@@ -141,7 +136,6 @@ public class Unit extends OwneableEntitty implements Serializable {
     }
 
     /**
-     * TODO: Remover Printf's
      * Makes the unit receive an Attack.
      *
      * @param attack Attack to receive.
@@ -189,12 +183,10 @@ public class Unit extends OwneableEntitty implements Serializable {
      * @param targetTerrain Terrain where the Unit is standing.
      * @return Double value with the Terrain modifier.
      */
-    //TODO implement new terrain modifier method
 
     /**
      * Picks and item. If the unit already has an item in the slot, the item is dropped and returned.
      */
-    //TODO REHACER
     public void pickItem(){
 
         Item droppedItem = null;

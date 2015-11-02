@@ -11,6 +11,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -105,9 +107,12 @@ public class GameController {
     }
 
     public void drawUnits(GraphicsContext graphicsContext) {
+        Location drawLocation;
         for (Unit unit : game.getUnits()) {
-            new UnitUI(gridLocationToDrawLocation(unit.getLocation()), unit, cellHeight, cellWidth).drawMe(graphicsContext);
-
+            drawLocation = gridLocationToDrawLocation(unit.getLocation());
+            new UnitUI(drawLocation, unit, cellHeight, cellWidth).drawMe(graphicsContext);
+            graphicsContext.setFill(Color.BURLYWOOD);
+            graphicsContext.fillText("this is a unit", drawLocation.getX(), drawLocation.getY());
         }
     }
 

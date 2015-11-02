@@ -15,8 +15,8 @@ import java.rmi.registry.LocateRegistry;
  */
 
 public abstract class Building extends OwneableEntitty implements Serializable{
-    BuildingType buildingType;
-    Income income;
+    private BuildingType buildingType;
+    private Income income;
 
     @Override
     public void setLocation(Location location){

@@ -75,7 +75,6 @@ public class Game implements Serializable {
             } else {
                 //No unit and building means unit tries to capture
                 //getOwnerID() can be null if its a neutral mine
-                //TODO: add building.hasOwner()
                 if ( world.isBuildingOnLocation(clickedLocation)){
                     Building currentBuilding = world.getBuildingAt(clickedLocation);
                     if ( currentBuilding.getOwner() == null || !(currentBuilding.getOwner().equals(activePlayer))){

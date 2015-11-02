@@ -3,9 +3,6 @@ package frontend;
 import backend.exceptions.NullArgumentException;
 import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
-import frontend.EntityUI;
-import frontend.GameController;
-import frontend.ImageManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 

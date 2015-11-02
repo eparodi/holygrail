@@ -41,7 +41,6 @@ public class Main extends Application {
         //END OF MODIFIABLE, DONT TOUCH THE REST
 
 
-        //TODO ARREGLAR LA VENTANA Y PONER EVENTOS
         final GameController gameController = new GameController(game);
 
         primaryStage.setTitle("El Santo Grial");

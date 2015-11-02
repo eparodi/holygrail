@@ -24,37 +24,23 @@ public class World implements Serializable {
 
     //TODO Replace player1 and player2 with Collection<Player> and receive map
     public World(Integer worldWidth, Integer worldHeight, Player player1, Player player2) {
-        this.worldHeight = worldHeight;
-        this.worldWidth = worldWidth;
-
-        cells = generateCellCollection();
+        cells = new ArrayList<>();
         units = new ArrayList<Unit>();
         buildings = new ArrayList<Building>();
 
-
-        Location player1Castle = new Location(2, 2);
-        Location player2Castle = new Location(14, 9);
-        Location mineLocation = new Location(1,8);
-        Location mineLocation2 = new Location(14,0);
-        Location mineLocation3 = new Location(6,3);
-        Location mineLocation4 = new Location(10,6);
-
-        buildings.add(new Castle(player1, player1Castle));
-        buildings.add(new Castle(player2, player2Castle));
-        buildings.add(new Mine(mineLocation));
-        buildings.add(new Mine(mineLocation2));
-        buildings.add(new Mine(mineLocation3));
-        buildings.add(new Mine(mineLocation4));
+        initialize(worldWidth,worldHeight,player1,player2);
+    }
 
 
 
+    public void addGrailToCell(Collection<Cell> cells, Location player1Castle, Location player2Castle){
         ArrayList<Cell> holyGrailPossibleCells = new ArrayList<Cell>();
 
         for (Cell cell : cells) {
             if (cell.canRecieveItem()) {
                 Location cellLocation = cell.getLocation();
                 if (cellLocation.distance(player1Castle) > 5 && cellLocation.distance(player2Castle) > 5) {
-                    if (cellLocation != mineLocation) {
+                    if (!isBuildingOnLocation(cellLocation)) {
                         holyGrailPossibleCells.add(cell); //TODO si hay m�s de una mina hay que cambiarlo.
                     }
                 }
@@ -65,10 +51,6 @@ public class World implements Serializable {
         int holyGrailPosition = random.nextInt(holyGrailPossibleCells.size());
         holyGrailPossibleCells.get(holyGrailPosition).addHolyGrail();
         System.out.println(holyGrailPossibleCells.get(holyGrailPosition).getLocation());
-
-//        for (Cell cell : cells) {
-//            System.out.println(cell.toString());
-//        }
     }
 
     /**
@@ -143,7 +125,6 @@ public class World implements Serializable {
     }
 
     /**
-     * TODO: Para qu� usamos esto?
      * Returns a Collection with all the Units in the World.
      *
      * @return a Collection of all Units.
@@ -153,7 +134,6 @@ public class World implements Serializable {
     }
 
     /**
-     * TODO: Idem Arriba
      * Returns a Collection with all the Units in the World of certain Player.
      *
      * @param player owner of the Units.
@@ -179,6 +159,7 @@ public class World implements Serializable {
             throw new NullArgumentException("player is null");
         }
         for (Building building : buildings) {
+           //TODO
             if (building == null) {
                 throw new NullPointerException("null building in buildings");
             }
@@ -230,7 +211,6 @@ public class World implements Serializable {
         return cells;
     }
 
-    //TODO: change, it's only for testing terrains
     public Terrain loadTerrain(Location location) {
 
         if (location.getX() >= 5 && location.getX() < 10 && location.getY() > 3 && location.getY() <= 8
@@ -257,7 +237,6 @@ public class World implements Serializable {
 
 
     /**
-     * TODO: Vamos a hacer mapas espec�ficos despues?
      * Generates all the Cells of the World.
      *
      * @return Collection of Cells.
@@ -319,4 +298,28 @@ public class World implements Serializable {
         }
         throw new NoSuchElementException("No building in buildings with that location: " + location);
     }
+
+    public void initialize(Integer worldWidth, Integer worldHeight, Player player1, Player player2){
+        this.worldHeight = worldHeight;
+        this.worldWidth = worldWidth;
+
+        cells = generateCellCollection();
+        Location player1Castle = new Location(2, 2);
+        Location player2Castle = new Location(14, 9);
+        Location mineLocation = new Location(1,8);
+        Location mineLocation2 = new Location(14,0);
+        Location mineLocation3 = new Location(6,3);
+        Location mineLocation4 = new Location(10,6);
+
+        buildings.add(new Castle(player1, player1Castle));
+        buildings.add(new Castle(player2, player2Castle));
+        buildings.add(new Mine(mineLocation));
+        buildings.add(new Mine(mineLocation2));
+        buildings.add(new Mine(mineLocation3));
+        buildings.add(new Mine(mineLocation4));
+        addGrailToCell(this.getCells(),player1Castle,player2Castle);
+    }
+
+
+
 }

@@ -38,7 +38,6 @@ public class ItemFactory implements Serializable {
      * @return Random Item.
      */
     public static Item buildRandomItem(){
-        //TODO Get a random name and use it.
         Random random = new Random();
         ItemType type;
         type = ITEM_TYPES[random.nextInt(MAX_ITEM_TYPES)];

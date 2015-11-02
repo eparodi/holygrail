@@ -80,7 +80,7 @@ public class Cell extends Entity {
      * Adds the Holy Grail item to the current Cell.
      */
     public void addHolyGrail(){
-        treasures.add(ItemFactory.buildItem("Holy Grail", ItemType.EXTRA, 0, 0, 0, 0, 0)); //TODO Check Values.
+        treasures.add(ItemFactory.buildItem("Holy Grail", ItemType.EXTRA, -2, 3, 0, 0, 0));
     }
 
     /**

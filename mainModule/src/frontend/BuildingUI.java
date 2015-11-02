@@ -1,13 +1,8 @@
 package frontend;
 
 import backend.building.Building;
-import backend.exceptions.NoSuchPlayerException;
 import backend.exceptions.NullArgumentException;
-import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
-import backend.worldBuilding.Player;
-import frontend.EntityUI;
-import frontend.ImageManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
