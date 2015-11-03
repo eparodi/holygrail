@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class Player implements Serializable {
-    static Integer nextId = 1;
+    private static Integer nextId = 1;
 
     private String name;
     private Integer id;

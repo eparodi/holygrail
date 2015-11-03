@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Random;
 
 public class ItemFactory implements Serializable {
+    private static Random random = new Random();
 
     private final static int MAX_ITEM_TYPES = ItemType.values().length;
     private final static ItemType[] ITEM_TYPES = ItemType.values();
@@ -16,7 +17,6 @@ public class ItemFactory implements Serializable {
     /**
      * Creates a new item with the given stats.
      * @param name Name of the item.
-     * @param type Type of the item.
      * @param maxAPBonus Action points added to the maximum.
      * @param maxHealthBonus Health added to the maximum.
      * @param slashBonus Slash Bonus added.
@@ -24,13 +24,13 @@ public class ItemFactory implements Serializable {
      * @param bluntBonus Blunt Bonus added.
      * @return An Item with the given stats.
      */
-    public static Item buildItem(String name, ItemType type ,Integer maxAPBonus, Integer maxHealthBonus,
+    public static Item buildItem(String name, Integer maxAPBonus, Integer maxHealthBonus,
                                  Integer slashBonus, Integer piercingBonus, Integer bluntBonus){
         if (name == null){
             return null;
         }
 
-        return new Item(name,type,maxAPBonus,maxHealthBonus,slashBonus,piercingBonus,bluntBonus);
+        return new Item(name,maxAPBonus,maxHealthBonus,slashBonus,piercingBonus,bluntBonus);
     }
 
     /**
@@ -38,7 +38,7 @@ public class ItemFactory implements Serializable {
      * @return Random Item.
      */
     public static Item buildRandomItem(){
-        Random random = new Random();
+
         ItemType type;
         type = ITEM_TYPES[random.nextInt(MAX_ITEM_TYPES)];
 
@@ -81,7 +81,7 @@ public class ItemFactory implements Serializable {
 
         String name = getName(maxAPBonus,maxHealthBonus,slashBonus,piercingBonus,bluntBonus,type);
 
-        return buildItem( name , type, maxAPBonus, maxHealthBonus, slashBonus, piercingBonus, bluntBonus);
+        return buildItem( name , maxAPBonus, maxHealthBonus, slashBonus, piercingBonus, bluntBonus);
     }
 
     /**
@@ -105,8 +105,8 @@ public class ItemFactory implements Serializable {
                 name += "Virorum ";
             }else if ( maxAPBonus == 4 ){
                 name += "Magnus ";
-            }else if ( maxAPBonus == 5 ){
-                name += "Optimus";
+            }else {
+                name += "Optimus " + maxAPBonus +" ";
             }
         }
 
@@ -119,8 +119,8 @@ public class ItemFactory implements Serializable {
                 name += "Liber ";
             } else if (maxHealthBonus == 4) {
                 name += "Scutum ";
-            } else if (maxHealthBonus == 5) {
-                name += "Potio ";
+            } else  {
+                name += "Potio " + maxHealthBonus+" ";
             }
         }
 
@@ -133,8 +133,8 @@ public class ItemFactory implements Serializable {
                 name += "Terrae ";
             } else if (slashBonus == 4) {
                 name += "Lucis ";
-            } else if (slashBonus == 5) {
-                name += "Umbrae ";
+            } else {
+                name += "Umbrae " + slashBonus+" ";
             }
         }
 
@@ -147,8 +147,8 @@ public class ItemFactory implements Serializable {
                 name += "Ubiqui ";
             } else if (piercingBonus == 4) {
                 name += "Magnificus ";
-            } else if (piercingBonus == 5) {
-                name += "Omnipotens ";
+            } else {
+                name += "Omnipotens " + piercingBonus+" ";
             }
         }
 
@@ -161,8 +161,8 @@ public class ItemFactory implements Serializable {
                 name += "III ";
             } else if (bluntBonus == 4) {
                 name += "IV ";
-            } else if (bluntBonus == 5) {
-                name += "V ";
+            } else {
+                name += "V " + bluntBonus + " ";
             }
         }
 
@@ -170,7 +170,7 @@ public class ItemFactory implements Serializable {
             name += "Rune";
         }
         if ( type == ItemType.EXTRA ){
-            name += "Accesory";
+            name += "Accessory";
         }
 
         return name;

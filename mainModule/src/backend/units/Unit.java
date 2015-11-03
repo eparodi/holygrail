@@ -2,10 +2,8 @@ package backend.units;
 
 import backend.*;
 import backend.exceptions.NullArgumentException;
-import backend.exceptions.NullLocationException;
 import backend.Defense;
 import backend.items.Item;
-import backend.items.ItemType;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.terrain.Terrain;
@@ -18,14 +16,12 @@ import java.util.LinkedList;
 public class Unit extends OwneableEntitty implements Serializable {
     public static final Integer ATTACK_AP_COST = 2;
     public static final Integer DIG_AP_COST = 1;
-    static Integer nextId = 0;
+    private static Integer nextId = 0;
 
     private Player owner;
     private Integer id;
-    private UnitType unitType;
 
     private World world;
-    //private Location location;
 
     private Attack baseAttack = null;
     private Defense defense = null;
@@ -42,10 +38,9 @@ public class Unit extends OwneableEntitty implements Serializable {
     private Integer speed;
 
 
-    public Unit(UnitType unitType, Attack baseAttack, Defense defense, Integer maxHealth, Integer maxActionPoints,
+    public Unit(Attack baseAttack, Defense defense, Integer maxHealth, Integer maxActionPoints,
                 Integer range, World world, Location location, Player owner, Integer endurance, Integer speed) {
         super(location,owner);
-        this.unitType = unitType;
         this.baseAttack = baseAttack;
         this.defense = defense;
         this.maxHealth = maxHealth;
@@ -61,9 +56,6 @@ public class Unit extends OwneableEntitty implements Serializable {
     }
 
 
-    public UnitType getUnitType() {
-        return unitType;
-    }
 
     public Integer getHealth() {
         return health < 0 ? 0 : health;
@@ -97,7 +89,6 @@ public class Unit extends OwneableEntitty implements Serializable {
     public Attack getAttack() {
         // returns the base attack with the terrain bonus the attacking unit is
         // on
-        System.out.println(unitType + "is attacking");
         System.out.println("attackerTerrain = " + getCurrentTerrain());
         System.out.println("baseAttack = " + baseAttack);
         System.out.println("baseAttack.getModifiedAttack(calcTerrainMod(attackerTerrain)) = "
@@ -115,11 +106,11 @@ public class Unit extends OwneableEntitty implements Serializable {
     }
 
     public boolean move(Location finalLocation) {
-        if(finalLocation == null) throw new NullArgumentException("null final position");
-        if(world.isUnitOnLocation(finalLocation)) return false;
-        Integer cost =world.getTerrainAt(finalLocation).getApCost(speed,endurance);
-        if(cost > actionPoints) return false;
-        if(getLocation().distance(finalLocation) != 1) return false;
+        if (finalLocation == null) throw new NullArgumentException("null final position");
+        if (world.isUnitOnLocation(finalLocation)) return false;
+        Integer cost = world.getTerrainAt(finalLocation).getApCost(speed, endurance);
+        if (cost > actionPoints) return false;
+        if (getLocation().distance(finalLocation) != 1) return false;
 
         spendAP(cost);
         setLocation(finalLocation);
@@ -140,7 +131,7 @@ public class Unit extends OwneableEntitty implements Serializable {
      *
      * @param attack Attack to receive.
      */
-    public void receiveDamage(Attack attack) {
+    private void receiveDamage(Attack attack) {
         Integer damageDealt = defense.getDamageDealt(attack, getCurrentTerrain());
         System.out.println("damageDealt = " + damageDealt);
         System.out.println("health = " + health);
@@ -157,7 +148,7 @@ public class Unit extends OwneableEntitty implements Serializable {
      * @param unit defending Unit.
      * @return true if the Distance between two Units is less or equals to the attacking range of the attacker Unit.
      */
-    public boolean isInRange(Unit unit) {
+    private boolean isInRange(Unit unit) {
         return unit.getLocation().distance(getLocation()) <= range;
     }
 
@@ -209,7 +200,7 @@ public class Unit extends OwneableEntitty implements Serializable {
     /**
      * Updates the Health and Action Points, adding the bonuses from Items.
      */
-    public void updateStatus( Item item ) {
+    private void updateStatus( Item item ) {
         Integer newHealth = health + item.getMaxHealthBonus();
         health = newHealth < getMaxHealth() ? newHealth : getMaxHealth();
 
@@ -220,7 +211,7 @@ public class Unit extends OwneableEntitty implements Serializable {
     /**
      * Makes the Unit drop its Items.
      */
-    public void dropItems() {
+    private void dropItems() {
         Cell currentCell = world.getCellAt(getLocation());
         for ( Item i : itemSlots ){
             currentCell.addItem(i);
@@ -239,20 +230,21 @@ public class Unit extends OwneableEntitty implements Serializable {
      *
      * @param actionPointsSpent ap spent.
      */
-    public void spendAP(Integer actionPointsSpent) {
+    private void spendAP(Integer actionPointsSpent) {
         actionPoints -= actionPointsSpent;
         if (actionPoints < 0) throw new IllegalStateException(this + " is using more AP than it has");
     }
 
     public String toString() {
-        return getUnitType() + " " + getId();
+        return "Unit: " + getId();
     }
 
-    public static Integer getNextId() {
+    private static Integer getNextId() {
         Integer aux = nextId;
         nextId++;
         return aux;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -278,4 +270,7 @@ public class Unit extends OwneableEntitty implements Serializable {
         return false;
     }
 
+    private void setLocation(Location location) {
+        this.location = location;
+    }
 }

@@ -18,11 +18,6 @@ public abstract class Building extends OwneableEntitty implements Serializable{
     private BuildingType buildingType;
     private Income income;
 
-    @Override
-    public void setLocation(Location location){
-        throw new UnsupportedOperationException();
-    }
-
     public Building(BuildingType buildingType, Player owner, Income income, Location location){
         super(location,owner);
         this.buildingType = buildingType;

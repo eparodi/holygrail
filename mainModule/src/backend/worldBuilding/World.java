@@ -18,9 +18,7 @@ public class World implements Serializable {
     Collection<Unit> units;
     Collection<Building> buildings;
 
-
     Integer worldWidth, worldHeight;
-
 
     //TODO Replace player1 and player2 with Collection<Player> and receive map
     public World(Integer worldWidth, Integer worldHeight, Player player1, Player player2) {
@@ -31,9 +29,7 @@ public class World implements Serializable {
         initialize(worldWidth,worldHeight,player1,player2);
     }
 
-
-
-    public void addGrailToCell(Collection<Cell> cells, Location player1Castle, Location player2Castle){
+    private void addGrailToCell(Collection<Cell> cells, Location player1Castle, Location player2Castle){
         ArrayList<Cell> holyGrailPossibleCells = new ArrayList<Cell>();
 
         for (Cell cell : cells) {
@@ -51,17 +47,6 @@ public class World implements Serializable {
         int holyGrailPosition = random.nextInt(holyGrailPossibleCells.size());
         holyGrailPossibleCells.get(holyGrailPosition).addHolyGrail();
         System.out.println(holyGrailPossibleCells.get(holyGrailPosition).getLocation());
-    }
-
-    /**
-     * Adds a Building to the Cell at the given location, with the Cell addBuilding method.
-     *
-     * @param building building to add.
-     */
-    public void addBuilding(Building building) {
-        if (building == null) throw new NullArgumentException("null building parameter");
-
-        buildings.add(building);
     }
 
     /**
@@ -211,7 +196,7 @@ public class World implements Serializable {
         return cells;
     }
 
-    public Terrain loadTerrain(Location location) {
+    private Terrain loadTerrain(Location location) {
 
         if (location.getX() >= 5 && location.getX() < 10 && location.getY() > 3 && location.getY() <= 8
                 || (location.getY() == 3 && (location.getX() == 8 || location.getX() == 9))
@@ -299,7 +284,7 @@ public class World implements Serializable {
         throw new NoSuchElementException("No building in buildings with that location: " + location);
     }
 
-    public void initialize(Integer worldWidth, Integer worldHeight, Player player1, Player player2){
+    private void initialize(Integer worldWidth, Integer worldHeight, Player player1, Player player2){
         this.worldHeight = worldHeight;
         this.worldWidth = worldWidth;
 

@@ -6,7 +6,7 @@ import backend.worldBuilding.Location;
 import java.io.Serializable;
 
 public abstract class Entity implements Serializable{
-    private Location location;
+    protected Location location;
 
     public Entity(Location newLoc){
         this.location=newLoc;
@@ -14,11 +14,6 @@ public abstract class Entity implements Serializable{
 
     public Location getLocation() {
         return location;
-    }
-
-    public void setLocation(Location location) {
-        if (location == null) throw new NullLocationException(this.toString() + " received a null location");
-        this.location = location;
     }
 
     @Override

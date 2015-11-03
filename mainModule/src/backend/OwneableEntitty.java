@@ -2,6 +2,8 @@ package backend;
 
 import backend.worldBuilding.Player;
 import backend.worldBuilding.Location;
+import jdk.nashorn.internal.objects.NativeUint16Array;
+
 import java.io.Serializable;
 
 
@@ -19,6 +21,10 @@ public abstract class OwneableEntitty extends Entity implements Serializable {
 
     public Player getOwner() {
         return owner;
+    }
+
+    public boolean hasOwner(){
+        return owner != null;
     }
 }
 

@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 public abstract class Terrain implements Serializable {
     private static final Integer baseCost=10;
-    private TerrainType terrainType;
 
     private Double slashBonus;
     private Double piercingBonus;
@@ -15,9 +14,6 @@ public abstract class Terrain implements Serializable {
     private Integer maxSpeed;
     private Integer enduranceCost;
 
-    public TerrainType getTerrainType() {
-        return terrainType;
-    }
 
     public Double getSlashBonus() {
         return slashBonus;
@@ -31,9 +27,8 @@ public abstract class Terrain implements Serializable {
         return bluntBonus;
     }
 
-    public Terrain(TerrainType terrainType, Double slashBonus, Double piercingBonus, Double bluntBonus,
+    public Terrain(Double slashBonus, Double piercingBonus, Double bluntBonus,
                    Integer maxSpeed, Integer enduranceCost) {
-        this.terrainType = terrainType;
         this.slashBonus = slashBonus;
         this.piercingBonus = piercingBonus;
         this.bluntBonus = bluntBonus;
