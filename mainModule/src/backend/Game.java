@@ -15,6 +15,9 @@ import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Queue;
 
+/**
+ * Represents a Game session, it has a World and Players.
+ */
 public class Game implements Serializable {
     private World world;
     private Location selectedLocation;
@@ -22,21 +25,41 @@ public class Game implements Serializable {
     private Player activePlayer;
     private Queue<String> logQueue;
 
+    /**
+     * Constructs a Game with a World of a specific Width and Height, and 2 players.
+     * @param worldWidth Width of the World.
+     * @param worldHeight Height of the World.
+     * @param player1 Player 1.
+     * @param player2 Player 2.
+     */
     public Game(Integer worldWidth, Integer worldHeight, String player1, String player2) {
         loadPlayers(player1, player2);
         world = new World(worldWidth, worldHeight, this.player1, this.player2);
         startNewGame();
     }
 
-    public void loadPlayers(String player1, String player2) {
+    /**
+     * Creates and loads the two players.
+     * @param player1 Player 1.
+     * @param player2 Player 2.
+     */
+    public void loadPlayers(String player1, String player2){
         this.player1 = new Player(player1);
         this.player2 = new Player(player2);
     }
 
+    /**
+     * Returns the World Height.
+     * @return Integer value of world Height.
+     */
     public Integer getWorldHeight() {
         return world.getWorldHeight();
     }
 
+    /**
+     * Return the World Width.
+     * @return Integer value of the
+     */
     public Integer getWorldWidth() {
         return world.getWorldWidth();
     }

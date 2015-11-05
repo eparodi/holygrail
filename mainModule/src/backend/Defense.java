@@ -5,6 +5,9 @@ import backend.terrain.Terrain;
 
 import java.io.Serializable;
 
+/**
+ * Represents the Defense of a Unit, based on different Resistance types.
+ */
 public class Defense implements Serializable {
     Integer slashResist, piercingResist, bluntResist;
 

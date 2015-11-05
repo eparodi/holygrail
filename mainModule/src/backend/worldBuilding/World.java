@@ -13,14 +13,17 @@ import backend.units.Unit;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * Represents the game World, with all the Cells, Units and Buildings.
+ */
 public class World implements Serializable {
     Collection<Cell> cells;
     Collection<Unit> units;
     Collection<Building> buildings;
 
     Integer worldWidth, worldHeight;
-
-    //TODO Replace player1 and player2 with Collection<Player> and receive map
+    //TODO: Javadoc
+    //TODO: Replace player1 and player2 with Collection<Player> and receive map
     public World(Integer worldWidth, Integer worldHeight, Player player1, Player player2) {
         cells = new ArrayList<>();
         units = new ArrayList<Unit>();
@@ -29,6 +32,7 @@ public class World implements Serializable {
         initialize(worldWidth,worldHeight,player1,player2);
     }
 
+    //TODO: Por qué le pasamos una collection de celdas, si vamos a usar this.cells?
     private void addGrailToCell(Collection<Cell> cells, Location player1Castle, Location player2Castle){
         ArrayList<Cell> holyGrailPossibleCells = new ArrayList<Cell>();
 
@@ -50,17 +54,17 @@ public class World implements Serializable {
     }
 
     /**
-     * Adds a Unit to the Cell at the given location, with the Cell addUnit method.
+     * Adds a Unit to World.
      *
      * @param unit unit to add.
      */
-    public void addUnit(Unit unit) {
+    public void addUnit(Unit unit) {//TODO: Remover exception, por qué una unidad seria null?
         if (unit == null) throw new NullArgumentException("null unit argument");
         units.add(unit);
     }
 
     /**
-     * Removes the Unit from the Cell at the specified Location, using the Cell removeUnit method.
+     * Removes the Unit from the World.
      *
      * @param unit unit to be removed.
      */
@@ -80,7 +84,11 @@ public class World implements Serializable {
         }
     }
 
-
+    /**
+     * Returns true if there is a Unit on the selected Location, false if not.
+     * @param selectedLocation Location of the World.
+     * @return True if there is a Unit on the selected Location, false if not.
+     */
     public boolean isUnitOnLocation(Location selectedLocation) {
         for (Unit unit : units) {
             if (unit.getLocation().equals(selectedLocation)) return true;
@@ -88,6 +96,11 @@ public class World implements Serializable {
         return false;
     }
 
+    /**
+     * Returns true if there is a building on the selected Location, false if not.
+     * @param selectedLocation Location of the World.
+     * @return True if there is a Building on the selected Location, false if not.
+     */
     public boolean isBuildingOnLocation(Location selectedLocation) {
         for (Building building : buildings) {
             if (building.getLocation().equals(selectedLocation)) return true;
@@ -100,7 +113,7 @@ public class World implements Serializable {
      * Returns the Cell of certain Location.
      *
      * @param location location of the Cell.
-     * @return a Cell type object of the specified location.
+     * @return the Cell of the specified location.
      */
     public Cell getCellAt(Location location) {
         for (Cell cell : cells) {
@@ -138,7 +151,7 @@ public class World implements Serializable {
      * @param player owner of the Castle.
      * @return Castle owned by Player.
      */
-    //TODO (ToAsk) how to recognize castle without enum
+    //TODO: (ToAsk) how to recognize castle without enum
     public Castle getPlayerCastle(Player player) {
         if (player == null) {
             throw new NullArgumentException("player is null");
@@ -196,8 +209,8 @@ public class World implements Serializable {
         return cells;
     }
 
+    // TODO: Javadoc
     private Terrain loadTerrain(Location location) {
-
         if (location.getX() >= 5 && location.getX() < 10 && location.getY() > 3 && location.getY() <= 8
                 || (location.getY() == 3 && (location.getX() == 8 || location.getX() == 9))
                 || (location.getY() == 2 && (location.getX()==9 || location.getX()==10))) {
@@ -217,7 +230,6 @@ public class World implements Serializable {
             return new Hill();
         }
         return new Grass();
-
     }
 
 
@@ -266,10 +278,19 @@ public class World implements Serializable {
         return income;
     }
 
+    /**
+     * Returns all the Buildings in the World.
+     * @return Collection of all the Buildings.
+     */
     public Collection<Building> getBuildings() {
         return buildings;
     }
 
+    /**
+     * Returns the Unit at a specific Location.
+     * @param location location of the Unit.
+     * @return Unit at the specified Location.
+     */
     public Unit getUnitAt(Location location) {
         for (Unit unit : units) {
             if (unit.getLocation().equals(location)) return unit;
@@ -277,6 +298,11 @@ public class World implements Serializable {
         throw new NoSuchElementException("No unit in units with that location: " + location);
     }
 
+    /**
+     * Returns the Building at a specific Location.
+     * @param location location of the Building.
+     * @return Building at the specified Location.
+     */
     public Building getBuildingAt(Location location) {
         for (Building building : buildings) {
             if (building.getLocation().equals(location)) return building;
@@ -284,6 +310,7 @@ public class World implements Serializable {
         throw new NoSuchElementException("No building in buildings with that location: " + location);
     }
 
+//TODO: Javadoc
     private void initialize(Integer worldWidth, Integer worldHeight, Player player1, Player player2){
         this.worldHeight = worldHeight;
         this.worldWidth = worldWidth;
