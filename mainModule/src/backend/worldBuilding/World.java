@@ -26,7 +26,7 @@ public class World implements Serializable {
     //TODO: Replace player1 and player2 with Collection<Player> and receive map
     public World(Integer worldWidth, Integer worldHeight, Player player1, Player player2) {
         cells = new ArrayList<>();
-        units = new ArrayList<Unit>();
+        units = new HashSet<>();
         buildings = new ArrayList<Building>();
 
         initialize(worldWidth,worldHeight,player1,player2);
@@ -41,7 +41,7 @@ public class World implements Serializable {
                 Location cellLocation = cell.getLocation();
                 if (cellLocation.distance(player1Castle) > 5 && cellLocation.distance(player2Castle) > 5) {
                     if (!isBuildingOnLocation(cellLocation)) {
-                        holyGrailPossibleCells.add(cell); //TODO si hay m�s de una mina hay que cambiarlo.
+                        holyGrailPossibleCells.add(cell);
                     }
                 }
             }
@@ -62,6 +62,13 @@ public class World implements Serializable {
         if (unit == null) throw new NullArgumentException("null unit argument");
         units.add(unit);
     }
+
+    //in the future new buildings might be added
+    public void addBuilding(Building building) {
+        if (building == null) throw new NullArgumentException("null unit argument");
+        buildings.add(building);
+    }
+
 
     /**
      * Removes the Unit from the World.

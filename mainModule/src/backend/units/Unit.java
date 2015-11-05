@@ -53,6 +53,7 @@ public class Unit extends OwneableEntitty implements Serializable {
         this.owner = owner;
         this.endurance = endurance;
         this.speed = speed;
+        //world.addUnit(this);
     }
 
 
@@ -128,12 +129,14 @@ public class Unit extends OwneableEntitty implements Serializable {
         return true;
     }
 
+    public boolean hasItem(){ return !itemSlots.isEmpty();}
+
     /**
      * Returns true if the unit has died.
      *
      * @return true if the unit is dead, false if it's alive.
      */
-    public boolean isDed() {
+    private boolean isDed() {
         return getHealth() == 0;
     }
 
@@ -175,7 +178,7 @@ public class Unit extends OwneableEntitty implements Serializable {
         return false;
     }
 
-    public void counterAttack(Unit unit){
+    private void counterAttack(Unit unit){
         if(isInRange(unit)) unit.receiveDamage(this.getAttack());
     }
 

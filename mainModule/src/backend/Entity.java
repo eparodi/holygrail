@@ -5,7 +5,7 @@ import backend.worldBuilding.Location;
 
 import java.io.Serializable;
 
-/**TODO: Esta bien definido esto?
+/**
  * Represents an Entity in certain Location of the World.
  */
 public abstract class Entity implements Serializable{
