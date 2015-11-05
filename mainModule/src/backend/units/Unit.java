@@ -13,7 +13,10 @@ import backend.worldBuilding.Cell;
 import java.io.Serializable;
 import java.util.LinkedList;
 
-public class Unit extends OwneableEntitty implements Serializable {
+/**
+ * Represents a Unit in the game.
+ */
+public abstract class Unit extends OwneableEntitty implements Serializable {
     public static final Integer ATTACK_AP_COST = 2;
     public static final Integer DIG_AP_COST = 1;
     private static Integer nextId = 0;
@@ -27,7 +30,7 @@ public class Unit extends OwneableEntitty implements Serializable {
     private Defense defense = null;
 
     private LinkedList<Item> itemSlots = new LinkedList<>();
-    private final int SLOT_NUMBER = 2 ;
+    private final int SLOT_NUMBER = 2;
 
     private Integer health;
     private Integer maxHealth;
@@ -37,10 +40,23 @@ public class Unit extends OwneableEntitty implements Serializable {
     private Integer endurance;
     private Integer speed;
 
-
+    /**
+     * Creates a Unit with certain stats on a specific Location in the World, with a Player owner.
+     *
+     * @param baseAttack      Attack of the unit.
+     * @param defense         Defense of the unit.
+     * @param maxHealth       Max Health of the unit.
+     * @param maxActionPoints Max AP of the unit.
+     * @param range           Range of the unit.
+     * @param world           World the unit is in.
+     * @param location        Location of the unit.
+     * @param owner           Player who owns the unit.
+     * @param endurance       Endurance of the unit.
+     * @param speed           Speed of the unit.
+     */
     public Unit(Attack baseAttack, Defense defense, Integer maxHealth, Integer maxActionPoints,
                 Integer range, World world, Location location, Player owner, Integer endurance, Integer speed) {
-        super(location,owner);
+        super(location, owner);
         this.baseAttack = baseAttack;
         this.defense = defense;
         this.maxHealth = maxHealth;
@@ -57,27 +73,46 @@ public class Unit extends OwneableEntitty implements Serializable {
     }
 
 
-
+    /**
+     * Returns the Health of the unit.
+     *
+     * @return Integer value of units health.
+     */
     public Integer getHealth() {
         return health < 0 ? 0 : health;
     }
 
+    /**
+     * Returns the Max Health of the unit.
+     *
+     * @return Integer value with the units max health.
+     */
     public Integer getMaxHealth() {
         int maxHealth = this.maxHealth;
-        for ( Item i : itemSlots ){
+        for (Item i : itemSlots) {
             maxHealth += i.getMaxHealthBonus();
         }
         return maxHealth;
     }
 
+    /**
+     * Returns the units max AP.
+     *
+     * @return Integer value of the units Max AP.
+     */
     public Integer getMaxActionPoints() {
         int maxActionPoints = this.maxActionPoints;
-        for ( Item i : itemSlots ){
+        for (Item i : itemSlots) {
             maxActionPoints += i.getMaxAPBonus();
         }
         return maxActionPoints;
     }
 
+    /**
+     * Returns the owner of the unit.
+     *
+     * @return Player who owns the unit.
+     */
     public Player getOwner() {
         return owner;
     }
@@ -87,9 +122,7 @@ public class Unit extends OwneableEntitty implements Serializable {
      *
      * @return modified Attack.
      */
-    public Attack getAttack() {
-        // returns the base attack with the terrain bonus the attacking unit is
-        // on
+    public Attack getAttack() {//TODO: Remover println
         System.out.println("attackerTerrain = " + getCurrentTerrain());
         System.out.println("baseAttack = " + baseAttack);
         System.out.println("baseAttack.getModifiedAttack(calcTerrainMod(attackerTerrain)) = "
@@ -97,30 +130,45 @@ public class Unit extends OwneableEntitty implements Serializable {
         return baseAttack.getModifiedAttack(getCurrentTerrain(), itemSlots);
     }
 
-
+    /**
+     * Returns the units current Terrain.
+     *
+     * @return Terrain of the unit current Location.
+     */
     public Terrain getCurrentTerrain() {
         return world.getTerrainAt(getLocation());
     }
 
+    /**
+     * Returns the player's ID.
+     *
+     * @return Integer value of player's ID.
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * Moves the unit to the final Location, and returns true if the unit has moved.
+     *
+     * @param finalLocation Location to move the unit.
+     * @return True if the unit has moved, false if not.
+     */
     public boolean move(Location finalLocation) {
-        if (finalLocation == null){
+        if (finalLocation == null) {
             throw new NullArgumentException("null final position");
         }
-        if (world.isUnitOnLocation(finalLocation)){
+        if (world.isUnitOnLocation(finalLocation)) {
             return false;
         }
         Integer cost = world.getTerrainAt(finalLocation).getApCost(speed, endurance);
-        if (cost > actionPoints){
+        if (cost > actionPoints) {
             return false;
         }
-        if (getLocation().distance(finalLocation) != 1){
+        if (getLocation().distance(finalLocation) != 1) {
             return false;
         }
-        if (world.isBuildingOnLocation(finalLocation)){
+        if (world.isBuildingOnLocation(finalLocation)) {
             world.getBuildingAt(finalLocation).setOwner(owner);
         }
 
@@ -129,7 +177,14 @@ public class Unit extends OwneableEntitty implements Serializable {
         return true;
     }
 
-    public boolean hasItem(){ return !itemSlots.isEmpty();}
+    /**
+     * Returns true if the unit has an Item.
+     *
+     * @return True if the unit has an Item, false if not.
+     */
+    public boolean hasItem() {
+        return !itemSlots.isEmpty();
+    }
 
     /**
      * Returns true if the unit has died.
@@ -150,12 +205,12 @@ public class Unit extends OwneableEntitty implements Serializable {
         System.out.println("damageDealt = " + damageDealt);
         System.out.println("health = " + health);
         health -= damageDealt;
-        if(isDed()){
+        if (isDed()) {
             dropItems();
             world.removeUnit(this);
         }
     }
-	
+
     /**
      * Returns true if a Unit is in range to attack another Unit.
      *
@@ -166,9 +221,14 @@ public class Unit extends OwneableEntitty implements Serializable {
         return unit.getLocation().distance(getLocation()) <= range;
     }
 
+    /**
+     * Makes an attack to another unit. Returns true if it attacked.
+     * @param unit Unit to attack.
+     * @return True if the unit has attacked, false if not.
+     */
     public boolean attack(Unit unit) {
-        if(actionPoints >= ATTACK_AP_COST){
-            if(isInRange(unit)){
+        if (actionPoints >= ATTACK_AP_COST) {
+            if (isInRange(unit)) {
                 spendAP(ATTACK_AP_COST);
                 unit.receiveDamage(this.getAttack());
                 unit.counterAttack(this);
@@ -178,8 +238,12 @@ public class Unit extends OwneableEntitty implements Serializable {
         return false;
     }
 
-    private void counterAttack(Unit unit){
-        if(isInRange(unit)) unit.receiveDamage(this.getAttack());
+    /**
+     * //TODO: aca quedó el gran marian.
+     * @param unit
+     */
+    private void counterAttack(Unit unit) {
+        if (isInRange(unit)) unit.receiveDamage(this.getAttack());
     }
 
     /**
@@ -192,16 +256,16 @@ public class Unit extends OwneableEntitty implements Serializable {
     /**
      * Picks and item. If the unit already has an item in the slot, the item is dropped and returned.
      */
-    public void pickItem(){
+    public void pickItem() {
 
         Item droppedItem = null;
-        if ( actionPoints >= DIG_AP_COST ){
+        if (actionPoints >= DIG_AP_COST) {
             actionPoints -= DIG_AP_COST;
             Cell dugCell = world.getCellAt(getLocation());
             Item itemPicked = dugCell.getItem();
-            if ( itemPicked != null){
+            if (itemPicked != null) {
                 System.out.println("Item: " + itemPicked.getName());
-                if ( itemSlots.size() == SLOT_NUMBER ){
+                if (itemSlots.size() == SLOT_NUMBER) {
                     droppedItem = itemSlots.remove();
                 }
                 itemSlots.add(itemPicked);
@@ -214,7 +278,7 @@ public class Unit extends OwneableEntitty implements Serializable {
     /**
      * Updates the Health and Action Points, adding the bonuses from Items.
      */
-    private void updateStatus( Item item ) {
+    private void updateStatus(Item item) {
         Integer newHealth = health + item.getMaxHealthBonus();
         health = newHealth < getMaxHealth() ? newHealth : getMaxHealth();
 
@@ -227,7 +291,7 @@ public class Unit extends OwneableEntitty implements Serializable {
      */
     private void dropItems() {
         Cell currentCell = world.getCellAt(getLocation());
-        for ( Item i : itemSlots ){
+        for (Item i : itemSlots) {
             currentCell.addItem(i);
         }
     }
@@ -266,7 +330,7 @@ public class Unit extends OwneableEntitty implements Serializable {
 
         Unit unit = (Unit) o;
 
-        return unit.getId().equals( this.getId());
+        return unit.getId().equals(this.getId());
 
     }
 
@@ -275,9 +339,9 @@ public class Unit extends OwneableEntitty implements Serializable {
         return this.getId().hashCode();
     }
 
-    public boolean hasHolyGrail(){
-        for ( Item i : itemSlots ){
-            if ( i.isHolyGrail() ){
+    public boolean hasHolyGrail() {
+        for (Item i : itemSlots) {
+            if (i.isHolyGrail()) {
                 return true;
             }
         }
