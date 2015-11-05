@@ -139,20 +139,6 @@ public class World implements Serializable {
     }
 
     /**
-     * Returns a Collection with all the Units in the World of certain Player.
-     *
-     * @param player owner of the Units.
-     * @return a Collection of all Units from a Player.
-     */
-    public Collection<Unit> getUnits(Player player) {
-        Collection<Unit> playerUnits = new ArrayList<Unit>();
-        for (Unit unit : units) {
-            if (unit.getOwner().equals(player)) playerUnits.add(unit);
-        }
-        return playerUnits;
-    }
-
-    /**
      * Returns the Castle of the specified Player.
      *
      * @param player owner of the Castle.

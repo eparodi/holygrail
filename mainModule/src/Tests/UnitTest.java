@@ -36,7 +36,6 @@ public class UnitTest {
         System.out.println("playerID: " + p1.getId());
 
         assertTrue(archer.getLocation().equals(new Location(2, 2)));
-        assertTrue(world.getCellAt(archer.getLocation()).getTerrain().equals(archer.getCurrentTerrain()));
     }
 
     @Test
@@ -47,7 +46,7 @@ public class UnitTest {
         System.out.println("playerID: " + p1.getId());
 
         assertTrue(!archer.getLocation().equals(new Location(40, 40)));
-        assertTrue(world.getCellAt(archer.getLocation()).getTerrain().equals(archer.getCurrentTerrain()));
+        assertTrue(archer.getLocation().equals(new Location(1, 3)));
     }
 
 

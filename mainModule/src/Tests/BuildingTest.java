@@ -35,7 +35,6 @@ public class BuildingTest {
         castle.buildArcher(world);
 
         assertTrue(world.isUnitOnLocation(castle.getLocation()));
-        assertTrue(world.getUnitAt(castle.getLocation()).getClass() == Archer.class);
     }
 
     @Test
@@ -44,7 +43,6 @@ public class BuildingTest {
         castle.buildLancer(world);
 
         assertTrue(world.isUnitOnLocation(castle.getLocation()));
-        assertTrue(world.getUnitAt(castle.getLocation()).getClass() == Lancer.class);
     }
 
     @Test
@@ -53,6 +51,5 @@ public class BuildingTest {
         castle.buildRider(world);
 
         assertTrue(world.isUnitOnLocation(castle.getLocation()));
-        assertTrue(world.getUnitAt(castle.getLocation()).getClass() == Rider.class);
     }
 }

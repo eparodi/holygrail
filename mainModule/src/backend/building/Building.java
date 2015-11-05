@@ -1,13 +1,10 @@
 package backend.building;
 
-import backend.Entity;
 import backend.OwneableEntitty;
-import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 
 import java.io.Serializable;
-import java.rmi.registry.LocateRegistry;
 
 /**
  * This class is the logic base to create all the constructions. Each building has its type and a player who is
