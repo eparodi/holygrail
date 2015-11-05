@@ -3,29 +3,51 @@ package backend.worldBuilding;
 
 import java.io.Serializable;
 
+/**
+ * Represents a location in the map, with x and y coordinates.
+ */
 public class Location implements Serializable {
     private Integer x;
     private Integer y;
 
-
+    /**
+     * Creates a new location object with x and y coordinates.
+     * @param x x coordinate.
+     * @param y y coordinate.
+     */
     public Location(Integer x,Integer y) {
         this.x = x;
         this.y = y;
     }
 
+    /**
+     * Returns the x coordinate of the Location.
+     * @return Integer value of x coordinate.
+     */
     public Integer getX() {
         return x;
     }
 
+    /**
+     * Sets the x coordinate of a Location.
+     * @param x x coordinate.
+     */
     public void setX(Integer x) {
         this.x = x;
     }
 
-
+    /**
+     * Returns the y coordinate of the Location.
+     * @param y Integer value of y coordinate.
+     */
     public Integer getY() {
         return y;
     }
 
+    /**
+     * Sets the y coordinate of a Location.
+     * @param y y coordinate.
+     */
     public void setY(Integer y) {
         this.y = y;
     }
@@ -54,7 +76,7 @@ public class Location implements Serializable {
     /**
      * Calculates the distance between this location and another.
      *
-     * @param location location.
+     * @param location other location.
      * @return Integer value with distance between locations.
      */
     public Integer distance(Location location) {

@@ -6,6 +6,9 @@ import backend.terrain.Terrain;
 import java.io.Serializable;
 import java.util.LinkedList;
 
+/**
+ * Represents an Attack, made of different damaging types.
+ */
 public class Attack implements Serializable {
     Integer slashDamage, piercingDamage, bluntDamage;
 
@@ -23,11 +26,11 @@ public class Attack implements Serializable {
     }
 
     /**
-     * Returns an Attack modified by a Rune, which gives bonus damage on certain types, and a Terrain, which has a
+     * Returns an Attack modified by Items, which gives bonus damage on certain types, and a Terrain, which has a
      * damage modifier for every Unit.
      *
-     * @param terrain Terrain
-     * @param rune       item.
+     * @param terrain Terrain where the attack is being made.
+     * @param items List of damage modifying items.
      * @return Attack with 3 types of damage.
      */
     public Attack getModifiedAttack(Terrain terrain, LinkedList<Item> items ) {
@@ -49,14 +52,26 @@ public class Attack implements Serializable {
         return modifiedAttack;
     }
 
+    /**
+     * Returns the Blunt Damage of an Attack.
+     * @return Integer value of Blunt Damage.
+     */
     public Integer getBluntDamage() {
         return bluntDamage;
     }
 
+    /**
+     * Returns the Piercing Damage of an Attack.
+     * @return Integer value of Piercing Damage.
+     */
     public Integer getPiercingDamage() {
         return piercingDamage;
     }
 
+    /**
+     * Returns the Slash Damage of an Attack.
+     * @return Integer value of Slash Damage.
+     */
     public Integer getSlashDamage() {
         return slashDamage;
     }

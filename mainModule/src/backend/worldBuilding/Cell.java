@@ -11,6 +11,9 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 
+/**
+ * Represents a Cell in the World. It has a specific Terrain and Items you can get by digging.
+ */
 public class Cell extends Entity {
 
     private Queue<Item> treasures;
@@ -70,7 +73,7 @@ public class Cell extends Entity {
     public Location getLocation() {
         return super.getLocation();
     }
-
+// TODO: Remove comment below?
     public String toString() {
        // return "Cell at " + ((location == null) ? "null location" : location.toString()) + "terrain type: " + terrain;
         return  super.getLocation().toString() + "terrain type: " + terrain;
@@ -103,6 +106,10 @@ public class Cell extends Entity {
         treasures.add(addItem);
     }
 
+    /**
+     * Returns true if the Cell can hold one more item, and false if not.
+     * @return True if the Cell can hold another item.
+     */
     public boolean canRecieveItem(){
         if(treasures.size() >= MAX_ITEMS)
             return false;

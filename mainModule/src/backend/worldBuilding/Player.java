@@ -6,6 +6,11 @@ import com.sun.xml.internal.bind.v2.model.core.ID;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Represents a player of the game.
+ * A player has a name, and certain amount of gold.
+ * TODO: Agregamos que un player es owner de ciertas unidades/edificios?
+ */
 public class Player implements Serializable {
     private static Integer nextId = 1;
 
@@ -13,11 +18,19 @@ public class Player implements Serializable {
     private Integer id;
     private Integer gold = 100;
 
+    /**
+     * Creates a new player with certain name, and a unique player ID.
+     * @param name
+     */
     public Player(String name) {
         this.name = name;
         this.id = getNextId();
     }
 
+    /**
+     * Returns the next id, to avoid having two players with same ID's.
+     * @return Integer value of the next available ID.
+     */
     private Integer getNextId() {
         Integer aux = nextId;
         nextId++;
@@ -29,11 +42,19 @@ public class Player implements Serializable {
         return name.hashCode();
     }
 
+    /**
+     * Returns the name of the player.
+     * @return name of the player.
+     */
     @Override
     public String toString(){
         return name;
     }
 
+    /**
+     * Returns the amount of gold of the player.
+     * @return Integer value of the player gold amount.
+     */
     public Integer getGold() {
         return gold;
     }
@@ -63,6 +84,10 @@ public class Player implements Serializable {
         gold -= amount;
     }
 
+    /**
+     * Returns the player's ID.
+     * @return player ID.
+     */
     public Integer getId() {
         return id;
     }
