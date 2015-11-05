@@ -106,11 +106,22 @@ public class Unit extends OwneableEntitty implements Serializable {
     }
 
     public boolean move(Location finalLocation) {
-        if (finalLocation == null) throw new NullArgumentException("null final position");
-        if (world.isUnitOnLocation(finalLocation)) return false;
+        if (finalLocation == null){
+            throw new NullArgumentException("null final position");
+        }
+        if (world.isUnitOnLocation(finalLocation)){
+            return false;
+        }
         Integer cost = world.getTerrainAt(finalLocation).getApCost(speed, endurance);
-        if (cost > actionPoints) return false;
-        if (getLocation().distance(finalLocation) != 1) return false;
+        if (cost > actionPoints){
+            return false;
+        }
+        if (getLocation().distance(finalLocation) != 1){
+            return false;
+        }
+        if (world.isBuildingOnLocation(finalLocation)){
+            world.getBuildingAt(finalLocation).setOwner(owner);
+        }
 
         spendAP(cost);
         setLocation(finalLocation);

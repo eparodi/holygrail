@@ -1,7 +1,6 @@
 package Tests;
 
 import backend.Game;
-import backend.units.UnitType;
 import backend.worldBuilding.Location;
 import org.junit.Before;
 import org.junit.Test;

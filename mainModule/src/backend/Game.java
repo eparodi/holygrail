@@ -23,12 +23,12 @@ public class Game implements Serializable {
     private Queue<String> logQueue;
 
     public Game(Integer worldWidth, Integer worldHeight, String player1, String player2) {
-        loadPlayers(player1,player2);
+        loadPlayers(player1, player2);
         world = new World(worldWidth, worldHeight, this.player1, this.player2);
         startNewGame();
     }
 
-    public void loadPlayers(String player1, String player2){
+    public void loadPlayers(String player1, String player2) {
         this.player1 = new Player(player1);
         this.player2 = new Player(player2);
     }
@@ -75,12 +75,12 @@ public class Game implements Serializable {
             } else {
                 //No unit and building means unit tries to capture
                 //getOwnerID() can be null if its a neutral mine
-                if ( world.isBuildingOnLocation(clickedLocation)){
+                if (world.isBuildingOnLocation(clickedLocation)) {
                     Building currentBuilding = world.getBuildingAt(clickedLocation);
-                    if ( currentBuilding.getOwner() == null || !(currentBuilding.getOwner().equals(activePlayer))){
-                        captureAttempt(selectedUnit,clickedLocation);
+                    if (currentBuilding.getOwner() == null || !(currentBuilding.getOwner().equals(activePlayer))) {
+                        moveAttempt(selectedUnit, clickedLocation);
                     }
-                }else if (selectedUnit.getOwner().equals(activePlayer)) { //Fixes bug that can move opponents units
+                } else if (selectedUnit.getOwner().equals(activePlayer)) { //Fixes bug that can move opponents units
                     moveAttempt(selectedUnit, clickedLocation);
                 }
                 selectedLocation = clickedLocation;
@@ -128,7 +128,6 @@ public class Game implements Serializable {
     //Returns if it moved
     private boolean moveAttempt(Unit unit, Location clickedLocation) {
         //TODO ask how we can display a log
-        boolean hasMoved = false;
 
         if (unit == null) {
             throw new NullArgumentException("null unit movement attempt");
@@ -138,18 +137,6 @@ public class Game implements Serializable {
         }
 
         return unit.move(clickedLocation);
-    }
-
-    private boolean captureAttempt(Unit unit, Location clickedLocation) {
-        boolean hasCaptured = false;
-
-        if (moveAttempt(unit, clickedLocation)) {
-            world.getBuildingAt(clickedLocation).setOwner(unit.getOwner());
-            addLog(unit + " captured " + world.getBuildingAt(clickedLocation));
-            hasCaptured = true;
-        }
-        addLog("cant capture");
-        return hasCaptured;
     }
 
     public boolean attackAttempt(Unit attacker, Unit defender) {
@@ -213,7 +200,7 @@ public class Game implements Serializable {
 
         getActivePlayer().addGold(world.getPlayerIncome(getActivePlayer()));
 
-        if(world.isUnitOnLocation(world.getPlayerCastle(activePlayer).getLocation())) {
+        if (world.isUnitOnLocation(world.getPlayerCastle(activePlayer).getLocation())) {
             Unit selectedUnit = world.getUnitAt(world.getPlayerCastle(activePlayer).getLocation());
             if (selectedUnit.hasHolyGrail()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -236,14 +223,14 @@ public class Game implements Serializable {
     /**
      * Attempts to make a Unit, if there is a unit there, pick an item in the current Cell.
      */
-	public void pickItemAttempt() {
+    public void pickItemAttempt() {
 
         if (selectedLocation == null) {
             return;
         }
-        if ( world.isUnitOnLocation(selectedLocation) ){
+        if (world.isUnitOnLocation(selectedLocation)) {
             Unit currentUnit = world.getUnitAt(selectedLocation);
-            if ( currentUnit.getOwner().equals(activePlayer) ){
+            if (currentUnit.getOwner().equals(activePlayer)) {
                 currentUnit.pickItem();
             }
         }
