@@ -1,5 +1,6 @@
 package backend.worldBuilding;
 
+import backend.building.ProductionBuilding;
 import backend.exceptions.CantPayException;
 import com.sun.xml.internal.bind.v2.model.core.ID;
 
@@ -17,6 +18,7 @@ public class Player implements Serializable {
     private String name;
     private Integer id;
     private Integer gold = 100;
+    private ProductionBuilding productionBuilding;
 
     /**
      * Creates a new player with certain name, and a unique player ID.
@@ -25,6 +27,14 @@ public class Player implements Serializable {
     public Player(String name) {
         this.name = name;
         this.id = getNextId();
+    }
+
+    public void addProductionBuilding(ProductionBuilding productionBuilding){
+        this.productionBuilding = productionBuilding;
+    }
+
+    public ProductionBuilding getProductionBuilding(){
+        return productionBuilding;
     }
 
     /**

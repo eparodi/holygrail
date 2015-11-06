@@ -2,6 +2,7 @@ package backend;
 
 import backend.building.Building;
 import backend.building.Castle;
+import backend.building.ProductionBuilding;
 import backend.exceptions.NullArgumentException;
 import backend.units.Unit;
 import backend.worldBuilding.Cell;
@@ -73,10 +74,10 @@ public class Game implements Serializable {
     private boolean selectPlayerCastle(Player player) {
         //Searches the castle from the first player and selects the cell where it is located
         //#Building needs location
-        if (world.getPlayerCastle(player) == null) {
+        if (world.getPlayerProductionBuilding(player) == null) {
             addLog(player + "lost, he has no more buildings");
             return false;
-        } else selectedLocation = world.getPlayerCastle(player).getLocation();
+        } else selectedLocation = world.getPlayerProductionBuilding(player).getLocation();
         return true;
     }
 
@@ -96,14 +97,7 @@ public class Game implements Serializable {
                     attackAttempt(selectedUnit, world.getUnitAt(clickedLocation));
                 }
             } else {
-                //No unit and building means unit tries to capture
-                //getOwnerID() can be null if its a neutral mine
-                if (world.isBuildingOnLocation(clickedLocation)) {
-                    Building currentBuilding = world.getBuildingAt(clickedLocation);
-                    if (currentBuilding.getOwner() == null || !(currentBuilding.getOwner().equals(activePlayer))) {
-                        moveAttempt(selectedUnit, clickedLocation);
-                    }
-                } else if (selectedUnit.getOwner().equals(activePlayer)) { //Fixes bug that can move opponents units
+                if (selectedUnit.getOwner().equals(activePlayer)) { //Fixes bug that can move opponents units
                     moveAttempt(selectedUnit, clickedLocation);
                 }
                 selectedLocation = clickedLocation;
@@ -115,9 +109,9 @@ public class Game implements Serializable {
     }
 
     public boolean attemptBuildArcher() {
-        Castle castle = world.getPlayerCastle(activePlayer);
-        if (castle.canBuild(world)) {
-            castle.buildArcher(world);
+        ProductionBuilding productionBuilding = world.getPlayerProductionBuilding(activePlayer);
+        if (productionBuilding.canBuild(world)) {
+            productionBuilding.buildArcher(world);
             addLog("Archer Built");
             return true;
         }
@@ -125,9 +119,9 @@ public class Game implements Serializable {
     }
 
     public boolean attemptBuildRider() {
-        Castle castle = world.getPlayerCastle(activePlayer);
-        if (castle.canBuild(world)) {
-            castle.buildRider(world);
+        ProductionBuilding productionBuilding = world.getPlayerProductionBuilding(activePlayer);
+        if (productionBuilding.canBuild(world)) {
+            productionBuilding.buildRider(world);
             addLog("Rider Built");
             return true;
         }
@@ -135,9 +129,9 @@ public class Game implements Serializable {
     }
 
     public boolean attemptBuildLancer() {
-        Castle castle = world.getPlayerCastle(activePlayer);
-        if (castle.canBuild(world)) {
-            castle.buildLancer(world);
+        ProductionBuilding productionBuilding = world.getPlayerProductionBuilding(activePlayer);
+        if (productionBuilding.canBuild(world)) {
+            productionBuilding.buildLancer(world);
             addLog("Lancer Built");
             return true;
         }
@@ -223,8 +217,8 @@ public class Game implements Serializable {
 
         getActivePlayer().addGold(world.getPlayerIncome(getActivePlayer()));
 
-        if (world.isUnitOnLocation(world.getPlayerCastle(activePlayer).getLocation())) {
-            Unit selectedUnit = world.getUnitAt(world.getPlayerCastle(activePlayer).getLocation());
+        if (world.isUnitOnLocation(world.getPlayerProductionBuilding(activePlayer).getLocation())) {
+            Unit selectedUnit = world.getUnitAt(world.getPlayerProductionBuilding(activePlayer).getLocation());
             if (selectedUnit.hasHolyGrail()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Game Message");

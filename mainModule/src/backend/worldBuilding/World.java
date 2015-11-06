@@ -1,9 +1,6 @@
 package backend.worldBuilding;
 
-import backend.building.Building;
-import backend.building.BuildingType;
-import backend.building.Castle;
-import backend.building.Mine;
+import backend.building.*;
 import backend.exceptions.CellOutOfWorldException;
 import backend.exceptions.NullArgumentException;
 import backend.items.Item;
@@ -68,7 +65,11 @@ public class World implements Serializable {
         if (building == null) throw new NullArgumentException("null unit argument");
         buildings.add(building);
     }
-
+    public void addBuilding(ProductionBuilding productionBuilding) {
+        if (productionBuilding == null) throw new NullArgumentException("null unit argument");
+        buildings.add(productionBuilding);
+        productionBuilding.getOwner().addProductionBuilding(productionBuilding);
+    }
 
     /**
      * Removes the Unit from the World.
@@ -159,24 +160,11 @@ public class World implements Serializable {
      * @return Castle owned by Player.
      */
     //TODO: (ToAsk) how to recognize castle without enum
-    public Castle getPlayerCastle(Player player) {
+    public ProductionBuilding getPlayerProductionBuilding(Player player) {
         if (player == null) {
             throw new NullArgumentException("player is null");
         }
-        for (Building building : buildings) {
-           //TODO
-            if (building == null) {
-                throw new NullPointerException("null building in buildings");
-            }
-            if (building.getOwner() != null) {
-                if (building.getOwner().equals(player)) {
-                    if (building.getBuildingType().equals(BuildingType.CASTLE)) {
-                        return (Castle) building;
-                    }
-                }
-            }
-        }
-        return null;
+        return player.getProductionBuilding();
     }
 
     /**
@@ -323,20 +311,24 @@ public class World implements Serializable {
         this.worldWidth = worldWidth;
 
         cells = generateCellCollection();
-        Location player1Castle = new Location(2, 2);
-        Location player2Castle = new Location(14, 9);
+        Location player1CastleLocation = new Location(2, 2);
+        Location player2CastleLocation = new Location(14, 9);
         Location mineLocation = new Location(1,8);
         Location mineLocation2 = new Location(14,0);
         Location mineLocation3 = new Location(6,3);
         Location mineLocation4 = new Location(10,6);
 
-        buildings.add(new Castle(player1, player1Castle));
-        buildings.add(new Castle(player2, player2Castle));
+        Castle player1Castle = new Castle(player1, player1CastleLocation);
+        Castle player2Castle = new Castle(player2, player2CastleLocation);
+        buildings.add(player1Castle);
+        buildings.add(player2Castle);
         buildings.add(new Mine(mineLocation));
         buildings.add(new Mine(mineLocation2));
         buildings.add(new Mine(mineLocation3));
         buildings.add(new Mine(mineLocation4));
-        addGrailToCell(this.getCells(),player1Castle,player2Castle);
+        addGrailToCell(this.getCells(),player1CastleLocation,player2CastleLocation);
+        player1.addProductionBuilding(player1Castle);
+        player2.addProductionBuilding(player2Castle);
     }
 
 

@@ -53,7 +53,7 @@ public class Unit extends OwneableEntitty implements Serializable {
         this.owner = owner;
         this.endurance = endurance;
         this.speed = speed;
-        //world.addUnit(this);
+        world.addUnit(this);
     }
 
 

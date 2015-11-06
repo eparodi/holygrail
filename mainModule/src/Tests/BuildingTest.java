@@ -10,6 +10,7 @@ import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.worldBuilding.World;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -22,8 +23,9 @@ public class BuildingTest {
 
     @Before
     public void initialisation() {
+
         p1 = new Player("Pablo");
-        p1 = new Player("Sergio");
+        p2 = new Player("Sergio");
         world = new World(50, 50, p1, p2);
         castle = new Castle(p1, new Location(20,20));
         world.addBuilding(castle);

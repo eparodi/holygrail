@@ -15,12 +15,10 @@ import java.rmi.registry.LocateRegistry;
  */
 
 public abstract class Building extends OwneableEntitty implements Serializable{
-    private BuildingType buildingType;
     private Income income;
 
-    public Building(BuildingType buildingType, Player owner, Income income, Location location){
+    public Building(Player owner, Income income, Location location){
         super(location,owner);
-        this.buildingType = buildingType;
         this.income = income;
     }
 
@@ -32,19 +30,12 @@ public abstract class Building extends OwneableEntitty implements Serializable{
         return income.giveIncome();
     }
 
-    /**
-     * Returns the type of building.
-     * @return the type of the building.
-     */
-    public BuildingType getBuildingType(){
-        return buildingType;
-    }
 
     /**
      * Returns the String representation of the object.
      * @return the String representation of the object.
      */
     public String toString(){
-        return buildingType + " from " + getOwner() + "; ";
+        return "Building from " + getOwner() + "; ";
     }
 }
