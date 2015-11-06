@@ -65,12 +65,21 @@ public class Game implements Serializable {
         return world.getWorldWidth();
     }
 
+    /**
+     * Starts a New Game, setting the active player to Player 1, and selecting his Castle.
+     */
     public void startNewGame() {
         logQueue = new ArrayDeque<>();
         activePlayer = this.player1;
         selectPlayerCastle(activePlayer);
     }
 
+    //TODO: Hacer un metodo para revisar si el player sigue teniendo Castle, para separarlo de este.
+    /**
+     * Selects the specified Player's castle.
+     * @param player owner of the Castle.
+     * @return
+     */
     private boolean selectPlayerCastle(Player player) {
         //Searches the castle from the first player and selects the cell where it is located
         //#Building needs location
@@ -81,6 +90,10 @@ public class Game implements Serializable {
         return true;
     }
 
+    /**
+     * //TODO: Esto debería estar en el controller.
+     * @param clickedLocation
+     */
     public void actionAttempt(Location clickedLocation) {
         if (selectedLocation == null) {
             selectedLocation = clickedLocation;
@@ -108,6 +121,10 @@ public class Game implements Serializable {
         }
     }
 
+    /**
+     * Attempts to build an Archer. If achieved, returns true.
+     * @return True if the Archer is created, false if not.
+     */
     public boolean attemptBuildArcher() {
         ProductionBuilding productionBuilding = world.getPlayerProductionBuilding(activePlayer);
         if (productionBuilding.canBuild(world)) {
@@ -118,6 +135,10 @@ public class Game implements Serializable {
         return false;
     }
 
+    /**
+     * Attempts to build a Rider. If achieved, returns true.
+     * @return True if the Rider is created, false if not.
+     */
     public boolean attemptBuildRider() {
         ProductionBuilding productionBuilding = world.getPlayerProductionBuilding(activePlayer);
         if (productionBuilding.canBuild(world)) {
@@ -128,6 +149,10 @@ public class Game implements Serializable {
         return false;
     }
 
+    /**
+     * Attempts to build a Lancer. If achieved, returns true.
+     * @return True if the Lancer is created, false if not.
+     */
     public boolean attemptBuildLancer() {
         ProductionBuilding productionBuilding = world.getPlayerProductionBuilding(activePlayer);
         if (productionBuilding.canBuild(world)) {
@@ -138,11 +163,20 @@ public class Game implements Serializable {
         return false;
     }
 
+    /**
+     * Adds a message to the log.
+     * @param msg message to add.
+     */
     private void addLog(String msg) {
         logQueue.add(msg);
     }
 
-    //Returns if it moved
+    /**
+     * Attempts to move a unit to a Location.
+     * @param unit unit to move.
+     * @param clickedLocation destination Location.
+     * @return True if the unit has moved, false if not.
+     */
     private boolean moveAttempt(Unit unit, Location clickedLocation) {
         //TODO ask how we can display a log
 
@@ -156,6 +190,12 @@ public class Game implements Serializable {
         return unit.move(clickedLocation);
     }
 
+    /**
+     * Attempts to perform an attack from an attacker unit to a defender.
+     * @param attacker attacking unit.
+     * @param defender defending unit.
+     * @return True if the unit has attacked.
+     */
     public boolean attackAttempt(Unit attacker, Unit defender) {
         boolean hasAttacked = false;
 
@@ -178,40 +218,76 @@ public class Game implements Serializable {
         return hasAttacked;
     }
 
+    /**
+     * //TODO: CONTROLLER
+     * @param location
+     */
     private void setSelectedLocation(Location location) {
         selectedLocation = location;
     }
 
+    /**
+     * //TODO : CONTROLLER
+     * @return
+     */
     public Location getSelectedLocation() {
         return selectedLocation;
     }
 
+    /**
+     * Prints the queued Log.
+     */
     public void printLog() {
         while (!logQueue.isEmpty()) {
             System.out.println(logQueue.poll());
         }
     }
 
+    /**
+     * Returns all the Units in the World.
+     * @return Collection of all the Units.
+     */
     public Collection<Unit> getUnits() {
         return world.getUnits();
     }
 
+    /**
+     * Returns all the Units in the World.
+     * @return Collection of all the Buildings.
+     */
     public Collection<Building> getBuildings() {
         return world.getBuildings();
     }
 
+    /**
+     * Returns all the Cells in the World.
+     * @return Collection of all the Cells.
+     */
     public Collection<Cell> getCells() {
         return world.getCells();
     }
 
+    /**
+     * Returns the active Player.
+     * @return current active Player.
+     */
     public Player getActivePlayer() {
         return activePlayer;
     }
 
+    /**
+     * Sets the next player to be the active player.
+     */
     private void activateNextPlayer() {
         activePlayer = activePlayer.equals(player1) ? player2 : player1;
     }
 
+    /** //TODO: El alert debería estar en el FrontEnd, el controller debería fijarse si algun jugador ganó y emitir el msg.
+     * Ends the current Player turn.
+     * Refills the player units action points, adds corresponding the gold per turn to the player.
+     * If a unit is standing at his owner Castle with the Holy Grail, the player wins the game.
+     * If the player does not own his Castle anymore, he loses the game.
+     */
     public void endTurn() {
         world.refillUnitsAP(getActivePlayer());
 
@@ -238,7 +314,7 @@ public class Game implements Serializable {
     }
 
     /**
-     * Attempts to make a Unit, if there is a unit there, pick an item in the current Cell.
+     * If there is a unit there, pick an item in the current Cell.
      */
     public void pickItemAttempt() {
 
