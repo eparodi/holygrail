@@ -1,6 +1,5 @@
 package backend;
 
-import backend.exceptions.NullLocationException;
 import backend.worldBuilding.Location;
 
 import java.io.Serializable;

@@ -7,7 +7,7 @@ import backend.worldBuilding.Player;
 import java.io.Serializable;
 
 /**
- * This class is the logic base to create all the constructions. Each building has its type and a player who is
+ * This class is the logic base to create all the constructions. Each building player who is
  * the owner.
  */
 

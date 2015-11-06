@@ -173,6 +173,7 @@ public class GameController {
             c.printStackTrace();
         }
         this.game = game;
+        //TODO: Nadie atrapa esta exception, este es su único uso.
         if(game == null) throw new NullLocationException(path + " is an invalid map");
         initialize();
         resetCellSize();

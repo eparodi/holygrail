@@ -3,10 +3,9 @@ package backend.worldBuilding;
 
 import backend.items.Item;
 import backend.items.ItemFactory;
-import backend.items.ItemType;
 import backend.terrain.Terrain;
 import backend.Entity;
-import java.io.Serializable;
+
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
@@ -114,6 +113,6 @@ public class Cell extends Entity {
         if(treasures.size() >= MAX_ITEMS)
             return false;
         else
-            return getTerrain().canRecieveItem();
+            return getTerrain().canReceiveItem();
     }
 }

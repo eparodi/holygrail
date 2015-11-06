@@ -239,19 +239,12 @@ public abstract class Unit extends OwneableEntitty implements Serializable {
     }
 
     /**
-     * //TODO: aca quedó el gran marian.
-     * @param unit
+     * Performs a counterattack to a unit. It takes damage if it's in range.
+     * @param unit unit to attack.
      */
     private void counterAttack(Unit unit) {
         if (isInRange(unit)) unit.receiveDamage(this.getAttack());
     }
-
-    /**
-     * Calculates the Terrain modifier for the Unit stats.
-     *
-     * @param targetTerrain Terrain where the Unit is standing.
-     * @return Double value with the Terrain modifier.
-     */
 
     /**
      * Picks and item. If the unit already has an item in the slot, the item is dropped and returned.
@@ -317,6 +310,10 @@ public abstract class Unit extends OwneableEntitty implements Serializable {
         return "Unit: " + getId();
     }
 
+    /**
+     * Returns the next available ID, to make every unit unique.
+     * @return Integer value of ID.
+     */
     private static Integer getNextId() {
         Integer aux = nextId;
         nextId++;
@@ -339,6 +336,10 @@ public abstract class Unit extends OwneableEntitty implements Serializable {
         return this.getId().hashCode();
     }
 
+    /**
+     * Returns true if the unit has the Holy Grail in its inventory.
+     * @return True if the unit has the Holy Grail, false if not.
+     */
     public boolean hasHolyGrail() {
         for (Item i : itemSlots) {
             if (i.isHolyGrail()) {
@@ -348,6 +349,10 @@ public abstract class Unit extends OwneableEntitty implements Serializable {
         return false;
     }
 
+    /**
+     * Sets the Location of the unit.
+     * @param location new location of the unit.
+     */
     private void setLocation(Location location) {
         this.location = location;
     }

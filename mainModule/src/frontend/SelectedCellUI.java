@@ -1,7 +1,6 @@
 package frontend;
 
 import backend.exceptions.NullArgumentException;
-import backend.exceptions.ResourceNotFoundException;
 import backend.worldBuilding.Location;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
