@@ -42,7 +42,7 @@ public class BuildingTest {
     @Test
     public void nullCastle(){
         Castle castle2  = new Castle(p1, null);
-        castle.buildArcher(world);
+        castle2.buildArcher(world);
         assertTrue(world.isBuildingOnLocation(null));
     }
 
@@ -57,7 +57,7 @@ public class BuildingTest {
     public void reputArcherTest(){
         castle.buildArcher(world);
         castle.buildLancer(world);
-        System.out.println(world.getUnitAt(castle.getLocation()).getAttack());
+        System.out.println(world.getUnitAt(castle.getLocation()));
         assertTrue(world.isUnitOnLocation(castle.getLocation()));
     }
 
@@ -65,7 +65,6 @@ public class BuildingTest {
     public void buildLancerTest(){
 
         castle.buildLancer(world);
-
         assertTrue(world.isUnitOnLocation(castle.getLocation()));
     }
 
@@ -73,7 +72,6 @@ public class BuildingTest {
      public void buildRiderTest(){
 
         castle.buildRider(world);
-
         assertTrue(world.isUnitOnLocation(castle.getLocation()));
     }
 }

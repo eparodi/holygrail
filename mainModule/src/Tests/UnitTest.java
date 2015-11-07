@@ -47,6 +47,13 @@ public class UnitTest {
         assertTrue(archer.getLocation().equals(new Location(1, 3)));
     }
 
+    @Test
+    //TODO: UNIDAD MAGICA
+    public void Nulllocation() {
+        lancer = new Lancer(world,new Location(500,500),p2);
+        assertTrue(lancer.getLocation().equals(new Location(1, 3)));
+    }
+
 
 
     @Test
