@@ -30,19 +30,34 @@ public class BuildingTest {
         castle = new Castle(p1, new Location(20,20));
         world.addBuilding(castle);
     }
+
     //TODO: Acepta castillos en cualquier lado che
     @Test
     public void incorrectCastle(){
         Castle castle2  = new Castle(p1, new Location(60,60));
+        castle.buildArcher(world);
         assertTrue(world.isBuildingOnLocation(castle2.getLocation()));
     }
 
+    @Test
+    public void nullCastle(){
+        Castle castle2  = new Castle(p1, null);
+        castle.buildArcher(world);
+        assertTrue(world.isBuildingOnLocation(null));
+    }
 
     @Test
-    public void buildArcherTest(){
-
+    public void buildTest(){
         castle.buildArcher(world);
+        assertTrue(world.isUnitOnLocation(castle.getLocation()));
+    }
 
+    //TODO: Se permite sin exception?
+    @Test
+    public void reputArcherTest(){
+        castle.buildArcher(world);
+        castle.buildLancer(world);
+        System.out.println(world.getUnitAt(castle.getLocation()).getAttack());
         assertTrue(world.isUnitOnLocation(castle.getLocation()));
     }
 
