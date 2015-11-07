@@ -25,14 +25,12 @@ public class UnitTest {
         world = new World(50, 50, p1, p2);
         archer = new Archer(world,new Location(1,3),p1);
         lancer = new Lancer(world,new Location(2,3),p2);
-        //world.addUnit(archer);
-        //world.addUnit(lancer);
     }
 
     @Test
     //Sees if a Unit can Move
     public void MoveTest() {
-        archer.move(new Location(2, 2));
+        archer.move(new Location(500, 5000));
         System.out.println("playerID: " + p1.getId());
 
         assertTrue(archer.getLocation().equals(new Location(2, 2)));
@@ -42,7 +40,7 @@ public class UnitTest {
     //Sees if a Unit cant move
     public void CantMoveTest() {
         world.addUnit(archer);
-        archer.move(new Location(40, 40));
+        archer.move(new Location(50, 50));
         System.out.println("playerID: " + p1.getId());
 
         assertTrue(!archer.getLocation().equals(new Location(40, 40)));
@@ -83,7 +81,6 @@ public class UnitTest {
 
         archer.attack(lancer);
 
-        //world.skirmish(archer, lancer, null, null);
 
         assertTrue(!lancer.getHealth().equals(lancerHealthIni) && !archer.getHealth().equals(archerHealthIni));
     }

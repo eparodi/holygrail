@@ -30,6 +30,13 @@ public class BuildingTest {
         castle = new Castle(p1, new Location(20,20));
         world.addBuilding(castle);
     }
+    //TODO: Acepta castillos en cualquier lado che
+    @Test
+    public void incorrectCastle(){
+        Castle castle2  = new Castle(p1, new Location(60,60));
+        assertTrue(world.isBuildingOnLocation(castle2.getLocation()));
+    }
+
 
     @Test
     public void buildArcherTest(){
