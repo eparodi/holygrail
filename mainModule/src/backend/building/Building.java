@@ -1,6 +1,7 @@
 package backend.building;
 
 import backend.OwneableEntitty;
+import backend.exceptions.NullArgumentException;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 
@@ -16,10 +17,11 @@ public abstract class Building extends OwneableEntitty implements Serializable{
 
     public Building(Player owner, Income income, Location location){
         super(location,owner);
+        if(location==null) throw new NullArgumentException("Building has to have a location");
         this.income = income;
     }
-
     /**
+
      * Returns the gold this building generates.
      * @return The amount of gold the player receive from this building per turn.
      */

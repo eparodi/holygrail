@@ -19,13 +19,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class GameController {
-    Integer cellHeight;
-    Integer cellWidth;
-    Integer worldHeight;
-    Integer worldWidth;
-    Integer canvasHeight;
-    Integer canvasWidth;
-    Game game;
+    private Integer cellHeight;
+    private Integer cellWidth;
+    private Integer worldHeight;
+    private Integer worldWidth;
+    private Integer canvasHeight;
+    private Integer canvasWidth;
+    private Game game;
 
     //    /**
 //     * @param cellHeight    The height of the cell in pixels
@@ -173,7 +173,7 @@ public class GameController {
             c.printStackTrace();
         }
         this.game = game;
-        //TODO: Nadie atrapa esta exception, este es su único uso.
+        //TODO: Nadie atrapa esta exception, este es su ï¿½nico uso.
         if(game == null) throw new NullLocationException(path + " is an invalid map");
         initialize();
         resetCellSize();

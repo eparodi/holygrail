@@ -14,7 +14,6 @@ public class ProductionBuilding extends Building implements Serializable {
     public static final Integer UNIT_COST = 10;
 
     /**
-     * //TODO: Un production building debería si o si tener income?
      * Constructs a Production building at certain Location, owned by a Player.
      *
      * @param owner    player who owns the building.
@@ -47,19 +46,32 @@ public class ProductionBuilding extends Building implements Serializable {
      *
      * @param world World where the Archer is created.
      */
-    public void buildArcher(World world) {
-        getOwner().pay(UNIT_COST);
-        new Archer(world, getLocation(), getOwner());
+    public boolean buildArcher(World world) {
+        if (canBuild(world)) {
+            getOwner().pay(UNIT_COST);
+            new Archer(world, getLocation(), getOwner());
+            return true;
+
+        }
+        return false;
+
     }
+
 
     /**
      * Produces a Rider Unit.
      *
      * @param world World where the Rider is created.
      */
-    public void buildRider(World world) {
-        getOwner().pay(UNIT_COST);
-        new Rider(world, getLocation(), getOwner());
+    public boolean buildRider(World world) {
+        if (canBuild(world)) {
+
+            getOwner().pay(UNIT_COST);
+            new Rider(world, getLocation(), getOwner());
+            return true;
+        }
+        return false;
+
     }
 
     /**
@@ -67,8 +79,13 @@ public class ProductionBuilding extends Building implements Serializable {
      *
      * @param world World where the Lancer is created.
      */
-    public void buildLancer(World world) {
-        getOwner().pay(UNIT_COST);
-        new Lancer(world, getLocation(), getOwner());
+
+    public boolean   buildLancer(World world) {
+        if (canBuild(world)) {
+            getOwner().pay(UNIT_COST);
+            new Lancer(world, getLocation(), getOwner());
+            return true;
+        }
+        return false;
     }
 }

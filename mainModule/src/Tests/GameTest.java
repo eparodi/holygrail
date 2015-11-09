@@ -17,18 +17,19 @@ public class GameTest {
         game = new Game(20,20,"Sergio","Pablo");
     }
 
-//    @Test
+    @Test
     //Two units in range form same player
-//    public void test1() {
-//        game.attemptBuildUnit(UnitType.LANCER);
-//        game.actionAttempt(new Location(2, Math.round(20 / 2)));
-//        game.actionAttempt(new Location(1, Math.round(20 / 2)));//esta es la posicion del castillo
-//        game.attemptBuildUnit(UnitType.ARCHER);
-//        game.actionAttempt(new Location(2, Math.round(20 / 2)));
-//
+    public void test1() {
+        game.attemptBuildLancer();
+
+        game.actionAttempt(new Location(2, Math.round(20 / 2)));
+        game.actionAttempt(new Location(1, Math.round(20 / 2)));//esta es la posicion del castillo
+        game.attemptBuildArcher();
+        game.actionAttempt(new Location(2, Math.round(20 / 2)));
+
 //        assertTrue(game.getSelectedLocation().getUnit().getUnitType().equals(UnitType.LANCER));
-//    }
-//
+    }
+
 //    @Test
 //    //Unit has been created
 //    public void test2() {

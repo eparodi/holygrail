@@ -83,7 +83,7 @@ public abstract class Terrain implements Serializable {
         return totalApCost;
     }
 
-    /** //TODO: Lo dejamos así, o hacemos que este método sea abstracto, y cada terreno tenga que implementarlo para decir si puede o no guardar items.
+    /**
      * Returns True if the Terrain can have Items.
      * @return True if the Terrain can receive Items, false if not.
      */

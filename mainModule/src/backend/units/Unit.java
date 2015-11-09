@@ -122,11 +122,7 @@ public abstract class Unit extends OwneableEntitty implements Serializable {
      *
      * @return modified Attack.
      */
-    public Attack getAttack() {//TODO: Remover println
-        System.out.println("attackerTerrain = " + getCurrentTerrain());
-        System.out.println("baseAttack = " + baseAttack);
-        System.out.println("baseAttack.getModifiedAttack(calcTerrainMod(attackerTerrain)) = "
-                + baseAttack.getModifiedAttack(getCurrentTerrain(), itemSlots));
+    public Attack getAttack() {
         return baseAttack.getModifiedAttack(getCurrentTerrain(), itemSlots);
     }
 

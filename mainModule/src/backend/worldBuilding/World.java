@@ -3,6 +3,7 @@ package backend.worldBuilding;
 import backend.building.*;
 import backend.exceptions.CellOutOfWorldException;
 import backend.exceptions.NullArgumentException;
+import backend.exceptions.NullLocationException;
 import backend.items.Item;
 import backend.terrain.*;
 import backend.units.Unit;
@@ -29,8 +30,7 @@ public class World implements Serializable {
         initialize(worldWidth,worldHeight,player1,player2);
     }
 
-    //TODO: Por qué le pasamos una collection de celdas, si vamos a usar this.cells?
-    private void addGrailToCell(Collection<Cell> cells, Location player1Castle, Location player2Castle){
+    private void addGrailToCell(Location player1Castle, Location player2Castle){
         ArrayList<Cell> holyGrailPossibleCells = new ArrayList<Cell>();
 
         for (Cell cell : cells) {
@@ -55,18 +55,27 @@ public class World implements Serializable {
      *
      * @param unit unit to add.
      */
-    public void addUnit(Unit unit) {//TODO: Remover exception, por qué una unidad seria null?
+    public void addUnit(Unit unit) {//TODO: Meter checkeo de bounds en una funcion
         if (unit == null) throw new NullArgumentException("null unit argument");
+        if(unit.getLocation().getX() < 0 || unit.getLocation().getX() >= worldWidth ||
+                unit.getLocation().getY() < 0 || unit.getLocation().getY() >= worldHeight)
+            throw new CellOutOfWorldException("unit is out of world");
         units.add(unit);
     }
 
     //in the future new buildings might be added
     public void addBuilding(Building building) {
         if (building == null) throw new NullArgumentException("null unit argument");
+        if(building.getLocation().getX() < 0 || building.getLocation().getX() >= worldWidth ||
+                building.getLocation().getY() < 0 || building.getLocation().getY() >= worldHeight)
+            throw new CellOutOfWorldException("building is out of world");
         buildings.add(building);
     }
     public void addBuilding(ProductionBuilding productionBuilding) {
         if (productionBuilding == null) throw new NullArgumentException("null unit argument");
+        if(productionBuilding.getLocation().getX() < 0 || productionBuilding.getLocation().getX() >= worldWidth ||
+                productionBuilding.getLocation().getY() < 0 || productionBuilding.getLocation().getY() >= worldHeight)
+            throw new CellOutOfWorldException("building is out of world");
         buildings.add(productionBuilding);
         productionBuilding.getOwner().addProductionBuilding(productionBuilding);
     }
@@ -145,7 +154,6 @@ public class World implements Serializable {
      * @param player owner of the Castle.
      * @return Castle owned by Player.
      */
-    //TODO: (ToAsk) how to recognize castle without enum
     public ProductionBuilding getPlayerProductionBuilding(Player player) {
         if (player == null) {
             throw new NullArgumentException("player is null");
@@ -312,11 +320,8 @@ public class World implements Serializable {
         buildings.add(new Mine(mineLocation2));
         buildings.add(new Mine(mineLocation3));
         buildings.add(new Mine(mineLocation4));
-        addGrailToCell(this.getCells(),player1CastleLocation,player2CastleLocation);
+        addGrailToCell(player1CastleLocation,player2CastleLocation);
         player1.addProductionBuilding(player1Castle);
         player2.addProductionBuilding(player2Castle);
     }
-
-
-
 }

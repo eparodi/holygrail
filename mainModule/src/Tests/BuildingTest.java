@@ -1,6 +1,9 @@
 package Tests;
 
 import backend.building.Castle;
+import backend.building.CastleIncome;
+import backend.exceptions.CellOutOfWorldException;
+import backend.exceptions.NullArgumentException;
 import backend.terrain.Terrain;
 import backend.units.Archer;
 import backend.units.Lancer;
@@ -13,6 +16,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class BuildingTest {
@@ -31,18 +35,18 @@ public class BuildingTest {
         world.addBuilding(castle);
     }
 
-    //TODO: Acepta castillos en cualquier lado che
-    @Test
-    public void incorrectCastle(){
+
+    @Test(expected = CellOutOfWorldException.class)
+    public void incorrectCastleLocationTest(){
         Castle castle2  = new Castle(p1, new Location(60,60));
-        castle.buildArcher(world);
+        world.addBuilding(castle2);
         assertTrue(world.isBuildingOnLocation(castle2.getLocation()));
     }
 
-    @Test
+    @Test(expected = NullArgumentException.class)
     public void nullCastle(){
         Castle castle2  = new Castle(p1, null);
-        castle2.buildArcher(world);
+        world.addBuilding(castle2);
         assertTrue(world.isBuildingOnLocation(null));
     }
 
@@ -52,18 +56,26 @@ public class BuildingTest {
         assertTrue(world.isUnitOnLocation(castle.getLocation()));
     }
 
-    //TODO: Se permite sin exception?
     @Test
-    public void reputArcherTest(){
+    public void cellOcupiedUnitBuildingTest(){
         castle.buildArcher(world);
-        castle.buildLancer(world);
-        System.out.println(world.getUnitAt(castle.getLocation()));
-        assertTrue(world.isUnitOnLocation(castle.getLocation()));
+
+        assertFalse(castle.canBuild(world));
+    }
+    @Test
+    public void LowGoldUnitBuildingTest(){
+        castle.getOwner().pay(castle.getOwner().getGold());
+        assertFalse(castle.canBuild(world));
+    }
+
+    @Test
+    public void CastleIncomeTest(){
+        Integer castleIncome = new CastleIncome().giveIncome();
+        assertTrue(castle.getIncome() == castleIncome);
     }
 
     @Test
     public void buildLancerTest(){
-
         castle.buildLancer(world);
         assertTrue(world.isUnitOnLocation(castle.getLocation()));
     }
