@@ -22,8 +22,8 @@ public class World implements Serializable {
     //TODO: Javadoc
     public World(Integer worldWidth, Integer worldHeight, Player player1, Player player2) {
 
-        cells = new ArrayList<>();
-        units = new HashSet<>();
+        cells = new ArrayList<Cell>();
+        units = new HashSet<Unit>();
         buildings = new ArrayList<Building>();
 
         initialize(worldWidth, worldHeight, player1, player2);
@@ -306,7 +306,7 @@ public class World implements Serializable {
         buildings.add(new Mine(mineLocation2));
         buildings.add(new Mine(mineLocation3));
         buildings.add(new Mine(mineLocation4));
-        addGrailToCell(player1CastleLocation,player2CastleLocation);
+        addGrailToCell(player1CastleLocation, player2CastleLocation);
         player1.addProductionBuilding(player1Castle);
         player2.addProductionBuilding(player2Castle);
     }

@@ -40,7 +40,7 @@ public class Game implements Serializable {
     }
 
     private String generateRandomName() {
-        ArrayList<String> names = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<String>();
         names.add("Sergio");
         names.add("Jorge");
         names.add("Epord");
@@ -87,7 +87,7 @@ public class Game implements Serializable {
      * Starts a New Game, setting the active player to Player 1, and selecting his Castle.
      */
     public void startNewGame() {
-        logQueue = new ArrayDeque<>();
+        logQueue = new ArrayDeque<String>();
         activePlayer = this.player1;
         selectPlayerCastle(activePlayer);
     }

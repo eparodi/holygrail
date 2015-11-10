@@ -14,6 +14,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.TextAlignment;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -103,9 +104,12 @@ public class GameController {
     }
 
     public void drawBuidings(GraphicsContext graphicsContext) {
+        Location drawLocation;
         for (Building building : game.getBuildings()) {
-            new BuildingUI(gridLocationToDrawLocation(building.getLocation()), building, cellHeight, cellWidth).drawMe(graphicsContext);
-
+            drawLocation = gridLocationToDrawLocation(building.getLocation());
+            new BuildingUI(drawLocation, building, cellHeight, cellWidth).drawMe(graphicsContext);
+            graphicsContext.setFill(Color.YELLOWGREEN);
+            graphicsContext.fillText("GOLD:", drawLocation.getX(), drawLocation.getY());
         }
     }
 
@@ -114,8 +118,6 @@ public class GameController {
         for (Unit unit : game.getUnits()) {
             drawLocation = gridLocationToDrawLocation(unit.getLocation());
             new UnitUI(drawLocation, unit, cellHeight, cellWidth).drawMe(graphicsContext);
-            graphicsContext.setFill(Color.BURLYWOOD);
-            graphicsContext.fillText("this is a unit", drawLocation.getX(), drawLocation.getY());
         }
     }
 
@@ -196,7 +198,7 @@ public class GameController {
 
         if (key.getCode().equals(KeyCode.SPACE)) {
 
-            if(game.endTurn()){
+            if (game.endTurn()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Game Message");
                 alert.setHeaderText("Congratulations");

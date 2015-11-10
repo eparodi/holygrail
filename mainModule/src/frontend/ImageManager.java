@@ -87,10 +87,27 @@ public class ImageManager {
             return "file:mainModule/resources/life60.png";
         } else if (lifeRatio >= 0.4d) {
             return "file:mainModule/resources/life40.png";
-        } else if (lifeRatio >= 0.2d) {
+        } else if (lifeRatio >= 0.1d) {
             return "file:mainModule/resources/life20.png";
         } else {
             return "file:mainModule/resources/lifeMin.png";
+        }
+    }
+
+    public String getAPImage(Unit unit) {
+        Double APRatio = (double) unit.getActionPoints() / unit.getMaxActionPoints();
+        if (APRatio == 1d) {
+            return "file:mainModule/resources/mana100.png";
+        } else if (APRatio >= 0.8d) {
+            return "file:mainModule/resources/mana80.png";
+        } else if (APRatio >= 0.6d) {
+            return "file:mainModule/resources/mana60.png";
+        } else if (APRatio >= 0.4d) {
+            return "file:mainModule/resources/mana40.png";
+        } else if (APRatio >= 0.1d) {
+            return "file:mainModule/resources/mana20.png";
+        } else {
+            return "file:mainModule/resources/manaMin.png";
         }
     }
 }

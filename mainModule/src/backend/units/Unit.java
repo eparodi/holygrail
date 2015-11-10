@@ -29,17 +29,18 @@ public abstract class Unit extends OwneableEntitty implements Serializable {
     private Attack baseAttack = null;
     private Defense defense = null;
 
-    private LinkedList<Item> itemSlots = new LinkedList<>();
+    private LinkedList<Item> itemSlots = new LinkedList<Item>();
     private final int SLOT_NUMBER = 2;
 
     private Integer health;
     private Integer maxHealth;
+
     private Integer actionPoints;
+
     private Integer maxActionPoints;
     private Integer range;
     private Integer endurance;
     private Integer speed;
-
     /**
      * Creates a Unit with certain stats on a specific Location in the World, with a Player owner.
      *
@@ -72,7 +73,6 @@ public abstract class Unit extends OwneableEntitty implements Serializable {
         world.addUnit(this);
     }
 
-
     /**
      * Returns the Health of the unit.
      *
@@ -81,6 +81,7 @@ public abstract class Unit extends OwneableEntitty implements Serializable {
     public Integer getHealth() {
         return health < 0 ? 0 : health;
     }
+
 
     /**
      * Returns the Max Health of the unit.
@@ -106,6 +107,15 @@ public abstract class Unit extends OwneableEntitty implements Serializable {
             maxActionPoints += i.getMaxAPBonus();
         }
         return maxActionPoints;
+    }
+
+    /**
+     * Returns the Action Points of the unit.
+     *
+     * @return Integer value of units AP.
+     */
+    public Integer getActionPoints() {
+        return actionPoints;
     }
 
     /**

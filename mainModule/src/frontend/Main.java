@@ -15,17 +15,16 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -130,10 +129,43 @@ public class Main extends Application {
             }
         });
 
-        mainMenu.getMenus().addAll(menuFile, menuStartNewGame);
-        menuStartNewGame.getItems().addAll(menuItemGame2, menuItemGame3, menuItemGame4, menuItemGame5);
+        Menu menuHelp = new Menu("Help");
+        MenuItem menuItemRules = new MenuItem("Rules");
+        menuItemRules.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+                Alert rules = new Alert(Alert.AlertType.INFORMATION);
+                rules.setTitle("Game Rules");
+                rules.setHeaderText("GAME RULES");
+                rules.setContentText("Objective: conquer enemy's castle.\n" +
+                                     "Secondary Objective: dig, find the Holy Grail, and bring it back to your Castle\n\n" +
+                                     "CONTROLS:\n" +
+                                     "A to build an Archer\n" +
+                                     "R to build a Rider\n" +
+                                     "L to build a Lancer\n" +
+                                     "D to dig with a unit selected\n" +
+                                     "Space Bar to change player turn\n" +
+                                     "Left Click to select a cell and interact with units.\n\n" +
+                                     "OTHER IMPORTANT STUFF:\n" +
+                                     "Blue bar over units represent their action points(AP). AP are used to move, attack and dig." +
+                                     "AP is restored after each turn\n\n" +
+                                     "Green bar over units represent their actual life.\n");
+
+                rules.showAndWait();
+            }
+        });
+
+
+        mainMenu.getMenus().addAll(menuFile, menuStartNewGame, menuHelp);
         menuFile.getItems().addAll(menuItemExit, menuItemLoadGame, menuItemSaveGame);
+        menuStartNewGame.getItems().addAll(menuItemGame2, menuItemGame3, menuItemGame4, menuItemGame5);
+        menuHelp.getItems().addAll(menuItemRules);
         root.getChildren().add(mainMenu);
+
+        Label label1 = new Label("Name:");
+        TextField textField = new TextField ();
+        HBox hb = new HBox();
+        hb.getChildren().addAll(label1, textField);
+        hb.setSpacing(10);
 
         root.getChildren().add(canvas);
         gameController.updateGraphics(graphicsContext);

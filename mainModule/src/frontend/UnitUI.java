@@ -11,6 +11,7 @@ public class UnitUI {
     private Image unitImage;
     private Image markerImage;
     private Image lifeImage;
+    private Image APImage;
     private ImageManager imageManager = new ImageManager();
 
     public UnitUI(Location drawLocation, Unit unit, Integer cellHeight, Integer cellWidth) {
@@ -23,6 +24,7 @@ public class UnitUI {
         unitImage = new Image(imageManager.getUnitImage(unit), cellWidth, cellHeight, false, false);
         markerImage = new Image(imageManager.getMarkerImage(unit), cellWidth, cellHeight, false, false);
         lifeImage = new Image(imageManager.getLifeImage(unit), cellWidth, cellHeight, false, false);
+        APImage = new Image(imageManager.getAPImage(unit), cellWidth, cellHeight, false, false);
 
     }
 
@@ -31,6 +33,7 @@ public class UnitUI {
 
         graphicsContext.drawImage(markerImage, drawLocation.getX(), drawLocation.getY());
         graphicsContext.drawImage(unitImage, drawLocation.getX(), drawLocation.getY());
+        graphicsContext.drawImage(APImage, drawLocation.getX(), drawLocation.getY());
         graphicsContext.drawImage(lifeImage, drawLocation.getX(), drawLocation.getY());
     }
 }

@@ -30,7 +30,7 @@ public class Cell extends Entity {
     public Cell(Location location, Terrain terrain) {
         super(location);
         this.terrain = terrain;
-        this.treasures = new LinkedList<>();
+        this.treasures = new LinkedList<Item>();
 
         random = new Random();
         int numberOfItems = random.nextInt(MAX_ITEMS);
