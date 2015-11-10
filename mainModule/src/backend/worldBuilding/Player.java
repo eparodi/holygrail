@@ -16,7 +16,7 @@ public class Player implements Serializable {
 
     private String name;
     private Integer id;
-    private Integer gold = 100;
+    private Integer gold = 20;
     private ProductionBuilding productionBuilding;
 
     /**

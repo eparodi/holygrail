@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class MineIncome implements Income, Serializable {
 
-    private static final Integer MINE_INCOME = 6;
+    private static final Integer MINE_INCOME = 5;
 
     /**
      * Returns the Mine gold income.

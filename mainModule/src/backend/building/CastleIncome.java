@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class CastleIncome implements Income, Serializable {
 
-    private static final Integer CASTLE_INCOME = 10;
+    private static final Integer CASTLE_INCOME = 5;
 
     /**
      * Returns the Castle gold income.
