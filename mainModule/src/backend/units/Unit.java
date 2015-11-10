@@ -18,7 +18,7 @@ import java.util.LinkedList;
  */
 public abstract class Unit extends OwneableEntitty implements Serializable {
     public static final Integer ATTACK_AP_COST = 2;
-    public static final Integer DIG_AP_COST = 1;
+    public static final Integer DIG_AP_COST = 2;
     private static Integer nextId = 0;
 
     private Player owner;
@@ -123,10 +123,6 @@ public abstract class Unit extends OwneableEntitty implements Serializable {
      * @return modified Attack.
      */
     public Attack getAttack() {//TODO: Remover println
-        System.out.println("attackerTerrain = " + getCurrentTerrain());
-        System.out.println("baseAttack = " + baseAttack);
-        System.out.println("baseAttack.getModifiedAttack(calcTerrainMod(attackerTerrain)) = "
-                + baseAttack.getModifiedAttack(getCurrentTerrain(), itemSlots));
         return baseAttack.getModifiedAttack(getCurrentTerrain(), itemSlots);
     }
 
@@ -154,27 +150,29 @@ public abstract class Unit extends OwneableEntitty implements Serializable {
      * @param finalLocation Location to move the unit.
      * @return True if the unit has moved, false if not.
      */
-    public boolean move(Location finalLocation) {
+    public String move(Location finalLocation) {
         if (finalLocation == null) {
             throw new NullArgumentException("null final position");
         }
         if (world.isUnitOnLocation(finalLocation)) {
-            return false;
+            return "Cant move, occupied at " + finalLocation;
         }
         Integer cost = world.getTerrainAt(finalLocation).getApCost(speed, endurance);
         if (cost > actionPoints) {
-            return false;
+            return "Not enough AP to move, needs " + cost + " and you have "+ actionPoints;
         }
         if (getLocation().distance(finalLocation) != 1) {
-            return false;
+            return finalLocation +" is too far away";
         }
+        String log = "Moved to " + finalLocation;
         if (world.isBuildingOnLocation(finalLocation)) {
             world.getBuildingAt(finalLocation).setOwner(owner);
+            log = "captured building at " + finalLocation;
         }
 
         spendAP(cost);
         setLocation(finalLocation);
-        return true;
+        return log;
     }
 
     /**
@@ -202,8 +200,6 @@ public abstract class Unit extends OwneableEntitty implements Serializable {
      */
     private void receiveDamage(Attack attack) {
         Integer damageDealt = defense.getDamageDealt(attack, getCurrentTerrain());
-        System.out.println("damageDealt = " + damageDealt);
-        System.out.println("health = " + health);
         health -= damageDealt;
         if (isDed()) {
             dropItems();
@@ -249,23 +245,29 @@ public abstract class Unit extends OwneableEntitty implements Serializable {
     /**
      * Picks and item. If the unit already has an item in the slot, the item is dropped and returned.
      */
-    public void pickItem() {
-
+    public String pickItem() {
+        Item itemPicked = null;
         Item droppedItem = null;
+        String log = "";
         if (actionPoints >= DIG_AP_COST) {
             actionPoints -= DIG_AP_COST;
             Cell dugCell = world.getCellAt(getLocation());
-            Item itemPicked = dugCell.getItem();
+            itemPicked = dugCell.getItem();
             if (itemPicked != null) {
-                System.out.println("Item: " + itemPicked.getName());
                 if (itemSlots.size() == SLOT_NUMBER) {
                     droppedItem = itemSlots.remove();
                 }
                 itemSlots.add(itemPicked);
                 updateStatus(itemPicked);
                 dugCell.addItem(droppedItem);
+                log = "An item has been found: " + itemPicked.getName();
+            } else {
+                log = "No item found";
             }
+        } else {
+            log = "Not enough AP to dig: you have " + actionPoints + " and you need " + DIG_AP_COST;
         }
+        return log;
     }
 
     /**

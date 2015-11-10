@@ -18,6 +18,7 @@ public class Cell extends Entity {
     private Queue<Item> treasures;
     private final static int MAX_ITEMS = 5;
     private Terrain terrain;
+    private static Random random;
 
     /**
      * Constructs a new Cell, on a Location, with certain Terrain and random Items.
@@ -30,7 +31,7 @@ public class Cell extends Entity {
         this.terrain = terrain;
         this.treasures = new LinkedList<>();
 
-        Random random = new Random();
+        random = new Random();
         int numberOfItems = random.nextInt(MAX_ITEMS);
 
         for ( int i = 0 ; i <= numberOfItems ; i++ ){
@@ -109,7 +110,7 @@ public class Cell extends Entity {
      * Returns true if the Cell can hold one more item, and false if not.
      * @return True if the Cell can hold another item.
      */
-    public boolean canRecieveItem(){
+    public boolean canReceiveItem(){
         if(treasures.size() >= MAX_ITEMS)
             return false;
         else

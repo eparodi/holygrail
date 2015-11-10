@@ -22,4 +22,9 @@ public class Lancer extends Unit implements Serializable {
     public Lancer(World world, Location location, Player owner){
         super(new Attack(5, 2, 2), new Defense(3,2,3), 15, 5, 1, world,location, owner,5,3);
     }
+
+    @Override
+    public String toString() {
+        return "Lancer";
+    }
 }

@@ -3,7 +3,6 @@ package backend.worldBuilding;
 import backend.building.*;
 import backend.exceptions.CellOutOfWorldException;
 import backend.exceptions.NullArgumentException;
-import backend.items.Item;
 import backend.terrain.*;
 import backend.units.Unit;
 
@@ -34,7 +33,7 @@ public class World implements Serializable {
         ArrayList<Cell> holyGrailPossibleCells = new ArrayList<Cell>();
 
         for (Cell cell : cells) {
-            if (cell.canRecieveItem()) {
+            if (cell.canReceiveItem()) {
                 Location cellLocation = cell.getLocation();
                 if (cellLocation.distance(player1Castle) > 5 && cellLocation.distance(player2Castle) > 5) {
                     if (!isBuildingOnLocation(cellLocation)) {

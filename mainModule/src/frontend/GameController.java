@@ -42,7 +42,7 @@ public class GameController {
         System.out.println(cellHeight + "," + cellWidth);
     }
 
-    public void resetCellSize(){
+    public void resetCellSize() {
         cellWidth = (int) (this.canvasWidth / (worldWidth + 0.417d));
         cellHeight = (int) (this.canvasHeight / (worldHeight * 0.80));
     }
@@ -55,8 +55,11 @@ public class GameController {
 
     public void attemptAction(double drawX, double drawY) {
         Location gridLocation = drawLocationToGridLocation((int) drawX, (int) drawY);
-        if (gridLocation.getY() < worldHeight && gridLocation.getX() < worldWidth)
+        if (gridLocation.getY() < worldHeight && gridLocation.getY() >= 0 &&
+                gridLocation.getX() < worldWidth && gridLocation.getX() >= 0) {
             game.actionAttempt(gridLocation);
+        }
+        game.printLog();
     }
 
     public void updateGraphics(GraphicsContext graphicsContext) {
@@ -116,13 +119,13 @@ public class GameController {
         }
     }
 
-    public void drawSelectedCell(GraphicsContext graphicsContext){
+    public void drawSelectedCell(GraphicsContext graphicsContext) {
         new SelectedCellUI(gridLocationToDrawLocation(game.getSelectedLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
     }
 
     public Location gridLocationToDrawLocation(Location gridLocation) {
         Location drawLocation = new Location(0, 0);
-        if(gridLocation == null) throw new NullArgumentException("null location");
+        if (gridLocation == null) throw new NullArgumentException("null location");
         drawLocation.setX(gridLocation.getY() % 2 == 0 ? gridLocation.getX() * cellWidth :
                 gridLocation.getX() * cellWidth + cellWidth / 2); // Depende de fila par/impar
         drawLocation.setY(gridLocation.getY() * (cellHeight - cellHeight / 4));
@@ -155,26 +158,23 @@ public class GameController {
         }
     }
 
-    public Game loadGame(String path){
+    public Game loadGame(String path) {
         Game game = null;
-        try
-        {
+        try {
             FileInputStream fileIn = new FileInputStream(path);
             ObjectInputStream in = new ObjectInputStream(fileIn);
             game = (Game) in.readObject();
             in.close();
             fileIn.close();
-        }catch(IOException i)
-        {
+        } catch (IOException i) {
             System.out.println("Game not found or old version");
-        }catch(ClassNotFoundException c)
-        {
+        } catch (ClassNotFoundException c) {
             System.out.println("game class not found");
             c.printStackTrace();
         }
         this.game = game;
         //TODO: Nadie atrapa esta exception, este es su único uso.
-        if(game == null) throw new NullLocationException(path + " is an invalid map");
+        if (game == null) throw new NullLocationException(path + " is an invalid map");
         initialize();
         resetCellSize();
         return game;
@@ -197,6 +197,7 @@ public class GameController {
         if (key.getCode().equals(KeyCode.SPACE)) {
             game.endTurn();
         }
+        game.printLog();
     }
 
 
