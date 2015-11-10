@@ -43,7 +43,6 @@ public class Game implements Serializable {
 
     /**
      * Creates and loads the two players.
-     *
      * @param player1 Player 1.
      * @param player2 Player 2.
      */
@@ -54,7 +53,6 @@ public class Game implements Serializable {
 
     /**
      * Returns the World Height.
-     *
      * @return Integer value of world Height.
      */
     public Integer getWorldHeight() {
@@ -63,7 +61,6 @@ public class Game implements Serializable {
 
     /**
      * Return the World Width.
-     *
      * @return Integer value of the
      */
     public Integer getWorldWidth() {
@@ -80,26 +77,27 @@ public class Game implements Serializable {
     }
 
     //TODO: Hacer un metodo para revisar si el player sigue teniendo Castle, para separarlo de este.
-
     /**
      * Selects the specified Player's castle.
-     *
      * @param player owner of the Castle.
      * @return
      */
     private boolean selectPlayerCastle(Player player) {
         //Searches the castle from the first player and selects the cell where it is located
         //#Building needs location
-        if (world.getPlayerProductionBuilding(player) == null) {
+        if (!hasCastle(player)){
             addLog(player + "lost, he has no more buildings");
             return false;
         } else selectedLocation = world.getPlayerProductionBuilding(player).getLocation();
         return true;
     }
 
+    public boolean hasCastle(Player player){
+        return player.getProductionBuilding().getOwner() == player;
+    }
+
     /**
      * //TODO: Esto debería estar en el controller.
-     *
      * @param clickedLocation
      */
     public void actionAttempt(Location clickedLocation) {
@@ -140,7 +138,6 @@ public class Game implements Serializable {
 
     /**
      * Attempts to build an Archer. If achieved, returns true.
-     *
      * @return True if the Archer is created, false if not.
      */
     public void attemptBuildArcher() {
@@ -150,7 +147,6 @@ public class Game implements Serializable {
 
     /**
      * Attempts to build a Rider. If achieved, returns true.
-     *
      * @return True if the Rider is created, false if not.
      */
     public void attemptBuildRider() {
@@ -160,7 +156,6 @@ public class Game implements Serializable {
 
     /**
      * Attempts to build a Lancer. If achieved, returns true.
-     *
      * @return True if the Lancer is created, false if not.
      */
     public void attemptBuildLancer() {
@@ -170,7 +165,6 @@ public class Game implements Serializable {
 
     /**
      * Adds a message to the log.
-     *
      * @param msg message to add.
      */
     private void addLog(String msg) {
@@ -179,8 +173,7 @@ public class Game implements Serializable {
 
     /**
      * Attempts to move a unit to a Location.
-     *
-     * @param unit            unit to move.
+     * @param unit unit to move.
      * @param clickedLocation destination Location.
      * @return True if the unit has moved, false if not.
      */
@@ -200,7 +193,6 @@ public class Game implements Serializable {
 
     /**
      * Attempts to perform an attack from an attacker unit to a defender.
-     *
      * @param attacker attacking unit.
      * @param defender defending unit.
      * @return True if the unit has attacked.
@@ -229,7 +221,6 @@ public class Game implements Serializable {
 
     /**
      * //TODO: CONTROLLER
-     *
      * @param location
      */
     private void setSelectedLocation(Location location) {
@@ -238,7 +229,6 @@ public class Game implements Serializable {
 
     /**
      * //TODO : CONTROLLER
-     *
      * @return
      */
     public Location getSelectedLocation() {
@@ -256,7 +246,6 @@ public class Game implements Serializable {
 
     /**
      * Returns all the Units in the World.
-     *
      * @return Collection of all the Units.
      */
     public Collection<Unit> getUnits() {
@@ -265,7 +254,6 @@ public class Game implements Serializable {
 
     /**
      * Returns all the Units in the World.
-     *
      * @return Collection of all the Buildings.
      */
     public Collection<Building> getBuildings() {
@@ -274,7 +262,6 @@ public class Game implements Serializable {
 
     /**
      * Returns all the Cells in the World.
-     *
      * @return Collection of all the Cells.
      */
     public Collection<Cell> getCells() {
@@ -283,7 +270,6 @@ public class Game implements Serializable {
 
     /**
      * Returns the active Player.
-     *
      * @return current active Player.
      */
     public Player getActivePlayer() {
@@ -297,8 +283,7 @@ public class Game implements Serializable {
         activePlayer = activePlayer.equals(player1) ? player2 : player1;
     }
 
-    /**
-     * //TODO: El alert debería estar en el FrontEnd, el controller debería fijarse si algun jugador ganó y emitir el msg.
+    /** //TODO: El alert debería estar en el FrontEnd, el controller debería fijarse si algun jugador ganó y emitir el msg.
      * Ends the current Player turn.
      * Refills the player units action points, adds corresponding the gold per turn to the player.
      * If a unit is standing at his owner Castle with the Holy Grail, the player wins the game.

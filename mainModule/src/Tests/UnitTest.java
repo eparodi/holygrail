@@ -1,6 +1,7 @@
 package Tests;
 import backend.building.Castle;
 import backend.building.Mine;
+import backend.exceptions.CellOutOfWorldException;
 import backend.terrain.Terrain;
 import backend.units.Archer;
 import backend.units.Lancer;
@@ -27,9 +28,9 @@ public class UnitTest {
         lancer = new Lancer(world,new Location(2,3),p2);
     }
 
-    @Test
+    @Test(expected = CellOutOfWorldException.class)
     //Sees if a Unit can Move
-    public void MoveTest() {
+    public void MoveOutOfWorldTest() {
         archer.move(new Location(500, 5000));
         System.out.println("playerID: " + p1.getId());
 
@@ -38,20 +39,19 @@ public class UnitTest {
 
     @Test
     //Sees if a Unit cant move
-    public void CantMoveTest() {
+    public void MoveTooFarAwayTest() {
         world.addUnit(archer);
-        archer.move(new Location(50, 50));
+        archer.move(new Location(49, 49));
         System.out.println("playerID: " + p1.getId());
 
-        assertTrue(!archer.getLocation().equals(new Location(40, 40)));
+        assertTrue(!archer.getLocation().equals(new Location(49, 49)));
         assertTrue(archer.getLocation().equals(new Location(1, 3)));
     }
 
-    @Test
-    //TODO: UNIDAD MAGICA
-    public void Nulllocation() {
+    @Test(expected = CellOutOfWorldException.class)
+    public void NullLocation() {
         lancer = new Lancer(world,new Location(500,500),p2);
-        assertTrue(lancer.getLocation().equals(new Location(1, 3)));
+        assertTrue(lancer.getLocation().equals(new Location(500, 500)));
     }
 
 

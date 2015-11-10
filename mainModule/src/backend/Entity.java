@@ -1,5 +1,6 @@
 package backend;
 
+import backend.exceptions.NullArgumentException;
 import backend.worldBuilding.Location;
 
 import java.io.Serializable;
@@ -10,8 +11,8 @@ import java.io.Serializable;
 public abstract class Entity implements Serializable{
     protected Location location;
 
-    //TODO: Clase abstracta con constructor?
     public Entity(Location newLoc){
+        if(newLoc == null) throw new NullArgumentException("Entity has to have a location");
         this.location=newLoc;
     }
 

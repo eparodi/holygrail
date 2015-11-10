@@ -10,7 +10,6 @@ import java.util.Objects;
 /**
  * Represents a player of the game.
  * A player has a name, and certain amount of gold.
- * TODO: Agregamos que un player es owner de ciertas unidades/edificios?
  */
 public class Player implements Serializable {
     private static Integer nextId = 1;

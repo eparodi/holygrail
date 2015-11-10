@@ -73,9 +73,8 @@ public class Cell extends Entity {
     public Location getLocation() {
         return super.getLocation();
     }
-// TODO: Remove comment below?
+
     public String toString() {
-       // return "Cell at " + ((location == null) ? "null location" : location.toString()) + "terrain type: " + terrain;
         return  super.getLocation().toString() + "terrain type: " + terrain;
     }
 
