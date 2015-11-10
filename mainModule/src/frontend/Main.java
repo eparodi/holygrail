@@ -2,6 +2,7 @@ package frontend;
 
 import backend.Game;
 //import backend.units.UnitType;
+import backend.exceptions.NullLocationException;
 import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
 import javafx.application.Application;
@@ -37,7 +38,7 @@ public class Main extends Application {
 
     public void start(Stage primaryStage) throws Exception {
 
-        final Game game = new Game(16, 11, "Jorge", "Sergio");
+        final Game game = new Game(16, 11);
         //END OF MODIFIABLE, DONT TOUCH THE REST
 
 

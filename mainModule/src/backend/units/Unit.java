@@ -122,7 +122,7 @@ public abstract class Unit extends OwneableEntitty implements Serializable {
      *
      * @return modified Attack.
      */
-    public Attack getAttack() {//TODO: Remover println
+    public Attack getAttack() {
         return baseAttack.getModifiedAttack(getCurrentTerrain(), itemSlots);
     }
 
@@ -256,10 +256,10 @@ public abstract class Unit extends OwneableEntitty implements Serializable {
             if (itemPicked != null) {
                 if (itemSlots.size() == SLOT_NUMBER) {
                     droppedItem = itemSlots.remove();
+                    dugCell.addItem(droppedItem);
                 }
                 itemSlots.add(itemPicked);
                 updateStatus(itemPicked);
-                dugCell.addItem(droppedItem);
                 log = "An item has been found: " + itemPicked.getName();
             } else {
                 log = "No item found";

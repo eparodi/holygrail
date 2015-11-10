@@ -1,6 +1,7 @@
 package backend.worldBuilding;
 
 
+import backend.exceptions.NullArgumentException;
 import backend.items.Item;
 import backend.items.ItemFactory;
 import backend.terrain.Terrain;
@@ -102,7 +103,8 @@ public class Cell extends Entity {
      * @param addItem Item added to the Treasures Queue
      */
     public void addItem( Item addItem ){
-        treasures.add(addItem);
+        if(addItem == null) throw new NullArgumentException("Item cant be null");
+            treasures.add(addItem);
     }
 
     /**

@@ -1,4 +1,5 @@
 package Tests;
+
 import backend.building.Castle;
 import backend.building.Mine;
 import backend.exceptions.CellOutOfWorldException;
@@ -6,6 +7,7 @@ import backend.terrain.Terrain;
 import backend.units.Archer;
 import backend.units.Lancer;
 import backend.units.Unit;
+import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.worldBuilding.World;
@@ -24,8 +26,14 @@ public class UnitTest {
     @Before
     public void initialisation() {
         world = new World(50, 50, p1, p2);
-        archer = new Archer(world,new Location(1,3),p1);
-        lancer = new Lancer(world,new Location(2,3),p2);
+        archer = new Archer(world, new Location(1, 3), p1);
+        lancer = new Lancer(world, new Location(2, 3), p2);
+    }
+
+    @Test
+    public void MoveTest() {
+        archer.move(new Location(2, 3));
+        assertTrue(world.isUnitOnLocation(new Location(2, 3)));
     }
 
     @Test(expected = CellOutOfWorldException.class)
@@ -50,16 +58,14 @@ public class UnitTest {
 
     @Test(expected = CellOutOfWorldException.class)
     public void NullLocation() {
-        lancer = new Lancer(world,new Location(500,500),p2);
+        lancer = new Lancer(world, new Location(500, 500), p2);
         assertTrue(lancer.getLocation().equals(new Location(500, 500)));
     }
-
-
 
     @Test
     //Sees if a unit can capture a castle
     public void CaptureCastleTest() {
-        Castle castle = new Castle(p2, new Location(1,4));
+        Castle castle = new Castle(p2, new Location(1, 4));
 
         world.addUnit(archer);
         world.addBuilding(castle);
@@ -71,7 +77,7 @@ public class UnitTest {
     @Test
     //Sees if a unit can capture a castle
     public void CaptureMineTest() {
-        Mine mine = new Mine(new Location(1,4));
+        Mine mine = new Mine(new Location(1, 4));
 
         world.addUnit(archer);
         world.addBuilding(mine);
@@ -111,16 +117,31 @@ public class UnitTest {
 
         //world.skirmish(archer, lancer, null, null);
 
-        assertTrue(!world.isUnitOnLocation(new Location(3,3)));
+        assertTrue(!world.isUnitOnLocation(new Location(3, 3)));
     }
 
     @Test
     public void PickupTest() {
 
-        world.getCellAt(new Location(1,3)).addHolyGrail();
+        world.getCellAt(new Location(1, 3)).addHolyGrail();
         archer.pickItem();
         assertTrue(archer.hasItem());
     }
 
+    @Test
+    public void DropItemTest() {
+        while (world.getCellAt(new Location(1, 3)).getItem() != null) ;
+
+        Cell target = world.getCellAt(new Location(1, 3));
+        target.addHolyGrail();
+        archer.pickItem();
+        while (world.isUnitOnLocation(new Location(1,3))){
+            lancer.attack(archer);
+            lancer.refillAP();
+        }
+        lancer.move(new Location(1,3));
+        lancer.pickItem();
+        assertTrue(lancer.hasItem());
+    }
 
 }

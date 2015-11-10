@@ -18,18 +18,18 @@ public class World implements Serializable {
     Collection<Building> buildings;
 
     Integer worldWidth, worldHeight;
+
     //TODO: Javadoc
-    //TODO: Replace player1 and player2 with Collection<Player> and receive map
     public World(Integer worldWidth, Integer worldHeight, Player player1, Player player2) {
+
         cells = new ArrayList<>();
         units = new HashSet<>();
         buildings = new ArrayList<Building>();
 
-        initialize(worldWidth,worldHeight,player1,player2);
+        initialize(worldWidth, worldHeight, player1, player2);
     }
 
-    //TODO: Por qué le pasamos una collection de celdas, si vamos a usar this.cells?
-    private void addGrailToCell(Collection<Cell> cells, Location player1Castle, Location player2Castle){
+    private void addGrailToCell(Location player1Castle, Location player2Castle){
         ArrayList<Cell> holyGrailPossibleCells = new ArrayList<Cell>();
 
         for (Cell cell : cells) {
@@ -54,18 +54,28 @@ public class World implements Serializable {
      *
      * @param unit unit to add.
      */
-    public void addUnit(Unit unit) {//TODO: Remover exception, por qué una unidad seria null?
+    public void addUnit(Unit unit) {
         if (unit == null) throw new NullArgumentException("null unit argument");
+        if(!isLocationOnBounds(unit.getLocation()))
+            throw new CellOutOfWorldException("unit is out of world");
         units.add(unit);
+    }
+    private boolean isLocationOnBounds(Location location){
+        return  !(location.getX() < 0 || location.getX() >= worldWidth ||
+                location.getY() < 0 || location.getY() >= worldHeight);
     }
 
     //in the future new buildings might be added
     public void addBuilding(Building building) {
         if (building == null) throw new NullArgumentException("null unit argument");
+        if(!isLocationOnBounds(building.getLocation()))
+            throw new CellOutOfWorldException("building is out of world");
         buildings.add(building);
     }
     public void addBuilding(ProductionBuilding productionBuilding) {
         if (productionBuilding == null) throw new NullArgumentException("null unit argument");
+        if(!isLocationOnBounds(productionBuilding.getLocation()))
+            throw new CellOutOfWorldException("building is out of world");
         buildings.add(productionBuilding);
         productionBuilding.getOwner().addProductionBuilding(productionBuilding);
     }
@@ -139,20 +149,6 @@ public class World implements Serializable {
     }
 
     /**
-     * Returns the Castle of the specified Player.
-     *
-     * @param player owner of the Castle.
-     * @return Castle owned by Player.
-     */
-    //TODO: (ToAsk) how to recognize castle without enum
-    public ProductionBuilding getPlayerProductionBuilding(Player player) {
-        if (player == null) {
-            throw new NullArgumentException("player is null");
-        }
-        return player.getProductionBuilding();
-    }
-
-    /**
      * Returns the Terrain of the Cell in certain Location.
      *
      * @param location location of the Cell.
@@ -211,7 +207,6 @@ public class World implements Serializable {
         }
         return new Grass();
     }
-
 
     /**
      * Generates all the Cells of the World.
@@ -311,7 +306,7 @@ public class World implements Serializable {
         buildings.add(new Mine(mineLocation2));
         buildings.add(new Mine(mineLocation3));
         buildings.add(new Mine(mineLocation4));
-        addGrailToCell(this.getCells(),player1CastleLocation,player2CastleLocation);
+        addGrailToCell(player1CastleLocation,player2CastleLocation);
         player1.addProductionBuilding(player1Castle);
         player2.addProductionBuilding(player2Castle);
     }

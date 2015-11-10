@@ -14,7 +14,6 @@ public class ProductionBuilding extends Building implements Serializable {
     public static final Integer UNIT_COST = 10;
 
     /**
-     * //TODO: Un production building debería si o si tener income?
      * Constructs a Production building at certain Location, owned by a Player.
      *
      * @param owner    player who owns the building.
@@ -51,7 +50,7 @@ public class ProductionBuilding extends Building implements Serializable {
         if (canBuild(world)) {
             getOwner().pay(UNIT_COST);
             new Archer(world, getLocation(), getOwner());
-            return "Archer built";
+            return "Archer built, " + getOwner().getGold() + " gold left.";
         }
         return "Can't build archer: Castle cell is occupied or you don't have enough gold";
     }
@@ -65,7 +64,7 @@ public class ProductionBuilding extends Building implements Serializable {
         if (canBuild(world)) {
             getOwner().pay(UNIT_COST);
             new Rider(world, getLocation(), getOwner());
-            return "Rider built";
+            return "Rider built, " + getOwner().getGold() + " gold left.";
         }
         return "Can't build rider: Castle cell is occupied or you don't have enough gold";
     }
@@ -79,7 +78,7 @@ public class ProductionBuilding extends Building implements Serializable {
         if (canBuild(world)) {
             getOwner().pay(UNIT_COST);
             new Lancer(world, getLocation(), getOwner());
-            return "Lancer built";
+            return "Lancer built, " + getOwner().getGold() + " gold left.";
         }
         return "Can't build lancer: Castle cell is occupied or you don't have enough gold";
     }

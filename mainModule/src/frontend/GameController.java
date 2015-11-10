@@ -8,6 +8,7 @@ import backend.units.Unit;
 import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -39,7 +40,6 @@ public class GameController {
     private void initialize() {
         this.worldHeight = game.getWorldHeight();
         this.worldWidth = game.getWorldWidth();
-        System.out.println(cellHeight + "," + cellWidth);
     }
 
     public void resetCellSize() {
@@ -169,15 +169,15 @@ public class GameController {
         } catch (IOException i) {
             System.out.println("Game not found or old version");
         } catch (ClassNotFoundException c) {
-            System.out.println("game class not found");
+            System.out.println("Game class not found");
             c.printStackTrace();
         }
-        this.game = game;
-        //TODO: Nadie atrapa esta exception, este es su único uso.
-        if (game == null) throw new NullLocationException(path + " is an invalid map");
-        initialize();
-        resetCellSize();
-        return game;
+        if (game != null) {
+            this.game = game;
+            initialize();
+            resetCellSize();
+        }
+        return this.game;
     }
 
     public void keyPressed(KeyEvent key) {
@@ -195,7 +195,15 @@ public class GameController {
         }
 
         if (key.getCode().equals(KeyCode.SPACE)) {
-            game.endTurn();
+
+            if(game.endTurn()){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Game Message");
+                alert.setHeaderText("Congratulations");
+                alert.setContentText("You have won!, do not try to move any more units please, start new game");
+
+                alert.showAndWait();
+            }
         }
         game.printLog();
     }

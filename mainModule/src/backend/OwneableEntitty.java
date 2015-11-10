@@ -12,7 +12,6 @@ import java.io.Serializable;
 public abstract class OwneableEntitty extends Entity implements Serializable {
     private Player owner=null;
 
-    //TODO: Constructor de clase abstracta.
     public OwneableEntitty(Location inLocation,Player inOwner){
         super(inLocation);
         this.owner=inOwner;
@@ -34,7 +33,7 @@ public abstract class OwneableEntitty extends Entity implements Serializable {
         return owner;
     }
 
-    /** //TODO: hasOwner no se usa nunca
+    /**
      * Returns true if the Entity has an owner.
      * @return True if it has an owner, false if not.
      */
