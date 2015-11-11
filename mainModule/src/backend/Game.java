@@ -88,6 +88,7 @@ public class Game implements Serializable {
      */
     public void startNewGame() {
         logQueue = new ArrayDeque<String>();
+        logQueue.add("Blue player: " + player1 + "  Red player: " + player2);
         activePlayer = this.player1;
         selectPlayerCastle(activePlayer);
     }
@@ -128,7 +129,6 @@ public class Game implements Serializable {
             if (world.isUnitOnLocation(clickedLocation)) {
                 if (world.getUnitAt(clickedLocation).getOwner().equals(activePlayer)) {
                     setSelectedLocation(clickedLocation);
-                    System.out.println("location: " + selectedLocation);
                 } else if (!selectedLocation.equals(clickedLocation)) {
                     attackAttempt(selectedUnit, world.getUnitAt(clickedLocation));
                 }
@@ -248,6 +248,7 @@ public class Game implements Serializable {
     /**
      * Prints the queued Log.
      */
+    @Deprecated
     public void printLog() {
         while (!logQueue.isEmpty()) {
             System.out.println(logQueue.poll());
@@ -255,12 +256,15 @@ public class Game implements Serializable {
     }
 
     /**
-     *
      * @return next string in log (returns null if empty.
      */
 
     public String getNextLog() {
         return logQueue.poll();
+    }
+
+    public boolean logHasNext() {
+        return !logQueue.isEmpty();
     }
 
     /**

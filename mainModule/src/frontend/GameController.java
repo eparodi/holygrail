@@ -45,9 +45,18 @@ public class GameController {
         this.worldWidth = game.getWorldWidth();
     }
 
-    private void printLog(GraphicsContext graphicsContext){
-        Location printLogLocation = new Location (10, worldHeight);
-        graphicsContext.strokeText("HAHAHAHAHAH",printLogLocation.getX(), printLogLocation.getY());
+    private void printLog(GraphicsContext graphicsContext) {
+        String log = "";
+        while (game.logHasNext()) {
+            log += " " + game.getNextLog();
+        }
+        if (log != "") {
+            graphicsContext.clearRect(0, graphicsContext.getCanvas().getHeight()-Main.getLogSize(),
+                    graphicsContext.getCanvas().getWidth(), Main.getLogSize());
+            Location printLogLocation = gridLocationToDrawLocation(new Location(0, worldHeight));
+            graphicsContext.setFill(Color.BLACK);
+            graphicsContext.fillText(log, printLogLocation.getX(), printLogLocation.getY() + 50);
+        }
     }
 
     public void resetCellSize() {
@@ -72,7 +81,8 @@ public class GameController {
 
     public void updateGraphics(GraphicsContext graphicsContext) {
         //clear the canvas
-        graphicsContext.clearRect(0, 0, graphicsContext.getCanvas().getWidth(), graphicsContext.getCanvas().getHeight());
+        graphicsContext.clearRect(0, 0, graphicsContext.getCanvas().getWidth(),
+                graphicsContext.getCanvas().getHeight() - Main.getLogSize());
         drawCells(graphicsContext);
 
     }
@@ -115,8 +125,7 @@ public class GameController {
         for (Building building : game.getBuildings()) {
             drawLocation = gridLocationToDrawLocation(building.getLocation());
             new BuildingUI(drawLocation, building, cellHeight, cellWidth).drawMe(graphicsContext);
-            graphicsContext.setFill(Color.YELLOWGREEN);
-            graphicsContext.fillText("GOLD:", drawLocation.getX(), drawLocation.getY());
+            printLog(graphicsContext);
         }
     }
 

@@ -5,6 +5,7 @@ import backend.exceptions.NullArgumentException;
 import backend.worldBuilding.Location;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 public class BuildingUI {
     private Location drawLocation;

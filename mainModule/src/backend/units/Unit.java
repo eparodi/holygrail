@@ -305,7 +305,7 @@ public abstract class Unit extends OwneableEntitty implements Serializable {
      * Refills the Unit Action Points.
      */
     public void refillAP() {
-        this.actionPoints = this.maxActionPoints;
+        this.actionPoints = getMaxActionPoints();
     }
 
     /**

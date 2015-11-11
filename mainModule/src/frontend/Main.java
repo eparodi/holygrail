@@ -35,7 +35,7 @@ import java.io.*;
 import java.util.Random;
 
 public class Main extends Application {
-    private static Integer LOG_SIZE = 80;
+    private static Integer LOG_SIZE = 30;
 
     public void start(Stage primaryStage) throws Exception {
 
@@ -52,6 +52,10 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public static Integer getLogSize(){
+        return LOG_SIZE;
     }
 
     public static Scene loadGameUI(final GameController gameController) {
