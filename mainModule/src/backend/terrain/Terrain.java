@@ -21,10 +21,11 @@ public abstract class Terrain implements Serializable {
     /**
      * Constructs a Terrain with its additional bonuses and costs.
      * Bonuses are expressed in percentages. For example: 1.25 slash bonus.
-     * @param slashBonus slash damage modifier.
+     *
+     * @param slashBonus    slash damage modifier.
      * @param piercingBonus piercing damage modifier.
-     * @param bluntBonus blunt damage modifier.
-     * @param maxSpeed max speed permitted on the terrain.
+     * @param bluntBonus    blunt damage modifier.
+     * @param maxSpeed      max speed permitted on the terrain.
      * @param enduranceCost endurance cost.
      */
     public Terrain(Double slashBonus, Double piercingBonus, Double bluntBonus,
@@ -65,7 +66,8 @@ public abstract class Terrain implements Serializable {
 
     /**
      * Returns the Action Points cost to move through the terrain.
-     * @param unitSpeed unit Speed.
+     *
+     * @param unitSpeed     unit Speed.
      * @param unitEndurance unit Endurance.
      * @return Integer value with AP movement cost.
      */
@@ -85,6 +87,7 @@ public abstract class Terrain implements Serializable {
 
     /**
      * Returns True if the Terrain can have Items.
+     *
      * @return True if the Terrain can receive Items, false if not.
      */
     public boolean canReceiveItem() {

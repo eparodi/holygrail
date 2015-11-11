@@ -12,16 +12,18 @@ public class Location implements Serializable {
 
     /**
      * Creates a new location object with x and y coordinates.
+     *
      * @param x x coordinate.
      * @param y y coordinate.
      */
-    public Location(Integer x,Integer y) {
+    public Location(Integer x, Integer y) {
         this.x = x;
         this.y = y;
     }
 
     /**
      * Returns the x coordinate of the Location.
+     *
      * @return Integer value of x coordinate.
      */
     public Integer getX() {
@@ -30,6 +32,7 @@ public class Location implements Serializable {
 
     /**
      * Sets the x coordinate of a Location.
+     *
      * @param x x coordinate.
      */
     public void setX(Integer x) {
@@ -38,7 +41,8 @@ public class Location implements Serializable {
 
     /**
      * Returns the y coordinate of the Location.
-     * @param y Integer value of y coordinate.
+     *
+     * @return Integer value of y coordinate.
      */
     public Integer getY() {
         return y;
@@ -46,6 +50,7 @@ public class Location implements Serializable {
 
     /**
      * Sets the y coordinate of a Location.
+     *
      * @param y y coordinate.
      */
     public void setY(Integer y) {
@@ -69,7 +74,7 @@ public class Location implements Serializable {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "(" + getX() + "," + getY() + ")";
     }
 

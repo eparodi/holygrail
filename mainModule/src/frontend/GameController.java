@@ -43,7 +43,7 @@ public class GameController {
             log += " " + game.getNextLog();
         }
         if (log != "") {
-            graphicsContext.clearRect(0, graphicsContext.getCanvas().getHeight()-Main.getLogSize(),
+            graphicsContext.clearRect(0, graphicsContext.getCanvas().getHeight() - Main.getLogSize(),
                     graphicsContext.getCanvas().getWidth(), Main.getLogSize());
             Location printLogLocation = gridLocationToDrawLocation(new Location(0, worldHeight));
             graphicsContext.setFill(Color.BLACK);

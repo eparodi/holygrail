@@ -39,7 +39,7 @@ public class Main extends Application {
         launch(args);
     }
 
-    public static Integer getLogSize(){
+    public static Integer getLogSize() {
         return LOG_SIZE;
     }
 
@@ -128,18 +128,18 @@ public class Main extends Application {
                 rules.setTitle("Game Rules");
                 rules.setHeaderText("GAME RULES");
                 rules.setContentText("Objective: conquer enemy's castle.\n" +
-                                     "Secondary Objective: dig, find the Holy Grail, and bring it back to your Castle\n\n" +
-                                     "CONTROLS:\n" +
-                                     "A to build an Archer\n" +
-                                     "R to build a Rider\n" +
-                                     "L to build a Lancer\n" +
-                                     "D to dig with a unit selected\n" +
-                                     "Space Bar to change player turn\n" +
-                                     "Left Click to select a cell and interact with units.\n\n" +
-                                     "OTHER IMPORTANT STUFF:\n" +
-                                     "Blue bar over units represent their action points(AP). AP are used to move, attack and dig." +
-                                     "AP is restored after each turn\n\n" +
-                                     "Green bar over units represent their actual life.\n");
+                        "Secondary Objective: dig, find the Holy Grail, and bring it back to your Castle\n\n" +
+                        "CONTROLS:\n" +
+                        "A to build an Archer\n" +
+                        "R to build a Rider\n" +
+                        "L to build a Lancer\n" +
+                        "D to dig with a unit selected\n" +
+                        "Space Bar to change player turn\n" +
+                        "Left Click to select a cell and interact with units.\n\n" +
+                        "OTHER IMPORTANT STUFF:\n" +
+                        "Blue bar over units represent their action points(AP). AP are used to move, attack and dig." +
+                        "AP is restored after each turn\n\n" +
+                        "Green bar over units represent their actual life.\n");
 
                 rules.showAndWait();
             }
@@ -153,7 +153,7 @@ public class Main extends Application {
         root.getChildren().add(mainMenu);
 
         Label label1 = new Label("Name:");
-        TextField textField = new TextField ();
+        TextField textField = new TextField();
         HBox hb = new HBox();
         hb.getChildren().addAll(label1, textField);
         hb.setSpacing(10);

@@ -19,7 +19,14 @@ public class World implements Serializable {
 
     Integer worldWidth, worldHeight;
 
-    //TODO: Javadoc
+    /**
+     * Creates a World with certain Width and Height, with 2 players.
+     *
+     * @param worldWidth  World Width.
+     * @param worldHeight World Height.
+     * @param player1     Player 1.
+     * @param player2     Player 2.
+     */
     public World(Integer worldWidth, Integer worldHeight, Player player1, Player player2) {
 
         cells = new ArrayList<Cell>();
@@ -29,7 +36,7 @@ public class World implements Serializable {
         initialize(worldWidth, worldHeight, player1, player2);
     }
 
-    private void addGrailToCell(Location player1Castle, Location player2Castle){
+    private void addGrailToCell(Location player1Castle, Location player2Castle) {
         ArrayList<Cell> holyGrailPossibleCells = new ArrayList<Cell>();
 
         for (Cell cell : cells) {
@@ -55,25 +62,27 @@ public class World implements Serializable {
      */
     public void addUnit(Unit unit) {
         if (unit == null) throw new NullArgumentException("null unit argument");
-        if(!isLocationOnBounds(unit.getLocation()))
+        if (!isLocationOnBounds(unit.getLocation()))
             throw new CellOutOfWorldException("unit is out of world");
         units.add(unit);
     }
-    private boolean isLocationOnBounds(Location location){
-        return  !(location.getX() < 0 || location.getX() >= worldWidth ||
+
+    private boolean isLocationOnBounds(Location location) {
+        return !(location.getX() < 0 || location.getX() >= worldWidth ||
                 location.getY() < 0 || location.getY() >= worldHeight);
     }
 
     //in the future new buildings might be added
     public void addBuilding(Building building) {
         if (building == null) throw new NullArgumentException("null unit argument");
-        if(!isLocationOnBounds(building.getLocation()))
+        if (!isLocationOnBounds(building.getLocation()))
             throw new CellOutOfWorldException("building is out of world");
         buildings.add(building);
     }
+
     public void addBuilding(ProductionBuilding productionBuilding) {
         if (productionBuilding == null) throw new NullArgumentException("null unit argument");
-        if(!isLocationOnBounds(productionBuilding.getLocation()))
+        if (!isLocationOnBounds(productionBuilding.getLocation()))
             throw new CellOutOfWorldException("building is out of world");
         buildings.add(productionBuilding);
         productionBuilding.getOwner().addProductionBuilding(productionBuilding);
@@ -102,6 +111,7 @@ public class World implements Serializable {
 
     /**
      * Returns true if there is a Unit on the selected Location, false if not.
+     *
      * @param selectedLocation Location of the World.
      * @return True if there is a Unit on the selected Location, false if not.
      */
@@ -114,6 +124,7 @@ public class World implements Serializable {
 
     /**
      * Returns true if there is a building on the selected Location, false if not.
+     *
      * @param selectedLocation Location of the World.
      * @return True if there is a Building on the selected Location, false if not.
      */
@@ -188,20 +199,20 @@ public class World implements Serializable {
     private Terrain loadTerrain(Location location) {
         if (location.getX() >= 5 && location.getX() < 10 && location.getY() > 3 && location.getY() <= 8
                 || (location.getY() == 3 && (location.getX() == 8 || location.getX() == 9))
-                || (location.getY() == 2 && (location.getX()==9 || location.getX()==10))) {
+                || (location.getY() == 2 && (location.getX() == 9 || location.getX() == 10))) {
             return new Water();
         }
-        if ((location.getY()<4 && location.getX()>8)) {
+        if ((location.getY() < 4 && location.getX() > 8)) {
             return new Forest();
         }
         if ((location.getX() == 0 && location.getY() <= 7) || (location.getX() < 6 && location.getY() == 0)
-                || (location.getX() == 1 && location.getY() < 3) || (location.getX()==1 &&(location.getY()==6 || location.getY()==7))
-                || (location.getX()>10 && location.getY()==10)|| (location.getX()==15 && location.getY()>3)
-                || (location.getX()>=10 && location.getY()==9 && location.getX()!=14 && location.getX()!=13)) {
+                || (location.getX() == 1 && location.getY() < 3) || (location.getX() == 1 && (location.getY() == 6 || location.getY() == 7))
+                || (location.getX() > 10 && location.getY() == 10) || (location.getX() == 15 && location.getY() > 3)
+                || (location.getX() >= 10 && location.getY() == 9 && location.getX() != 14 && location.getX() != 13)) {
             return new Mountain();
         }
-        if ((location.getX() < 5 && location.getX()>=0 &&  location.getY() <= 10 && location.getY() > 5)
-                || (location.getX()==2 && location.getY()==6) || (location.getX()==2 && location.getY()==7)) {
+        if ((location.getX() < 5 && location.getX() >= 0 && location.getY() <= 10 && location.getY() > 5)
+                || (location.getX() == 2 && location.getY() == 6) || (location.getX() == 2 && location.getY() == 7)) {
             return new Hill();
         }
         return new Grass();
@@ -254,6 +265,7 @@ public class World implements Serializable {
 
     /**
      * Returns all the Buildings in the World.
+     *
      * @return Collection of all the Buildings.
      */
     public Collection<Building> getBuildings() {
@@ -262,6 +274,7 @@ public class World implements Serializable {
 
     /**
      * Returns the Unit at a specific Location.
+     *
      * @param location location of the Unit.
      * @return Unit at the specified Location.
      */
@@ -274,6 +287,7 @@ public class World implements Serializable {
 
     /**
      * Returns the Building at a specific Location.
+     *
      * @param location location of the Building.
      * @return Building at the specified Location.
      */
@@ -284,18 +298,18 @@ public class World implements Serializable {
         throw new NoSuchElementException("No building in buildings with that location: " + location);
     }
 
-//TODO: Javadoc
-    private void initialize(Integer worldWidth, Integer worldHeight, Player player1, Player player2){
+    //TODO: Javadoc
+    private void initialize(Integer worldWidth, Integer worldHeight, Player player1, Player player2) {
         this.worldHeight = worldHeight;
         this.worldWidth = worldWidth;
 
         cells = generateCellCollection();
         Location player1CastleLocation = new Location(2, 2);
         Location player2CastleLocation = new Location(14, 9);
-        Location mineLocation = new Location(1,8);
-        Location mineLocation2 = new Location(14,0);
-        Location mineLocation3 = new Location(6,3);
-        Location mineLocation4 = new Location(10,6);
+        Location mineLocation = new Location(1, 8);
+        Location mineLocation2 = new Location(14, 0);
+        Location mineLocation3 = new Location(6, 3);
+        Location mineLocation4 = new Location(10, 6);
 
         Castle player1Castle = new Castle(player1, player1CastleLocation);
         Castle player2Castle = new Castle(player2, player2CastleLocation);
@@ -309,7 +323,6 @@ public class World implements Serializable {
         player1.addProductionBuilding(player1Castle);
         player2.addProductionBuilding(player2Castle);
     }
-
 
 
 }

@@ -15,12 +15,12 @@ public class TerrainUI {
 //        super(drawLocation, new Image(imageManager.getTerrainImage(cell.getTerrain()), cellWidth, cellHeight, false, false));
         this.drawLocation = drawLocation;
         this.image = new Image(imageManager.getTerrainImage(cell.getTerrain()), cellWidth, cellHeight, false, false);
-        if(drawLocation == null)throw new NullArgumentException("null drawLocation");
+        if (drawLocation == null) throw new NullArgumentException("null drawLocation");
     }
 
-    public void drawMe(GraphicsContext graphicsContext){
-        if(graphicsContext == null) throw new NullArgumentException("null graphics context");
+    public void drawMe(GraphicsContext graphicsContext) {
+        if (graphicsContext == null) throw new NullArgumentException("null graphics context");
 
-        graphicsContext.drawImage(image,drawLocation.getX(),drawLocation.getY());
+        graphicsContext.drawImage(image, drawLocation.getX(), drawLocation.getY());
     }
 }

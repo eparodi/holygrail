@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class Mine extends Building implements Serializable {
     /**
      * Constructs a Mine with its location in the map.
+     *
      * @param location location of the mine.
      */
     public Mine(Location location) {

@@ -8,16 +8,17 @@ import java.io.Serializable;
 /**
  * Represents an Entity in certain Location of the World.
  */
-public abstract class Entity implements Serializable{
+public abstract class Entity implements Serializable {
     protected Location location;
 
-    public Entity(Location newLoc){
-        if(newLoc == null) throw new NullArgumentException("Entity has to have a location");
-        this.location=newLoc;
+    public Entity(Location newLoc) {
+        if (newLoc == null) throw new NullArgumentException("Entity has to have a location");
+        this.location = newLoc;
     }
 
     /**
      * Returns the Location of the entity in the world.
+     *
      * @return entity location.
      */
     public Location getLocation() {
@@ -25,7 +26,7 @@ public abstract class Entity implements Serializable{
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return location.toString();
     }
 

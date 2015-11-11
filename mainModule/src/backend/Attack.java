@@ -30,16 +30,16 @@ public class Attack implements Serializable {
      * damage modifier for every Unit.
      *
      * @param terrain Terrain where the attack is being made.
-     * @param items List of damage modifying items.
+     * @param items   List of damage modifying items.
      * @return Attack with 3 types of damage.
      */
-    public Attack getModifiedAttack(Terrain terrain, LinkedList<Item> items ) {
+    public Attack getModifiedAttack(Terrain terrain, LinkedList<Item> items) {
         Attack modifiedAttack;
         int slashDamage = this.slashDamage;
         int piercingDamage = this.piercingDamage;
         int bluntDamage = this.bluntDamage;
 
-        for ( Item i : items ){
+        for (Item i : items) {
             slashDamage += i.getSlashBonus();
             piercingDamage += i.getPiercingBonus();
             bluntDamage += i.getBluntBonus();
@@ -54,6 +54,7 @@ public class Attack implements Serializable {
 
     /**
      * Returns the Blunt Damage of an Attack.
+     *
      * @return Integer value of Blunt Damage.
      */
     public Integer getBluntDamage() {
@@ -62,6 +63,7 @@ public class Attack implements Serializable {
 
     /**
      * Returns the Piercing Damage of an Attack.
+     *
      * @return Integer value of Piercing Damage.
      */
     public Integer getPiercingDamage() {
@@ -70,6 +72,7 @@ public class Attack implements Serializable {
 
     /**
      * Returns the Slash Damage of an Attack.
+     *
      * @return Integer value of Slash Damage.
      */
     public Integer getSlashDamage() {

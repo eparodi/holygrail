@@ -28,11 +28,11 @@ public class ProductionBuilding extends Building implements Serializable {
      * Returns True if the Production Building can produce a Unit, checking if the Location where the unit has to
      * be created is occupied, and if the owner has enough gold.
      *
-     * @param world
-     * @return
+     * @param world The World in which the building resides.
+     * @return True if the a unit can be built, false if not.
      */
     public boolean canBuild(World world) {
-        if (world.isUnitOnLocation(getLocation())) {
+        if (world.isUnitOnLocation(getLocation()) || !getOwner().canPay(UNIT_COST )) {
             return false;
         }
         if (!getOwner().canPay(UNIT_COST)) {

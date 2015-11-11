@@ -11,6 +11,7 @@ public class CastleIncome implements Income, Serializable {
 
     /**
      * Returns the Castle gold income.
+     *
      * @return Integer value with gold income.
      */
     @Override

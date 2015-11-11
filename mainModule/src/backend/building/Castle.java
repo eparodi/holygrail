@@ -17,11 +17,11 @@ public class Castle extends ProductionBuilding implements Serializable {
      * @param owner Owner of the Castle.
      */
     public Castle(Player owner, Location location) {
-        super(owner,new CastleIncome(),location);
+        super(owner, new CastleIncome(), location);
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "Castle from " + getOwner();
     }
 }

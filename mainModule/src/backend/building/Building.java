@@ -12,29 +12,31 @@ import java.io.Serializable;
  * the owner.
  */
 
-public abstract class Building extends OwnableEntity implements Serializable{
+public abstract class Building extends OwnableEntity implements Serializable {
     private Income income;
 
-    public Building(Player owner, Income income, Location location){
-        super(location,owner);
-        if(location==null) throw new NullArgumentException("Building has to have a location");
+    public Building(Player owner, Income income, Location location) {
+        super(location, owner);
+        if (location == null) throw new NullArgumentException("Building has to have a location");
         this.income = income;
     }
-    /**
 
+    /**
      * Returns the gold this building generates.
+     *
      * @return The amount of gold the player receive from this building per turn.
      */
-    public Integer getIncome(){
+    public Integer getIncome() {
         return income.giveIncome();
     }
 
 
     /**
      * Returns the String representation of the object.
+     *
      * @return the String representation of the object.
      */
-    public String toString(){
+    public String toString() {
         return "Building from " + getOwner() + "; ";
     }
 }

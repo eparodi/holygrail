@@ -41,6 +41,7 @@ public abstract class Unit extends OwnableEntity implements Serializable {
     private Integer range;
     private Integer endurance;
     private Integer speed;
+
     /**
      * Creates a Unit with certain stats on a specific Location in the World, with a Player owner.
      *
@@ -169,10 +170,10 @@ public abstract class Unit extends OwnableEntity implements Serializable {
         }
         Integer cost = world.getTerrainAt(finalLocation).getApCost(speed, endurance);
         if (cost > actionPoints) {
-            return "Not enough AP to move, needs " + cost + " and you have "+ actionPoints;
+            return "Not enough AP to move, needs " + cost + " and you have " + actionPoints;
         }
         if (getLocation().distance(finalLocation) != 1) {
-            return finalLocation +" is too far away";
+            return finalLocation + " is too far away";
         }
         String log = "Moved to " + finalLocation;
         if (world.isBuildingOnLocation(finalLocation)) {
@@ -229,6 +230,7 @@ public abstract class Unit extends OwnableEntity implements Serializable {
 
     /**
      * Makes an attack to another unit. Returns true if it attacked.
+     *
      * @param unit Unit to attack.
      * @return True if the unit has attacked, false if not.
      */
@@ -246,6 +248,7 @@ public abstract class Unit extends OwnableEntity implements Serializable {
 
     /**
      * Performs a counterattack to a unit. It takes damage if it's in range.
+     *
      * @param unit unit to attack.
      */
     private void counterAttack(Unit unit) {
@@ -324,6 +327,7 @@ public abstract class Unit extends OwnableEntity implements Serializable {
 
     /**
      * Returns the next available ID, to make every unit unique.
+     *
      * @return Integer value of ID.
      */
     private static Integer getNextId() {
@@ -350,6 +354,7 @@ public abstract class Unit extends OwnableEntity implements Serializable {
 
     /**
      * Returns true if the unit has the Holy Grail in its inventory.
+     *
      * @return True if the unit has the Holy Grail, false if not.
      */
     public boolean hasHolyGrail() {
@@ -363,6 +368,7 @@ public abstract class Unit extends OwnableEntity implements Serializable {
 
     /**
      * Sets the Location of the unit.
+     *
      * @param location new location of the unit.
      */
     private void setLocation(Location location) {

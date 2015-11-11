@@ -95,8 +95,8 @@ public class Game implements Serializable {
     /**
      * Selects the specified Player's castle.
      *
-     * @param player owner of the Castle.
-     * @return
+     * @param player Owner of the Castle.
+     * @return True if the Player Castle was selected, false if not.
      */
     private boolean selectPlayerCastle(Player player) {
         //Searches the castle from the first player and selects the cell where it is located
@@ -113,6 +113,9 @@ public class Game implements Serializable {
     }
 
     /**
+     * //TODO: JAVADOC
+     * //TODO: No vamos a poner todo lo de Clicked y selected location en el controller?
+     *
      * @param clickedLocation
      */
     public void actionAttempt(Location clickedLocation) {
@@ -144,8 +147,6 @@ public class Game implements Serializable {
 
     /**
      * Attempts to build an Archer. If achieved, returns true.
-     *
-     * @return True if the Archer is created, false if not.
      */
     public void attemptBuildArcher() {
         ProductionBuilding productionBuilding = activePlayer.getProductionBuilding();
@@ -154,8 +155,6 @@ public class Game implements Serializable {
 
     /**
      * Attempts to build a Rider. If achieved, returns true.
-     *
-     * @return True if the Rider is created, false if not.
      */
     public void attemptBuildRider() {
         ProductionBuilding productionBuilding = activePlayer.getProductionBuilding();
@@ -164,8 +163,6 @@ public class Game implements Serializable {
 
     /**
      * Attempts to build a Lancer. If achieved, returns true.
-     *
-     * @return True if the Lancer is created, false if not.
      */
     public void attemptBuildLancer() {
         ProductionBuilding productionBuilding = activePlayer.getProductionBuilding();
@@ -186,7 +183,6 @@ public class Game implements Serializable {
      *
      * @param unit            unit to move.
      * @param clickedLocation destination Location.
-     * @return True if the unit has moved, false if not.
      */
     private void moveAttempt(Unit unit, Location clickedLocation) {
         if (unit == null) {
@@ -230,6 +226,8 @@ public class Game implements Serializable {
     }
 
     /**
+     * //TODO:  JAVADOC
+     *
      * @param location
      */
     private void setSelectedLocation(Location location) {
@@ -237,11 +235,14 @@ public class Game implements Serializable {
     }
 
     /**
+     * //TODO: JAVADOC
+     *
      * @return
      */
     public Location getSelectedLocation() {
         return selectedLocation;
     }
+
 
     /**
      * @return next string in log (returns null if empty.
@@ -322,8 +323,12 @@ public class Game implements Serializable {
     }
 
     private boolean hasEverybodyElseLost(Player currentPlayer) {
-        if (player1.equals(currentPlayer)) return hasPlayerLost(player2);
-        if (player2.equals(currentPlayer)) return hasPlayerLost(player1);
+        if (player1.equals(currentPlayer)) {
+            return hasPlayerLost(player2);
+        }
+        if (player2.equals(currentPlayer)) {
+            return hasPlayerLost(player1);
+        }
         return false;
     }
 

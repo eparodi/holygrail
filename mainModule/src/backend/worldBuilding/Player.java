@@ -19,7 +19,7 @@ public class Player implements Serializable {
 
     /**
      * Creates a new player with certain name, and a unique player ID.
-     * @param name
+     * @param name Player's name.
      */
     public Player(String name) {
         this.name = name;
