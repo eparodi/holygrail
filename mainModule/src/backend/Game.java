@@ -1,7 +1,6 @@
 package backend;
 
 import backend.building.Building;
-import backend.building.Castle;
 import backend.building.ProductionBuilding;
 import backend.exceptions.NullArgumentException;
 import backend.units.Unit;
@@ -9,7 +8,6 @@ import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
 import backend.worldBuilding.World;
-import javafx.scene.control.Alert;
 
 import java.io.Serializable;
 import java.util.*;

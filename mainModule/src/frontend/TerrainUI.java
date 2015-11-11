@@ -6,9 +6,6 @@ import backend.worldBuilding.Location;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-/**
- * Created by Julian Benitez on 10/29/2015.
- */
 public class TerrainUI {
     protected Location drawLocation;
     protected Image image;

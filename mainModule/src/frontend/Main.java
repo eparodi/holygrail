@@ -1,38 +1,23 @@
 package frontend;
 
 import backend.Game;
-//import backend.units.UnitType;
-import backend.exceptions.NullLocationException;
-import backend.worldBuilding.Cell;
-import backend.worldBuilding.Location;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-
-import javax.swing.event.TreeModelEvent;
-import java.awt.*;
-import java.io.*;
-import java.util.Random;
 
 public class Main extends Application {
     private static Integer LOG_SIZE = 30;

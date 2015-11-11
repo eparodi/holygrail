@@ -5,13 +5,9 @@ import backend.worldBuilding.Location;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-import java.io.IOException;
-import java.nio.file.NoSuchFileException;
-
 public class SelectedCellUI {
     protected Location drawLocation;
     protected Image image;
-    protected ImageManager imageManager = new ImageManager();
 
     /**
      *

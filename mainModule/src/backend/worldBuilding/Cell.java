@@ -17,7 +17,13 @@ import java.util.Random;
 public class Cell extends Entity {
 
     private Queue<Item> treasures;
-    private final static int MAX_ITEMS = 5;
+    private final static int MAX_PERCENTAGE = 140;
+    private final static int ZERO_ITEM_PROB = 40;
+    private final static int ONE_ITEM_PROB = 90;
+    private final static int TWO_ITEM_PROB = 110;
+    private final static int THREE_ITEM_PROB = 125;
+    private final static int FOUR_ITEM_PROB = 135;
+    private final static int MAX_ITEMS = 5 ;
     private Terrain terrain;
     private static Random random;
 
@@ -33,7 +39,21 @@ public class Cell extends Entity {
         this.treasures = new LinkedList<Item>();
 
         random = new Random();
-        int numberOfItems = random.nextInt(MAX_ITEMS);
+        int numberOfItems;
+
+        int itemProbability = random.nextInt(MAX_PERCENTAGE);
+        if ( itemProbability <= ZERO_ITEM_PROB )
+            numberOfItems = 0;
+        else if ( itemProbability <= ONE_ITEM_PROB)
+            numberOfItems = 1;
+        else if ( itemProbability <= TWO_ITEM_PROB)
+            numberOfItems = 2;
+        else if ( itemProbability <= THREE_ITEM_PROB)
+            numberOfItems = 3;
+        else if ( itemProbability <= FOUR_ITEM_PROB)
+            numberOfItems = 4;
+        else
+            numberOfItems = 5;
 
         for ( int i = 0 ; i <= numberOfItems ; i++ ){
             treasures.add(ItemFactory.buildRandomItem());

@@ -46,7 +46,6 @@ public class World implements Serializable {
         Random random = new Random();
         int holyGrailPosition = random.nextInt(holyGrailPossibleCells.size());
         holyGrailPossibleCells.get(holyGrailPosition).addHolyGrail();
-        System.out.println(holyGrailPossibleCells.get(holyGrailPosition).getLocation());
     }
 
     /**

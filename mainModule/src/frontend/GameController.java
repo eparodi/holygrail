@@ -3,24 +3,16 @@ package frontend;
 import backend.Game;
 import backend.building.Building;
 import backend.exceptions.NullArgumentException;
-import backend.exceptions.NullLocationException;
 import backend.units.Unit;
 import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
-import com.sun.corba.se.impl.orbutil.graph.Graph;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collection;
 
 public class GameController {
     Integer cellHeight;
@@ -55,7 +47,7 @@ public class GameController {
                     graphicsContext.getCanvas().getWidth(), Main.getLogSize());
             Location printLogLocation = gridLocationToDrawLocation(new Location(0, worldHeight));
             graphicsContext.setFill(Color.BLACK);
-            graphicsContext.fillText(log, printLogLocation.getX(), printLogLocation.getY() + 50);
+            graphicsContext.fillText(log, printLogLocation.getX(), printLogLocation.getY() + Main.getLogSize());
         }
     }
 

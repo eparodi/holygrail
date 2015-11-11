@@ -9,13 +9,9 @@ import backend.units.Archer;
 import backend.units.Lancer;
 import backend.units.Rider;
 import backend.units.Unit;
-import javafx.scene.image.Image;
 
 import java.util.HashMap;
 
-/**
- * Created by Familia Balaguer on 30/10/2015.
- */
 public class ImageManager {
     HashMap<Class, String> images;
 
