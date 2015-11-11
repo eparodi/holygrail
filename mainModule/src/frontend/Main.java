@@ -175,7 +175,7 @@ public class Main extends Application {
 
         root.getChildren().add(canvas);
         gameController.updateGraphics(graphicsContext);
-        scene.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+        canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
                 gameController.attemptAction(e.getX(), e.getY() - mainMenu.getHeight(), graphicsContext);
