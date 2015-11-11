@@ -1,6 +1,6 @@
 package backend.building;
 
-import backend.OwneableEntity;
+import backend.OwnableEntity;
 import backend.exceptions.NullArgumentException;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
@@ -12,7 +12,7 @@ import java.io.Serializable;
  * the owner.
  */
 
-public abstract class Building extends OwneableEntity implements Serializable{
+public abstract class Building extends OwnableEntity implements Serializable{
     private Income income;
 
     public Building(Player owner, Income income, Location location){

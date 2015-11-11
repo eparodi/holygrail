@@ -9,10 +9,10 @@ import java.io.Serializable;
 /**
  * Represents an Entity owned by a Player.
  */
-public abstract class OwneableEntity extends Entity implements Serializable {
+public abstract class OwnableEntity extends Entity implements Serializable {
     private Player owner=null;
 
-    public OwneableEntity(Location inLocation,Player inOwner){
+    public OwnableEntity(Location inLocation, Player inOwner){
         super(inLocation);
         this.owner=inOwner;
     }

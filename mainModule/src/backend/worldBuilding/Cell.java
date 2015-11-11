@@ -37,28 +37,28 @@ public class Cell extends Entity {
         super(location);
         this.terrain = terrain;
         this.treasures = new LinkedList<Item>();
+        if ( this.terrain.canReceiveItem() ) {
+            random = new Random();
+            int numberOfItems;
 
-        random = new Random();
-        int numberOfItems;
+            int itemProbability = random.nextInt(MAX_PERCENTAGE);
+            if (itemProbability <= ZERO_ITEM_PROB)
+                numberOfItems = 0;
+            else if (itemProbability <= ONE_ITEM_PROB)
+                numberOfItems = 1;
+            else if (itemProbability <= TWO_ITEM_PROB)
+                numberOfItems = 2;
+            else if (itemProbability <= THREE_ITEM_PROB)
+                numberOfItems = 3;
+            else if (itemProbability <= FOUR_ITEM_PROB)
+                numberOfItems = 4;
+            else
+                numberOfItems = 5;
 
-        int itemProbability = random.nextInt(MAX_PERCENTAGE);
-        if ( itemProbability <= ZERO_ITEM_PROB )
-            numberOfItems = 0;
-        else if ( itemProbability <= ONE_ITEM_PROB)
-            numberOfItems = 1;
-        else if ( itemProbability <= TWO_ITEM_PROB)
-            numberOfItems = 2;
-        else if ( itemProbability <= THREE_ITEM_PROB)
-            numberOfItems = 3;
-        else if ( itemProbability <= FOUR_ITEM_PROB)
-            numberOfItems = 4;
-        else
-            numberOfItems = 5;
-
-        for ( int i = 0 ; i <= numberOfItems ; i++ ){
-            treasures.add(ItemFactory.buildRandomItem());
+            for (int i = 0; i <= numberOfItems; i++) {
+                treasures.add(ItemFactory.buildRandomItem());
+            }
         }
-
     }
 
     @Override

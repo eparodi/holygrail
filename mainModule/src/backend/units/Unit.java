@@ -16,7 +16,7 @@ import java.util.LinkedList;
 /**
  * Represents a Unit in the game.
  */
-public abstract class Unit extends OwneableEntity implements Serializable {
+public abstract class Unit extends OwnableEntity implements Serializable {
     public static final Integer ATTACK_AP_COST = 2;
     public static final Integer DIG_AP_COST = 2;
     private static Integer nextId = 0;

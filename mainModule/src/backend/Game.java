@@ -244,16 +244,6 @@ public class Game implements Serializable {
     }
 
     /**
-     * Prints the queued Log.
-     */
-    @Deprecated
-    public void printLog() {
-        while (!logQueue.isEmpty()) {
-            System.out.println(logQueue.poll());
-        }
-    }
-
-    /**
      * @return next string in log (returns null if empty.
      */
 

@@ -84,6 +84,7 @@ public class Player implements Serializable {
     public void addGold(Integer amount){
         gold+=amount;
     }
+
     public void pay(Integer amount){
         if (!canPay(amount)){
             throw new CantPayException("Amount to pay is bigger than actual gold.");
