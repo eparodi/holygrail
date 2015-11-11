@@ -25,6 +25,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -34,6 +35,7 @@ import java.io.*;
 import java.util.Random;
 
 public class Main extends Application {
+    private static Integer LOG_SIZE = 80;
 
     public void start(Stage primaryStage) throws Exception {
 
@@ -62,7 +64,7 @@ public class Main extends Application {
         gameController.addCanvasSize(canvas.getHeight(), canvas.getWidth());
 
         final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
-        Scene scene = new Scene(root, canvas.getWidth(), canvas.getHeight());
+        Scene scene = new Scene(root, canvas.getWidth(), canvas.getHeight() + LOG_SIZE);
 
         final MenuBar mainMenu = new MenuBar();
         Menu menuFile = new Menu("File");
@@ -172,14 +174,14 @@ public class Main extends Application {
         scene.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-                gameController.attemptAction(e.getX(), e.getY() - mainMenu.getHeight());
+                gameController.attemptAction(e.getX(), e.getY() - mainMenu.getHeight(), graphicsContext);
                 gameController.updateGraphics(graphicsContext);
             }
         });
 
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent key) {
-                gameController.keyPressed(key);
+                gameController.keyPressed(key, graphicsContext);
                 gameController.updateGraphics(graphicsContext);
             }
         });

@@ -255,6 +255,15 @@ public class Game implements Serializable {
     }
 
     /**
+     *
+     * @return next string in log (returns null if empty.
+     */
+
+    public String getNextLog() {
+        return logQueue.poll();
+    }
+
+    /**
      * Returns all the Units in the World.
      *
      * @return Collection of all the Units.

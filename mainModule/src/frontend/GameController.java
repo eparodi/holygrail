@@ -7,6 +7,7 @@ import backend.exceptions.NullLocationException;
 import backend.units.Unit;
 import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
+import com.sun.corba.se.impl.orbutil.graph.Graph;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
@@ -14,6 +15,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 import java.io.*;
@@ -43,6 +45,11 @@ public class GameController {
         this.worldWidth = game.getWorldWidth();
     }
 
+    private void printLog(GraphicsContext graphicsContext){
+        Location printLogLocation = new Location (10, worldHeight);
+        graphicsContext.strokeText("HAHAHAHAHAH",printLogLocation.getX(), printLogLocation.getY());
+    }
+
     public void resetCellSize() {
         cellWidth = (int) (this.canvasWidth / (worldWidth + 0.417d));
         cellHeight = (int) (this.canvasHeight / (worldHeight * 0.80));
@@ -54,13 +61,13 @@ public class GameController {
         resetCellSize();
     }
 
-    public void attemptAction(double drawX, double drawY) {
+    public void attemptAction(double drawX, double drawY, GraphicsContext graphicsContext) {
         Location gridLocation = drawLocationToGridLocation((int) drawX, (int) drawY);
         if (gridLocation.getY() < worldHeight && gridLocation.getY() >= 0 &&
                 gridLocation.getX() < worldWidth && gridLocation.getX() >= 0) {
             game.actionAttempt(gridLocation);
         }
-        game.printLog();
+        printLog(graphicsContext);
     }
 
     public void updateGraphics(GraphicsContext graphicsContext) {
@@ -182,7 +189,7 @@ public class GameController {
         return this.game;
     }
 
-    public void keyPressed(KeyEvent key) {
+    public void keyPressed(KeyEvent key, GraphicsContext graphicsContext) {
         if (key.getCode().equals(KeyCode.A)) {
             game.attemptBuildArcher();
         }
@@ -207,7 +214,7 @@ public class GameController {
                 alert.showAndWait();
             }
         }
-        game.printLog();
+        printLog(graphicsContext);
     }
 
 
