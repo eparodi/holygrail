@@ -88,7 +88,7 @@ public class Game implements Serializable {
      */
     public void startNewGame() {
         logQueue = new ArrayDeque<String>();
-        logQueue.add("Blue player: " + player1 + "  Red player: " + player2);
+        logQueue.add("Blue player: " + player1 + "                  Red player: " + player2);
         activePlayer = this.player1;
         selectPlayerCastle(activePlayer);
     }
