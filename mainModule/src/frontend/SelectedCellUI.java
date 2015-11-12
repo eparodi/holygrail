@@ -5,13 +5,19 @@ import backend.worldBuilding.Location;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+/**
+ * Represent the exterior border Graphics of a Selected Cell.
+ */
 public class SelectedCellUI {
     private Location drawLocation;
     private Image image;
 
     /**
-     * @param drawLocation Entity screen coordinates
-     * @param image        the image to draw
+     * Creates a UI for the Selected Cell view.
+     *
+     * @param drawLocation Pixel based Location of the Cell.
+     * @param cellHeight Height of the Cell in pixels.
+     * @param cellWidth Width of the Cell in pixels.
      */
     public SelectedCellUI(Location drawLocation, Integer cellHeight, Integer cellWidth) {
         this.drawLocation = drawLocation;
@@ -20,7 +26,9 @@ public class SelectedCellUI {
     }
 
     /**
-     * @param graphicsContext
+     * Draws the border of the Selected Cell.
+     *
+     * @param graphicsContext Graphic Context where the Image will be drawn.
      */
     public void drawMe(GraphicsContext graphicsContext) {
         if (graphicsContext == null) throw new NullArgumentException("null graphics context");

@@ -6,6 +6,9 @@ import backend.worldBuilding.Location;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+/**
+ * Represents the Graphical content of a Unit, its health and AP.
+ */
 public class UnitUI {
     private Location drawLocation;
     private Image unitImage;
@@ -14,6 +17,14 @@ public class UnitUI {
     private Image APImage;
     private ImageManager imageManager = new ImageManager();
 
+    /**
+     * Constructs the UI view for a Unit.
+     *
+     * @param drawLocation Pixel based Location of the Cell.
+     * @param unit Unit to be drawn.
+     * @param cellHeight Height of the Cell in pixels.
+     * @param cellWidth Width of the Cell in pixels.
+     */
     public UnitUI(Location drawLocation, Unit unit, Integer cellHeight, Integer cellWidth) {
         if (drawLocation == null) throw new NullArgumentException("null drawLocation");
         if (unit == null) throw new NullArgumentException("null unit");
@@ -28,6 +39,11 @@ public class UnitUI {
 
     }
 
+    /**
+     * Draws the unit UI.
+     *
+     * @param graphicsContext Graphic Context where the Image will be drawn.
+     */
     public void drawMe(GraphicsContext graphicsContext) {
         if (graphicsContext == null) throw new NullArgumentException("null graphics context");
 
