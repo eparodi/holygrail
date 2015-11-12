@@ -1,104 +1,147 @@
 package Tests;
 
-import backend.Attack;
 import backend.building.Castle;
-import backend.items.Item;
-import backend.items.ItemFactory;
+import backend.building.Mine;
+import backend.exceptions.CellOutOfWorldException;
+import backend.terrain.Terrain;
+import backend.units.Archer;
+import backend.units.Lancer;
 import backend.units.Unit;
-import backend.units.UnitFactory;
+import backend.worldBuilding.Cell;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
-import backend.worldBuilding.Terrain;
 import backend.worldBuilding.World;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 public class UnitTest {
-    Player p1;
-    Player p2;
+    Player p1 = new Player("Pablo");
+    Player p2 = new Player("Sergio");
     World world;
     Unit archer;
+    Unit lancer;
+
 
     @Before
     public void initialisation() {
-        p1 = new Player("Pablo");
-        p2 = new Player("Sergio");
         world = new World(50, 50, p1, p2);
-
-        archer = UnitFactory.buildUnit("archer", Terrain.GRASS, new Location(3, 0), p1);
+        archer = new Archer(world, new Location(1, 3), p1);
+        lancer = new Lancer(world, new Location(2, 3), p2);
     }
 
     @Test
-    //Sees if a Unit can Move
     public void MoveTest() {
-        world.addUnit(archer);
-        world.moveUnit(archer.getLocation(), new Location(3, 3));
+        archer.move(new Location(2, 3));
+        assertTrue(world.isUnitOnLocation(new Location(2, 3)));
+    }
 
-        assertTrue(archer.getLocation().equals(new Location(3, 3)));
-        assertTrue(world.getCellAt(archer.getLocation()).getTerrain().equals(archer.getCurrentTerrain()));
+    @Test(expected = CellOutOfWorldException.class)
+    //Sees if a Unit can Move
+    public void MoveOutOfWorldTest() {
+        archer.move(new Location(500, 5000));
+        System.out.println("playerID: " + p1.getId());
+
+        assertTrue(archer.getLocation().equals(new Location(2, 2)));
+    }
+
+    @Test
+    //Sees if a Unit cant move
+    public void MoveTooFarAwayTest() {
+        world.addUnit(archer);
+        archer.move(new Location(49, 49));
+        System.out.println("playerID: " + p1.getId());
+
+        assertTrue(!archer.getLocation().equals(new Location(49, 49)));
+        assertTrue(archer.getLocation().equals(new Location(1, 3)));
+    }
+
+    @Test(expected = CellOutOfWorldException.class)
+    public void NullLocation() {
+        lancer = new Lancer(world, new Location(500, 500), p2);
+        assertTrue(lancer.getLocation().equals(new Location(500, 500)));
     }
 
     @Test
     //Sees if a unit can capture a castle
     public void CaptureCastleTest() {
-        Castle castle = new Castle(p2);
+        Castle castle = new Castle(p2, new Location(1, 4));
 
         world.addUnit(archer);
-        world.addBuilding(castle, new Location(1, 1));
+        world.addBuilding(castle);
 
-        world.captureBuilding(archer, new Location(1, 1));
-
+        archer.move(new Location(1, 4));
         assertTrue(castle.getOwner().equals(p1));
+    }
+
+    @Test
+    //Sees if a unit can capture a castle
+    public void CaptureMineTest() {
+        Mine mine = new Mine(new Location(1, 4));
+
+        world.addUnit(archer);
+        world.addBuilding(mine);
+        archer.move(new Location(1, 4));
+        assertTrue(mine.getOwner().equals(p1));
     }
 
     @Test
     //Sees if two units attack each other
     public void BattleTest() {
-        Unit lancer = UnitFactory.buildUnit("lancer", Terrain.GRASS, new Location(3, 1), p2);
-
-        world.addUnit(archer);
-        world.addUnit(lancer);
 
         Integer lancerHealthIni = lancer.getHealth();
         Integer archerHealthIni = archer.getHealth();
 
-        world.skirmish(archer, lancer);
+        archer.attack(lancer);
+
 
         assertTrue(!lancer.getHealth().equals(lancerHealthIni) && !archer.getHealth().equals(archerHealthIni));
     }
 
     @Test
-    //Sees if a Unit can pickup an item
-    public void PickupTest() {
-        //Extra item:
-        Unit archer1 = UnitFactory.buildUnit("archer", Terrain.GRASS, new Location(3, 1), p1);
-        world.addUnit(archer1);
+    //Sees if two units attack each other
+    public void DeathTest() {
+        lancer.move(new Location(3, 3));
 
-        Integer maxHealthIni = archer1.getMaxHealth();
-        Integer healthIni = archer1.getHealth();
+        archer.attack(lancer);
+        archer.refillAP();
+        archer.attack(lancer);
+        archer.refillAP();
+        archer.attack(lancer);
+        archer.refillAP();
+        archer.attack(lancer);
+        archer.refillAP();
+        archer.attack(lancer);
+        archer.refillAP();
+        archer.attack(lancer);
 
-        Item potion = ItemFactory.buildExtra("potion");
-        archer1.pickItem(potion);
+        //world.skirmish(archer, lancer, null, null);
 
-        assertTrue(!maxHealthIni.equals(archer1.getMaxHealth()) && !healthIni.equals(archer1.getHealth()));
-
-        world.removeUnit(archer1);
-
-        //Rune item
-        Unit archer2 = UnitFactory.buildUnit("archer", Terrain.GRASS, new Location(3, 1), p1);
-        world.addUnit(archer2);
-
-        Attack attackIni = archer2.getAttack();
-
-        Item rune = ItemFactory.buildRune("fire rune");
-        archer2.pickItem(rune);
-
-        assertTrue(!attackIni.equals(archer2.getAttack()));
-
-        world.removeUnit(archer2);
-
-        //TODO ver si hacemos armor pickupeable
+        assertTrue(!world.isUnitOnLocation(new Location(3, 3)));
     }
+
+    @Test
+    public void PickupTest() {
+
+        world.getCellAt(new Location(1, 3)).addHolyGrail();
+        archer.pickItem();
+        assertTrue(archer.hasItem());
+    }
+
+    @Test
+    public void DropItemTest() {
+        while (world.getCellAt(new Location(1, 3)).getItem() != null) ;
+
+        Cell target = world.getCellAt(new Location(1, 3));
+        target.addHolyGrail();
+        archer.pickItem();
+        while (world.isUnitOnLocation(new Location(1,3))){
+            lancer.attack(archer);
+            lancer.refillAP();
+        }
+        lancer.move(new Location(1,3));
+        lancer.pickItem();
+        assertTrue(lancer.hasItem());
+    }
+
 }

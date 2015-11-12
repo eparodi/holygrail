@@ -1,144 +1,147 @@
 package backend.worldBuilding;
 
-import backend.Attack;
-import backend.building.Building;
-import backend.building.Castle;
+import backend.building.*;
 import backend.exceptions.CellOutOfWorldException;
-import backend.exceptions.InvalidTerrainException;
 import backend.exceptions.NullArgumentException;
-import backend.exceptions.NullLocationException;
+import backend.terrain.*;
 import backend.units.Unit;
-import backend.worldBuilding.Cell;
-import backend.worldBuilding.Location;
-import frontend.CellUIData;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.*;
 
-public class World {
-    Collection<Cell> cells;
-    Integer worldWidth, worldHeight;
+/**
+ * Represents the game World, with all the Cells, Units and Buildings.
+ */
+public class World implements Serializable {
+    private Collection<Cell> cells;
+    private Collection<Unit> units;
+    private Collection<Building> buildings;
 
+    private Integer worldWidth, worldHeight;
 
-    //TODO Replace player1 and player2 with Collection<Player> and recieve map
+    /**
+     * Creates a World with certain Width and Height, with 2 players.
+     *
+     * @param worldWidth  World Width.
+     * @param worldHeight World Height.
+     * @param player1     Player 1.
+     * @param player2     Player 2.
+     */
     public World(Integer worldWidth, Integer worldHeight, Player player1, Player player2) {
-        this.worldHeight = worldHeight;
-        this.worldWidth = worldWidth;
 
-        cells = generateCellCollection();
+        cells = new ArrayList<Cell>();
+        units = new HashSet<Unit>();
+        buildings = new ArrayList<Building>();
 
-        Location player1Castle = new Location(1, Math.round(worldHeight / 2));
-        Location player2Castle = new Location(worldWidth - 2, Math.round(worldHeight / 2));
-
-        Castle castle = new Castle(player1);
-        getCellAt(player1Castle).addBuilding(castle);
-        castle = new Castle(player2);
-        getCellAt(player2Castle).addBuilding(castle);
-
-//        for (Cell cell : cells) {
-//            System.out.println(cell.toString());
-//        }
+        initialize(worldWidth, worldHeight, player1, player2);
     }
 
-    public void addBuilding(Building building, Location location) {
-        if (building == null) throw new NullArgumentException("null building parameter");
-        if (location == null) throw new NullArgumentException("null location parameter");
+    private void addGrailToCell(Location player1Castle, Location player2Castle) {
+        ArrayList<Cell> holyGrailPossibleCells = new ArrayList<Cell>();
 
-        getCellAt(location).addBuilding(building);
+        for (Cell cell : cells) {
+            if (cell.canReceiveItem()) {
+                Location cellLocation = cell.getLocation();
+                if (cellLocation.distance(player1Castle) > 5 && cellLocation.distance(player2Castle) > 5) {
+                    if (!isBuildingOnLocation(cellLocation)) {
+                        holyGrailPossibleCells.add(cell);
+                    }
+                }
+            }
+        }
+
+        Random random = new Random();
+        int holyGrailPosition = random.nextInt(holyGrailPossibleCells.size());
+        holyGrailPossibleCells.get(holyGrailPosition).addHolyGrail();
     }
 
+    /**
+     * Adds a Unit to World.
+     *
+     * @param unit unit to add.
+     */
     public void addUnit(Unit unit) {
         if (unit == null) throw new NullArgumentException("null unit argument");
-        if (unit.getLocation() == null) throw new NullLocationException("unit has no location");
-        getCellAt(unit.getLocation()).addUnit(unit);
+        if (!isLocationOnBounds(unit.getLocation()))
+            throw new CellOutOfWorldException("unit is out of world");
+        units.add(unit);
     }
 
-    public void removeUnit(Location location) {
-        getCellAt(location).removeUnit();
+    private boolean isLocationOnBounds(Location location) {
+        return !(location.getX() < 0 || location.getX() >= worldWidth ||
+                location.getY() < 0 || location.getY() >= worldHeight);
     }
 
+    //in the future new buildings might be added
+    public void addBuilding(Building building) {
+        if (building == null) throw new NullArgumentException("null unit argument");
+        if (!isLocationOnBounds(building.getLocation()))
+            throw new CellOutOfWorldException("building is out of world");
+        buildings.add(building);
+    }
+
+    public void addBuilding(ProductionBuilding productionBuilding) {
+        if (productionBuilding == null) throw new NullArgumentException("null unit argument");
+        if (!isLocationOnBounds(productionBuilding.getLocation()))
+            throw new CellOutOfWorldException("building is out of world");
+        buildings.add(productionBuilding);
+        productionBuilding.getOwner().addProductionBuilding(productionBuilding);
+    }
+
+    /**
+     * Removes the Unit from the World.
+     *
+     * @param unit unit to be removed.
+     */
     public void removeUnit(Unit unit) {
-        getCellAt(unit.getLocation()).removeUnit();
+        units.remove(unit);
     }
 
+    /**
+     * Refills all Units action points of certain Player.
+     *
+     * @param player player whose units AP will be filled.
+     */
     public void refillUnitsAP(Player player) {
-        Unit unit;
-        for (Cell cell : cells) {
-            unit = cell.getUnit();
-            if ((unit != null) && (unit.getOwner().equals(player))) unit.refillAP();
+        for (Unit unit : units) {
+            if (unit == null) throw new NullPointerException("null unit in units");
+            if (unit.getOwner().equals(player)) unit.refillAP();
         }
     }
 
-    public void moveUnit(Location initialLocation, Location finalLocation) {
-        Unit auxUnit = getCellAt(initialLocation).getUnit();
-
-        auxUnit.setCurrentTerrain(getTerrainAt(finalLocation));
-        auxUnit.setLocation(finalLocation);
-
-        getCellAt(initialLocation).removeUnit();
-        getCellAt(finalLocation).addUnit(auxUnit);
-    }
-
-    public void captureBuilding(Unit unit, Location buildingLocation) {
-        if (unit == null) throw new NullArgumentException("null unit parameter");
-        if (buildingLocation == null) throw new NullArgumentException("null location parameter");
-
-        moveUnit(unit.getLocation(), buildingLocation);
-        getCellAt(buildingLocation).getBuilding().setOwner(unit.getOwner());
-    }
-
-    private void attack(Unit attacker, Unit defender) {
-            Attack attack = attacker.getAttack();
-            defender.receiveDamage(attack);
-    }
-
-    public void skirmish(Unit attacker, Unit defender) {
-        attack(attacker, defender);
-        attack(defender, attacker);
-
-        if (attacker.isDed()) removeUnit(attacker);
-        if (defender.isDed()) removeUnit(defender);
-    }
-
-    public boolean isInRange(Unit attacker, Unit defender) {
-        Integer range = attacker.getRange();
-        return distance(attacker.getLocation(), defender.getLocation()) <= range;
-    }
-
-    public static Integer distance(Location l1, Location l2) {
-        // Cálculos raros para adaptar la matriz a la matriz de 3 ejes:
-        Integer x1 = -l1.getY();
-        Integer x2 = -l2.getY();
-        Integer y1 = l1.getY() % 2 == 0 ? l1.getX() + l1.getY() / 2 : l1.getX() + (l1.getY() + 1) / 2;
-        Integer y2 = l2.getY() % 2 == 0 ? l2.getX() + l2.getY() / 2 : l2.getX() + (l2.getY() + 1) / 2;
-        Integer z1 = -x1 - y1;
-        Integer z2 = -x2 - y2;
-
-        Integer deltaX = Math.abs(x1 - x2);
-        Integer deltaY = Math.abs(y1 - y2);
-        Integer deltaZ = Math.abs(z1 - z2);
-
-        return Math.max(Math.max(deltaX, deltaY), deltaZ);
-    }
-
-    public Integer getTerrainAPCost(Terrain terrain) {
-        switch (terrain) {
-            case GRASS:
-                return 1;
-            case HILL:
-                return 3;
-            case FOREST:
-                return 2;
-            //TODO (ToAsk) esta bien si water tiene costo alto o hacemos celdas no pisables?
-            case WATER:
-                return 20;
-            case MOUNTAIN:
-                return 20;
+    /**
+     * Returns true if there is a Unit on the selected Location, false if not.
+     *
+     * @param selectedLocation Location of the World.
+     * @return True if there is a Unit on the selected Location, false if not.
+     */
+    public boolean isUnitOnLocation(Location selectedLocation) {
+        for (Unit unit : units) {
+            if (unit.getLocation().equals(selectedLocation)) return true;
         }
-        throw new InvalidTerrainException(terrain + " does not have a cost");
+        return false;
     }
 
+    /**
+     * Returns true if there is a building on the selected Location, false if not.
+     *
+     * @param selectedLocation Location of the World.
+     * @return True if there is a Building on the selected Location, false if not.
+     */
+    public boolean isBuildingOnLocation(Location selectedLocation) {
+        for (Building building : buildings) {
+            if (building.getLocation().equals(selectedLocation)) return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * Returns the Cell of certain Location.
+     *
+     * @param location location of the Cell.
+     * @return the Cell of the specified location.
+     */
     public Cell getCellAt(Location location) {
         for (Cell cell : cells) {
             if (cell.getLocation().equals(location)) return cell;
@@ -146,70 +149,80 @@ public class World {
         throw new CellOutOfWorldException("No cell exists at " + location.toString());
     }
 
+    /**
+     * Returns a Collection with all the Units in the World.
+     *
+     * @return a Collection of all Units.
+     */
     public Collection<Unit> getUnits() {
-        Collection<Unit> units = new ArrayList<Unit>();
-        Unit unit;
-
-        for (Cell cell : cells) {
-            unit = cell.getUnit();
-            if (!(unit == null)) units.add(unit);
-        }
         return units;
     }
 
-    public Collection<Unit> getUnits(Player player) {
-        Collection<Unit> units = new ArrayList<Unit>();
-        Unit unit;
-
-        for (Cell cell : cells) {
-            unit = cell.getUnit();
-            if ((!(unit == null)) && unit.getOwner().equals(player)) units.add(unit);
-        }
-
-        return units;
-    }
-
-    public Location getBuildingLocation(Building building) {
-        Location location;
-        if (building == null) throw new NullArgumentException("building is null");
-        for (Cell cell : cells) {
-            if (building.equals(cell.getBuilding())) return cell.getLocation();
-        }
-        //No such building exists if execution reached this point
-        return null;
-    }
-
-    public Castle getPlayerCastle(Player player) {
-        for (Cell cell : cells) {
-            if (cell.getBuilding() != null) {
-                if (cell.getBuilding().getOwner().equals(player)) {
-                    if (cell.getBuilding().getBuildingType().equals("Castle")) return (Castle) cell.getBuilding();
-                }
-            }
-        }
-        return null;
-    }
-
+    /**
+     * Returns the Terrain of the Cell in certain Location.
+     *
+     * @param location location of the Cell.
+     * @return Terrain of the Cell in Location.
+     */
     public Terrain getTerrainAt(Location location) {
-        return getCellAt(location).terrain;
+        return getCellAt(location).getTerrain();
     }
 
+    /**
+     * Returns the World height.
+     *
+     * @return Integer value of World height.
+     */
     public Integer getWorldHeight() {
         return worldHeight;
     }
 
+    /**
+     * Returns the World width.
+     *
+     * @return Integer value of World width.
+     */
     public Integer getWorldWidth() {
         return worldWidth;
     }
 
-    public Collection<Cell> getCells(){
+    /**
+     * Returns a Collection of all Cells in the World.
+     *
+     * @return Collection of all Cells.
+     */
+    public Collection<Cell> getCells() {
         return cells;
     }
 
-    public Terrain loadTerrain(Location location) {
-        return Terrain.GRASS;
+    // TODO: Javadoc
+    private Terrain loadTerrain(Location location) {
+        if (location.getX() >= 5 && location.getX() < 10 && location.getY() > 3 && location.getY() <= 8
+                || (location.getY() == 3 && (location.getX() == 8 || location.getX() == 9))
+                || (location.getY() == 2 && (location.getX() == 9 || location.getX() == 10))) {
+            return new Water();
+        }
+        if ((location.getY() < 4 && location.getX() > 8)) {
+            return new Forest();
+        }
+        if ((location.getX() == 0 && location.getY() <= 7) || (location.getX() < 6 && location.getY() == 0)
+                || (location.getX() == 1 && location.getY() < 3) || (location.getX() == 1 && (location.getY() == 6 || location.getY() == 7))
+                || (location.getX() > 10 && location.getY() == 10) || (location.getX() == 15 && location.getY() > 3)
+                || (location.getX() >= 10 && location.getY() == 9 && location.getX() != 14 && location.getX() != 13)) {
+            return new Mountain();
+        }
+        if ((location.getX() < 5 && location.getX() >= 0 && location.getY() <= 10 && location.getY() > 5)
+                || (location.getX() == 2 && location.getY() == 6) || (location.getX() == 2 && location.getY() == 7)) {
+            return new Hill();
+        }
+        return new Grass();
     }
 
+    /**
+     * Generates all the Cells of the World.
+     *
+     * @return Collection of Cells.
+     */
     private Collection<Cell> generateCellCollection() {
 
         Collection<Cell> cellCollection = new ArrayList<Cell>();
@@ -228,27 +241,88 @@ public class World {
         return cellCollection;
     }
 
-    public Collection<CellUIData> generateCellUIData(){
-        Collection<CellUIData> cellUIDataCollection = new ArrayList<CellUIData>();
-        for(Cell cell:cells){
-            cellUIDataCollection.add(cell.getCellUIData());
+    /**
+     * Returns the Player gold income.
+     *
+     * @param player player whose income is asked.
+     * @return Integer value with gold income.
+     */
+    public Integer getPlayerIncome(Player player) {
+        Integer income = 0;
+        if (player == null) {
+            throw new NullArgumentException("player is null");
         }
-        return cellUIDataCollection;
+        for (Building building : buildings) {
+            if (building.getOwner() != null) {
+                if (building.getOwner().equals(player)) {
+                    income += building.getIncome();
+                }
+            }
+        }
+
+        return income;
     }
 
-    private static Integer distance(Location l1, Location l2) {
-        // Cálculos raros para adaptar la matriz a la matriz de 3 ejes:
-        Integer x1 = -l1.getY();
-        Integer x2 = -l2.getY();
-        Integer y1 = l1.getY() % 2 == 0 ? l1.getX() + l1.getY() / 2 : l1.getX() + (l1.getY() + 1) / 2;
-        Integer y2 = l2.getY() % 2 == 0 ? l2.getX() + l2.getY() / 2 : l2.getX() + (l2.getY() + 1) / 2;
-        Integer z1 = -x1 - y1;
-        Integer z2 = -x2 - y2;
-
-        Integer deltaX = Math.abs(x1 - x2);
-        Integer deltaY = Math.abs(y1 - y2);
-        Integer deltaZ = Math.abs(z1 - z2);
-
-        return Math.max(Math.max(deltaX, deltaY), deltaZ);
+    /**
+     * Returns all the Buildings in the World.
+     *
+     * @return Collection of all the Buildings.
+     */
+    public Collection<Building> getBuildings() {
+        return buildings;
     }
+
+    /**
+     * Returns the Unit at a specific Location.
+     *
+     * @param location location of the Unit.
+     * @return Unit at the specified Location.
+     */
+    public Unit getUnitAt(Location location) {
+        for (Unit unit : units) {
+            if (unit.getLocation().equals(location)) return unit;
+        }
+        throw new NoSuchElementException("No unit in units with that location: " + location);
+    }
+
+    /**
+     * Returns the Building at a specific Location.
+     *
+     * @param location location of the Building.
+     * @return Building at the specified Location.
+     */
+    public Building getBuildingAt(Location location) {
+        for (Building building : buildings) {
+            if (building.getLocation().equals(location)) return building;
+        }
+        throw new NoSuchElementException("No building in buildings with that location: " + location);
+    }
+
+    //TODO: Javadoc
+    private void initialize(Integer worldWidth, Integer worldHeight, Player player1, Player player2) {
+        this.worldHeight = worldHeight;
+        this.worldWidth = worldWidth;
+
+        cells = generateCellCollection();
+        Location player1CastleLocation = new Location(2, 2);
+        Location player2CastleLocation = new Location(14, 9);
+        Location mineLocation = new Location(1, 8);
+        Location mineLocation2 = new Location(14, 0);
+        Location mineLocation3 = new Location(6, 3);
+        Location mineLocation4 = new Location(10, 6);
+
+        Castle player1Castle = new Castle(player1, player1CastleLocation);
+        Castle player2Castle = new Castle(player2, player2CastleLocation);
+        buildings.add(player1Castle);
+        buildings.add(player2Castle);
+        buildings.add(new Mine(mineLocation));
+        buildings.add(new Mine(mineLocation2));
+        buildings.add(new Mine(mineLocation3));
+        buildings.add(new Mine(mineLocation4));
+        addGrailToCell(player1CastleLocation, player2CastleLocation);
+        player1.addProductionBuilding(player1Castle);
+        player2.addProductionBuilding(player2Castle);
+    }
+
+
 }
