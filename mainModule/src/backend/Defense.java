@@ -1,6 +1,5 @@
 package backend;
 
-import backend.Attack;
 import backend.terrain.Terrain;
 
 import java.io.Serializable;
