@@ -10,7 +10,7 @@ import java.util.LinkedList;
  * Represents an Attack, made of different damaging types.
  */
 public class Attack implements Serializable {
-    Integer slashDamage, piercingDamage, bluntDamage;
+    private Integer slashDamage, piercingDamage, bluntDamage;
 
     /**
      * Creates an Attack with three different types of damage.

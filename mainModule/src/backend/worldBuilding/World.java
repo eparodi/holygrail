@@ -13,11 +13,11 @@ import java.util.*;
  * Represents the game World, with all the Cells, Units and Buildings.
  */
 public class World implements Serializable {
-    Collection<Cell> cells;
-    Collection<Unit> units;
-    Collection<Building> buildings;
+    private Collection<Cell> cells;
+    private Collection<Unit> units;
+    private Collection<Building> buildings;
 
-    Integer worldWidth, worldHeight;
+    private Integer worldWidth, worldHeight;
 
     /**
      * Creates a World with certain Width and Height, with 2 players.

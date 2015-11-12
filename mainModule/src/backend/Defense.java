@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Represents the Defense of a Unit, based on different Resistance types.
  */
 public class Defense implements Serializable {
-    Integer slashResist, piercingResist, bluntResist;
+    private Integer slashResist, piercingResist, bluntResist;
 
     /**
      * Constructs a Defense considering three types of resistances.
