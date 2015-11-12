@@ -90,25 +90,6 @@ public class GameController {
     public void drawTerrain(GraphicsContext graphicsContext) {
         for (Cell cell : game.getCells()) {
             new TerrainUI(gridLocationToDrawLocation(cell.getLocation()), cell, cellHeight, cellWidth).drawMe(graphicsContext);
-//            switch (cell.getTerrain().getTerrainType()) {
-//                case WATER:
-//                    new WaterUI(gridLocationToDrawLocation(cell.getLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
-//                    break;
-//                case GRASS:
-//                    new GrassUI(gridLocationToDrawLocation(cell.getLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
-//                    break;
-//                case HILL:
-//                    new HillUI(gridLocationToDrawLocation(cell.getLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
-//                    break;
-//                case MOUNTAIN:
-//                    new MountainUI(gridLocationToDrawLocation(cell.getLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
-//                    break;
-//                case FOREST:
-//                    new ForestUI(gridLocationToDrawLocation(cell.getLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
-//                    break;
-//
-//
-//            }
         }
     }
 
