@@ -210,12 +210,18 @@ public abstract class Unit extends OwnableEntity implements Serializable {
      * @param attack Attack to receive.
      */
     private void receiveDamage(Attack attack) {
+        StringBuilder msg = new StringBuilder();
+
         Integer damageDealt = defense.getDamageDealt(attack, getCurrentTerrain());
         health -= damageDealt;
+        msg.append(this + " recieved " + damageDealt + " damage");
         if (isDed()) {
             dropItems();
             world.removeUnit(this);
+            msg.append(" and died");
         }
+        msg.append(".");
+        Log.getInstance().addLog(msg.toString());
     }
 
     /**
@@ -232,18 +238,25 @@ public abstract class Unit extends OwnableEntity implements Serializable {
      * Makes an attack to another unit. Returns true if it attacked.
      *
      * @param unit Unit to attack.
-     * @return True if the unit has attacked, false if not.
      */
-    public boolean attack(Unit unit) {
+    public void attack(Unit unit) {
+        StringBuilder msg = new StringBuilder();
+        Log log = Log.getInstance();
         if (actionPoints >= ATTACK_AP_COST) {
             if (isInRange(unit)) {
                 spendAP(ATTACK_AP_COST);
+                msg.append(this + " attacked " + unit + ".");
+                log.addLog(msg.toString());
+
                 unit.receiveDamage(this.getAttack());
                 unit.counterAttack(this);
+            }else {
+                msg.append(this + " is too far away from " + unit + ".");
             }
-            return true;
+        }else {
+            msg.append(this + " needs " + ATTACK_AP_COST + " AP to attack and has " + actionPoints + ".");
         }
-        return false;
+        log.addLog(msg.toString());
     }
 
     /**
@@ -258,10 +271,10 @@ public abstract class Unit extends OwnableEntity implements Serializable {
     /**
      * Picks and item. If the unit already has an item in the slot, the item is dropped and returned.
      */
-    public String pickItem() {
+    public void pickItem() {
         Item itemPicked = null;
         Item droppedItem = null;
-        String log = "";
+        String msg = "";
         if (actionPoints >= DIG_AP_COST) {
             actionPoints -= DIG_AP_COST;
             Cell dugCell = world.getCellAt(getLocation());
@@ -273,14 +286,14 @@ public abstract class Unit extends OwnableEntity implements Serializable {
                 }
                 itemSlots.add(itemPicked);
                 updateStatus(itemPicked);
-                log = "An item has been found: " + itemPicked.getName();
+                msg = "An item has been found: " + itemPicked.getName();
             } else {
-                log = "No item found";
+                msg = "No item found";
             }
         } else {
-            log = "Not enough AP to dig: you have " + actionPoints + " and you need " + DIG_AP_COST;
+            msg = this + " needs " + DIG_AP_COST + " AP to dig and has " + actionPoints + ".";
         }
-        return log;
+        Log.getInstance().addLog(msg);
     }
 
     /**

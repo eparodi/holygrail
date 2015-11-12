@@ -1,6 +1,7 @@
 package frontend;
 
 import backend.Game;
+import backend.Log;
 import backend.building.Building;
 import backend.exceptions.NullArgumentException;
 import backend.units.Unit;
@@ -13,6 +14,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 
 import java.io.*;
+import java.security.acl.LastOwnerException;
 
 public class GameController {
     private Integer cellHeight;
@@ -21,6 +23,8 @@ public class GameController {
     private Integer worldWidth;
     private Integer canvasHeight;
     private Integer canvasWidth;
+    private Integer logHeight;
+
     private Game game;
 
     //    /**
@@ -38,16 +42,16 @@ public class GameController {
     }
 
     private void printLog(GraphicsContext graphicsContext) {
-        String log = "";
-        while (game.logHasNext()) {
-            log += " " + game.getNextLog();
+        StringBuilder log = new StringBuilder();
+        while (!Log.getInstance().isEmpty()   ) {
+            log.append(" " + Log.getInstance().printLog() + " ");
         }
-        if (log != "") {
+        if (log.length() != 0) {
             graphicsContext.clearRect(0, graphicsContext.getCanvas().getHeight() - Main.getLogSize(),
                     graphicsContext.getCanvas().getWidth(), Main.getLogSize());
             Location printLogLocation = gridLocationToDrawLocation(new Location(0, worldHeight));
             graphicsContext.setFill(Color.BLACK);
-            graphicsContext.fillText(log, printLogLocation.getX(), printLogLocation.getY() + Main.getLogSize());
+            graphicsContext.fillText(log.toString(), printLogLocation.getX(), printLogLocation.getY() + Main.getLogSize());
         }
     }
 

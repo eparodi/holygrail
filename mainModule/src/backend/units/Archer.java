@@ -26,6 +26,6 @@ public class Archer extends Unit implements Serializable {
 
     @Override
     public String toString() {
-        return "Archer";
+        return "Archer from "+ getOwner();
     }
 }

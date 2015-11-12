@@ -23,7 +23,6 @@ public class Game implements Serializable {
     private Player player2;
 
     private Player activePlayer;
-    private Queue<String> logQueue;
     private Random random;
     private boolean hasGameEnded = false;
     /**
@@ -95,15 +94,14 @@ public class Game implements Serializable {
      * Starts a New Game, setting the active player to Player 1, and selecting his Castle.
      */
     public void startNewGame() {
-        logQueue = new ArrayDeque<String>();
-        logQueue.add("Blue player: " + player1 + "                  Red player: " + player2);
+        addLog("Blue player: " + player1 + "                  Red player: " + player2);
         activePlayer = this.player1;
         selectPlayerCastle(activePlayer);
     }
 
     public void putHolyGrail(Game game){
         world.addGrailToCell(game.getPlayer1().getProductionBuilding().getLocation(),
-                                    game.getPlayer2().getProductionBuilding().getLocation());
+                game.getPlayer2().getProductionBuilding().getLocation());
     }
 
     /**
@@ -188,7 +186,7 @@ public class Game implements Serializable {
      * @param msg message to add.
      */
     private void addLog(String msg) {
-        logQueue.add(msg);
+        Log.getInstance().addLog(msg);
     }
 
     /**
@@ -229,12 +227,7 @@ public class Game implements Serializable {
         if (attacker.getOwner().equals(defender.getOwner())) {
             throw new IllegalStateException("tries to attack own unit");
         }
-        if (attacker.attack(defender)) {
-            addLog(attacker + " attacked " + defender);
-            hasAttacked = true;
-        } else {
-            addLog(attacker + " Cant Attack ");
-        }
+        attacker.attack(defender);
         return hasAttacked;
     }
 
@@ -254,19 +247,6 @@ public class Game implements Serializable {
      */
     public Location getSelectedLocation() {
         return selectedLocation;
-    }
-
-
-    /**
-     * @return next string in log (returns null if empty.
-     */
-
-    public String getNextLog() {
-        return logQueue.poll();
-    }
-
-    public boolean logHasNext() {
-        return !logQueue.isEmpty();
     }
 
     /**
@@ -370,7 +350,7 @@ public class Game implements Serializable {
         if (world.isUnitOnLocation(selectedLocation)) {
             Unit currentUnit = world.getUnitAt(selectedLocation);
             if (currentUnit.getOwner().equals(activePlayer)) {
-                addLog(currentUnit.pickItem());
+                currentUnit.pickItem();
             }
         }
     }

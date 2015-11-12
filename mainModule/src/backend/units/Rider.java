@@ -26,6 +26,6 @@ public class Rider extends Unit implements Serializable {
 
     @Override
     public String toString() {
-        return "Rider";
+        return "Rider from "+ getOwner();
     }
 }

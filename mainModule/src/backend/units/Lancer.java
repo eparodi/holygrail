@@ -26,6 +26,6 @@ public class Lancer extends Unit implements Serializable {
 
     @Override
     public String toString() {
-        return "Lancer";
+        return "Lancer from "+ getOwner();
     }
 }
