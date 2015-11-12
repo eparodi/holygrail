@@ -16,6 +16,9 @@ import javafx.scene.paint.Color;
 import java.io.*;
 import java.security.acl.LastOwnerException;
 
+/**
+ * Represents the Game Controller class.
+ */
 public class GameController {
     private Integer cellHeight;
     private Integer cellWidth;
@@ -27,20 +30,28 @@ public class GameController {
 
     private Game game;
 
-    //    /**
-//     * @param cellHeight    The height of the cell in pixels
-//     * @param cellWidth     The width of the cell in pixels
-//     */
+    /**
+     * Creates a GameController from a Game and executes initialize.
+     *
+     * @param game Current Game.
+     */
     public GameController(Game game) {
         this.game = game;
         initialize();
     }
 
+    /**
+     * Loads the World Height and Width from the game.
+     */
     private void initialize() {
         this.worldHeight = game.getWorldHeight();
         this.worldWidth = game.getWorldWidth();
     }
 
+    /**
+     * Prints the queued Log.
+     * @param graphicsContext Graphic Context where the Log will be drawn.
+     */
     private void printLog(GraphicsContext graphicsContext) {
         StringBuilder log = new StringBuilder();
         while (!Log.getInstance().isEmpty()   ) {
@@ -55,17 +66,31 @@ public class GameController {
         }
     }
 
+    /**
+     * Resets the Cells Size.
+     */
     public void resetCellSize() {
         cellWidth = (int) (this.canvasWidth / (worldWidth + 0.417d));
         cellHeight = (int) (this.canvasHeight / (worldHeight * 0.80));
     }
 
+    /**
+     * Sets the Canvas Size.
+     * @param canvasHeight Canvas Height
+     * @param canvasWidth Canvas Width.
+     */
     public void addCanvasSize(Double canvasHeight, Double canvasWidth) {
         this.canvasHeight = canvasHeight.intValue();
         this.canvasWidth = canvasWidth.intValue();
         resetCellSize();
     }
 
+    /**
+     * Attempts to perform an action from a clicked location.
+     * @param drawX X coordinate.
+     * @param drawY Y coordinate.
+     * @param graphicsContext Graphic Context of the Log.
+     */
     public void attemptAction(double drawX, double drawY, GraphicsContext graphicsContext) {
         Location gridLocation = drawLocationToGridLocation((int) drawX, (int) drawY);
         if (gridLocation.getY() < worldHeight && gridLocation.getY() >= 0 &&
@@ -75,6 +100,11 @@ public class GameController {
         printLog(graphicsContext);
     }
 
+    /**
+     * Clears the Screen and updates the Game World Graphics.
+     *
+     * @param graphicsContext Graphic Context where the Cells are.
+     */
     public void updateGraphics(GraphicsContext graphicsContext) {
         //clear the canvas
         graphicsContext.clearRect(0, 0, graphicsContext.getCanvas().getWidth(),
@@ -83,6 +113,11 @@ public class GameController {
 
     }
 
+    /**
+     * Draws the Cells on the Game World.
+     *
+     * @param graphicsContext Graphics Context where the Cells will be drawn.
+     */
     public void drawCells(GraphicsContext graphicsContext) {
         drawTerrain(graphicsContext);
         drawSelectedCell(graphicsContext);
@@ -91,12 +126,22 @@ public class GameController {
 
     }
 
+    /**
+     * Draws the Terrain of every Cell.
+     *
+     * @param graphicsContext Graphics Context where the Terrain will be drawn.
+     */
     public void drawTerrain(GraphicsContext graphicsContext) {
         for (Cell cell : game.getCells()) {
             new TerrainUI(gridLocationToDrawLocation(cell.getLocation()), cell, cellHeight, cellWidth).drawMe(graphicsContext);
         }
     }
 
+    /**
+     * Draws the Buildings in the Game.
+     *
+     * @param graphicsContext Graphics Context where the Buildings will be draw.
+     */
     public void drawBuildings(GraphicsContext graphicsContext) {
         Location drawLocation;
         for (Building building : game.getBuildings()) {
@@ -106,6 +151,11 @@ public class GameController {
         }
     }
 
+    /**
+     * Draws the Units in the Game.
+     *
+     * @param graphicsContext Graphics Context where the Units will be drawn.
+     */
     public void drawUnits(GraphicsContext graphicsContext) {
         Location drawLocation;
         for (Unit unit : game.getUnits()) {
@@ -114,10 +164,21 @@ public class GameController {
         }
     }
 
+    /**
+     * Draws the current Selected Cell.
+     *
+     * @param graphicsContext Graphics Context where the Selected Cell will be drawn.
+     */
     public void drawSelectedCell(GraphicsContext graphicsContext) {
         new SelectedCellUI(gridLocationToDrawLocation(game.getSelectedLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
     }
 
+    /**
+     * Returns a Pixel based Location transforming a Grid Cell Location.
+     *
+     * @param gridLocation Grid based Location on the Cell.
+     * @return Pixel based Location.
+     */
     public Location gridLocationToDrawLocation(Location gridLocation) {
         Location drawLocation = new Location(0, 0);
         if (gridLocation == null) {
@@ -130,6 +191,13 @@ public class GameController {
         return drawLocation;
     }
 
+    /**
+     * Returns a Grid Cell Location transforming a pixel base Location.
+     *
+     * @param x X Coordinate.
+     * @param y Y Coordinate.
+     * @return Grid Cell Location.
+     */
     public Location drawLocationToGridLocation(Integer x, Integer y) {
         Location gridLocation = new Location(0, 0);
 
@@ -142,6 +210,10 @@ public class GameController {
         return gridLocation;
     }
 
+    /**
+     * Saves the Game on the specified Path.
+     * @param path Path to save the game at.
+     */
     public void saveGame(String path) {
         try {
             FileOutputStream fileOut =
@@ -155,6 +227,12 @@ public class GameController {
         }
     }
 
+    /**
+     * Loads a New Game from a Custom Game MAP at the specified Path.
+     *
+     * @param path Path to load the Game maps from.
+     * @return Game of a new loaded Map.
+     */
     public Game loadNewGame(String path) {
         Game game = null;
         try {
@@ -178,6 +256,12 @@ public class GameController {
         return this.game;
     }
 
+    /**
+     * Loads the Game at the specified Path.
+     *
+     * @param path Path to load the game from.
+     * @return Loaded Game.
+     */
     public Game loadGame(String path) {
         Game game = null;
         try {
@@ -200,6 +284,12 @@ public class GameController {
         return this.game;
     }
 
+    /**
+     * Performs the corresponding action depending on the pressed Key.
+     *
+     * @param key Pressed Key.
+     * @param graphicsContext Graphic Context to draw if the game ends.
+     */
     public void keyPressed(KeyEvent key, GraphicsContext graphicsContext) {
         if (key.getCode().equals(KeyCode.A)) {
             game.attemptBuildArcher();
