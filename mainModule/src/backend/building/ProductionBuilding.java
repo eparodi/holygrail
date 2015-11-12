@@ -1,5 +1,6 @@
 package backend.building;
 
+import backend.Log;
 import backend.units.*;
 import backend.worldBuilding.Location;
 import backend.worldBuilding.Player;
@@ -32,13 +33,18 @@ public class ProductionBuilding extends Building implements Serializable {
      * @return True if the a unit can be built, false if not.
      */
     public boolean canBuild(World world) {
-        if (world.isUnitOnLocation(getLocation()) || !getOwner().canPay(UNIT_COST )) {
-            return false;
+        String msg;
+        if (!world.isUnitOnLocation(getLocation())) {
+            if (getOwner().canPay(UNIT_COST)) {
+                return true;
+            }else {
+                msg = getOwner() + " needs " + UNIT_COST + " and has " + getOwner().getGold() + ".";
+            }
+        }else{
+            msg = "There is a unit on the " + this + ", cant build.";
         }
-        if (!getOwner().canPay(UNIT_COST)) {
-            return false;
-        }
-        return true;
+        Log.getInstance().addLog(msg);
+        return false;
     }
 
     /**
@@ -46,13 +52,12 @@ public class ProductionBuilding extends Building implements Serializable {
      *
      * @param world World where the Archer is created.
      */
-    public String buildArcher(World world) {
+    public void buildArcher(World world) {
         if (canBuild(world)) {
             getOwner().pay(UNIT_COST);
             new Archer(world, getLocation(), getOwner());
-            return "Archer built, " + getOwner().getGold() + " gold left.";
+            Log.getInstance().addLog(this + " built an Archer, " + getOwner().getGold() + " gold left.");
         }
-        return "Can't build archer: Castle cell is occupied or you don't have enough gold";
     }
 
     /**
@@ -60,13 +65,12 @@ public class ProductionBuilding extends Building implements Serializable {
      *
      * @param world World where the Rider is created.
      */
-    public String buildRider(World world) {
+    public void buildRider(World world) {
         if (canBuild(world)) {
             getOwner().pay(UNIT_COST);
             new Rider(world, getLocation(), getOwner());
-            return "Rider built, " + getOwner().getGold() + " gold left.";
+            Log.getInstance().addLog(this + " built an Rider, " + getOwner().getGold() + " gold left.");
         }
-        return "Can't build rider: Castle cell is occupied or you don't have enough gold";
     }
 
     /**
@@ -74,12 +78,11 @@ public class ProductionBuilding extends Building implements Serializable {
      *
      * @param world World where the Lancer is created.
      */
-    public String buildLancer(World world) {
+    public void buildLancer(World world) {
         if (canBuild(world)) {
             getOwner().pay(UNIT_COST);
             new Lancer(world, getLocation(), getOwner());
-            return "Lancer built, " + getOwner().getGold() + " gold left.";
+            Log.getInstance().addLog(this + " built an Lancer, " + getOwner().getGold() + " gold left.");
         }
-        return "Can't build lancer: Castle cell is occupied or you don't have enough gold";
     }
 }

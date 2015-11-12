@@ -19,6 +19,7 @@ import java.util.LinkedList;
 public abstract class Unit extends OwnableEntity implements Serializable {
     public static final Integer ATTACK_AP_COST = 2;
     public static final Integer DIG_AP_COST = 2;
+    public static final Integer MAX_MOVEMENT=1;
     private static Integer nextId = 0;
 
     private Player owner;
@@ -161,29 +162,35 @@ public abstract class Unit extends OwnableEntity implements Serializable {
      * @param finalLocation Location to move the unit.
      * @return True if the unit has moved, false if not.
      */
-    public String move(Location finalLocation) {
+    public void move(Location finalLocation) {
+        StringBuilder msg =  new StringBuilder();
         if (finalLocation == null) {
             throw new NullArgumentException("null final position");
         }
-        if (world.isUnitOnLocation(finalLocation)) {
-            return "Cant move, occupied at " + finalLocation;
-        }
-        Integer cost = world.getTerrainAt(finalLocation).getApCost(speed, endurance);
-        if (cost > actionPoints) {
-            return "Not enough AP to move, needs " + cost + " and you have " + actionPoints;
-        }
-        if (getLocation().distance(finalLocation) != 1) {
-            return finalLocation + " is too far away";
-        }
-        String log = "Moved to " + finalLocation;
-        if (world.isBuildingOnLocation(finalLocation)) {
-            world.getBuildingAt(finalLocation).setOwner(owner);
-            log = "captured building at " + finalLocation;
-        }
 
-        spendAP(cost);
-        setLocation(finalLocation);
-        return log;
+        if (! world.isUnitOnLocation(finalLocation)) {
+            Integer cost = world.getTerrainAt(finalLocation).getApCost(speed, endurance);
+            if (cost <= actionPoints) {
+                if (getLocation().distance(finalLocation) <= MAX_MOVEMENT) {
+                    msg.append("Moved to " + finalLocation);
+                    spendAP(cost);
+                    setLocation(finalLocation);
+
+                    if (world.isBuildingOnLocation(finalLocation)) {
+                        world.getBuildingAt(finalLocation).setOwner(owner);
+                        msg.append(this+ "captured building at " + finalLocation);
+                    }
+
+                }else {
+                    msg.append( finalLocation + " is too far away");
+                }
+            }else {
+                msg.append( this + "needs " + cost + " AP to move, and it has " + actionPoints + " AP.");
+            }
+        }else {
+            msg.append( this + " cant move, cell occupied at " + finalLocation);
+        }
+        Log.getInstance().addLog(msg.toString());
     }
 
     /**
@@ -245,6 +252,8 @@ public abstract class Unit extends OwnableEntity implements Serializable {
         if (actionPoints >= ATTACK_AP_COST) {
             if (isInRange(unit)) {
                 spendAP(ATTACK_AP_COST);
+                //If we move the log.addLog(msg.toString()) to the end of the method,
+                //the message logs are displayed in wrong order
                 msg.append(this + " attacked " + unit + ".");
                 log.addLog(msg.toString());
 
@@ -252,11 +261,12 @@ public abstract class Unit extends OwnableEntity implements Serializable {
                 unit.counterAttack(this);
             }else {
                 msg.append(this + " is too far away from " + unit + ".");
+                log.addLog(msg.toString());
             }
         }else {
             msg.append(this + " needs " + ATTACK_AP_COST + " AP to attack and has " + actionPoints + ".");
+            log.addLog(msg.toString());
         }
-        log.addLog(msg.toString());
     }
 
     /**

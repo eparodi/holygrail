@@ -19,6 +19,6 @@ public class Mine extends Building implements Serializable {
 
     @Override
     public String toString() {
-        return "Castle from " + getOwner();
+        return "Mine from " + getOwner();
     }
 }

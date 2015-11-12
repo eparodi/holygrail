@@ -191,7 +191,7 @@ public class Game implements Serializable {
      */
     public void attemptBuildArcher() {
         ProductionBuilding productionBuilding = activePlayer.getProductionBuilding();
-        addLog(productionBuilding.buildArcher(world));
+        productionBuilding.buildArcher(world);
     }
 
     /**
@@ -199,7 +199,7 @@ public class Game implements Serializable {
      */
     public void attemptBuildRider() {
         ProductionBuilding productionBuilding = activePlayer.getProductionBuilding();
-        addLog(productionBuilding.buildRider(world));
+        productionBuilding.buildRider(world);
     }
 
     /**
@@ -207,7 +207,7 @@ public class Game implements Serializable {
      */
     public void attemptBuildLancer() {
         ProductionBuilding productionBuilding = activePlayer.getProductionBuilding();
-        addLog(productionBuilding.buildLancer(world));
+        productionBuilding.buildLancer(world);
     }
 
     /**
@@ -233,7 +233,7 @@ public class Game implements Serializable {
             throw new NullArgumentException("null to cell movement attempt");
         }
 
-        addLog(unit.move(clickedLocation));
+        unit.move(clickedLocation);
 
     }
 

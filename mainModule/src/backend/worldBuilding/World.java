@@ -197,7 +197,13 @@ public class World implements Serializable {
         return cells;
     }
 
-    // TODO: Javadoc
+    /**
+     * Returns the terrain from a location
+     *
+     * @param location the location from which the method returns the terrain
+     *
+     * @return
+     */
     private Terrain loadTerrain(Location location) {
         return new Grass();
     }
