@@ -114,7 +114,6 @@ public class Game implements Serializable {
 
     /**
      * //TODO: JAVADOC
-     * //TODO: No vamos a poner todo lo de Clicked y selected location en el controller?
      *
      * @param clickedLocation
      */

@@ -3,7 +3,7 @@ package backend.items;
 import java.io.Serializable;
 import java.util.Random;
 
-public class ItemFactory implements Serializable {
+public abstract class ItemFactory implements Serializable {
     private static Random random = new Random();
 
     private final static int MAX_ITEM_TYPES = ItemType.values().length;
