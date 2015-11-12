@@ -3,6 +3,9 @@ package backend.items;
 import java.io.Serializable;
 import java.util.Random;
 
+/**
+ * Represents an Item Factory which creates new Items.
+ */
 public abstract class ItemFactory implements Serializable {
     private static Random random = new Random();
 

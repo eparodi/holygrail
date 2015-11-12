@@ -24,9 +24,15 @@ public class BuildingUI {
      * @param cellWidth Width of the Cell in pixels.
      */
     public BuildingUI(Location drawLocation, Building building, Integer cellHeight, Integer cellWidth) {
-        if (drawLocation == null) throw new NullArgumentException("null drawLocation");
-        if (building == null) throw new NullArgumentException("null building");
-        if (cellHeight == null) throw new NullArgumentException("null cellHeight");
+        if (drawLocation == null) {
+            throw new NullArgumentException("null drawLocation");
+        }
+        if (building == null) {
+            throw new NullArgumentException("null building");
+        }
+        if (cellHeight == null) {
+            throw new NullArgumentException("null cellHeight");
+        }
         if (cellWidth == null) throw new NullArgumentException("null cellWidth");
 
         this.drawLocation = drawLocation;
@@ -42,7 +48,9 @@ public class BuildingUI {
      * @param graphicsContext Graphic Context where the Image will be drawn.
      */
     public void drawMe(GraphicsContext graphicsContext) {
-        if (graphicsContext == null) throw new NullArgumentException("null graphics context");
+        if (graphicsContext == null) {
+            throw new NullArgumentException("null graphics context");
+        }
 
         graphicsContext.drawImage(buildingImage, drawLocation.getX(), drawLocation.getY());
         graphicsContext.drawImage(flagImage, drawLocation.getX(), drawLocation.getY());

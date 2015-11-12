@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 public abstract class OwnableEntity extends Entity implements Serializable {
     private Player owner = null;
-
+    
     public OwnableEntity(Location inLocation, Player inOwner) {
         super(inLocation);
         this.owner = inOwner;

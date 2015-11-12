@@ -86,7 +86,7 @@ public class GameController {
     public void drawCells(GraphicsContext graphicsContext) {
         drawTerrain(graphicsContext);
         drawSelectedCell(graphicsContext);
-        drawBuidings(graphicsContext);
+        drawBuildings(graphicsContext);
         drawUnits(graphicsContext);
 
     }
@@ -97,7 +97,7 @@ public class GameController {
         }
     }
 
-    public void drawBuidings(GraphicsContext graphicsContext) {
+    public void drawBuildings(GraphicsContext graphicsContext) {
         Location drawLocation;
         for (Building building : game.getBuildings()) {
             drawLocation = gridLocationToDrawLocation(building.getLocation());
@@ -120,7 +120,9 @@ public class GameController {
 
     public Location gridLocationToDrawLocation(Location gridLocation) {
         Location drawLocation = new Location(0, 0);
-        if (gridLocation == null) throw new NullArgumentException("null location");
+        if (gridLocation == null) {
+            throw new NullArgumentException("null location");
+        }
         drawLocation.setX(gridLocation.getY() % 2 == 0 ? gridLocation.getX() * cellWidth :
                 gridLocation.getX() * cellWidth + cellWidth / 2); // Depende de fila par/impar
         drawLocation.setY(gridLocation.getY() * (cellHeight - cellHeight / 4));
@@ -171,8 +173,8 @@ public class GameController {
             this.game = game;
             initialize();
             resetCellSize();
+            game.putHolyGrail(game);
         }
-        game.putHolyGrail(game);
         return this.game;
     }
 

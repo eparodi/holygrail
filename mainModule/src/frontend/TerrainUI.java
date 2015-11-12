@@ -35,7 +35,9 @@ public class TerrainUI {
      * @param graphicsContext Graphic Context where the Image will be drawn.
      */
     public void drawMe(GraphicsContext graphicsContext) {
-        if (graphicsContext == null) throw new NullArgumentException("null graphics context");
+        if (graphicsContext == null) {
+            throw new NullArgumentException("null graphics context");
+        }
 
         graphicsContext.drawImage(image, drawLocation.getX(), drawLocation.getY());
     }

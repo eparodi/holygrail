@@ -3,7 +3,7 @@ package backend.terrain;
 import java.io.Serializable;
 
 /**
- * //TODO: javadoc
+ * Represents a Water Cell.
  */
 public class Water extends Terrain implements Serializable {
     public Water() {

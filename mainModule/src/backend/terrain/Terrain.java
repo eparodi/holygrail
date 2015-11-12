@@ -72,8 +72,12 @@ public abstract class Terrain implements Serializable {
      * @return Integer value with AP movement cost.
      */
     public Integer getApCost(Integer unitSpeed, Integer unitEndurance) {
-        if (unitSpeed == null) throw new NullArgumentException("null unit speed");
-        if (unitEndurance == null) throw new NullArgumentException("null unit endurance");
+        if (unitSpeed == null) {
+            throw new NullArgumentException("null unit speed");
+        }
+        if (unitEndurance == null) {
+            throw new NullArgumentException("null unit endurance");
+        }
 
         Integer totalApCost = 0;
         Integer baseApCost = baseCost;
