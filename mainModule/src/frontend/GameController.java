@@ -82,7 +82,7 @@ public class GameController {
     public void drawCells(GraphicsContext graphicsContext) {
         drawTerrain(graphicsContext);
         drawSelectedCell(graphicsContext);
-        drawBuidings(graphicsContext);
+        drawBuildings(graphicsContext);
         drawUnits(graphicsContext);
 
     }
@@ -93,7 +93,7 @@ public class GameController {
         }
     }
 
-    public void drawBuidings(GraphicsContext graphicsContext) {
+    public void drawBuildings(GraphicsContext graphicsContext) {
         Location drawLocation;
         for (Building building : game.getBuildings()) {
             drawLocation = gridLocationToDrawLocation(building.getLocation());
@@ -167,8 +167,8 @@ public class GameController {
             this.game = game;
             initialize();
             resetCellSize();
+            game.putHolyGrail(game);
         }
-        game.putHolyGrail(game);
         return this.game;
     }
 

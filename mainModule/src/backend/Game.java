@@ -39,6 +39,11 @@ public class Game implements Serializable {
         startNewGame();
     }
 
+    /**
+     * Generates Random Names for Players.
+     *
+     * @return A random name String.
+     */
     private String generateRandomName() {
         ArrayList<String> names = new ArrayList<String>();
         names.add("Sergio");
@@ -65,10 +70,20 @@ public class Game implements Serializable {
         this.player2 = new Player(player2);
     }
 
+    /**
+     * Returns the Player 2.
+     *
+     * @return Player 2.
+     */
     public Player getPlayer2() {
         return player2;
     }
 
+    /**
+     * Returns the Player 1.
+     *
+     * @return Player 1.
+     */
     public Player getPlayer1() {
         return player1;
     }
@@ -101,6 +116,11 @@ public class Game implements Serializable {
         selectPlayerCastle(activePlayer);
     }
 
+    /**
+     * Adds he Holy Grail to the game map.
+     *
+     * @param game Game to add the Holy Grail in.
+     */
     public void putHolyGrail(Game game){
         world.addGrailToCell(game.getPlayer1().getProductionBuilding().getLocation(),
                                     game.getPlayer2().getProductionBuilding().getLocation());
@@ -122,14 +142,24 @@ public class Game implements Serializable {
         return true;
     }
 
+    /**
+     * Returns true if the player has his Castle.
+     *
+     * @param player Owner of the Castle.
+     * @return True if the Player has his Castle, false if not.
+     */
     public boolean hasCastle(Player player) {
         return player.getProductionBuilding().getOwner() == player;
     }
 
     /**
-     * //TODO: JAVADOC
+     * Attempts to perform an action according to the clicked and already selected location in the map.
+     * If there is a Unit on the already Selected Cell, it attempts to move the unit.
+     * If there is an Enemy Unit on the clicked location, it attempts to perform an Attack.
+     * If there is no Unit on the already Selected Cell, or the clicked cell is out of range of the Unit to
+     * perform a movement or attack attempt, it changes the Selected Cell to the new Clicked Cell.
      *
-     * @param clickedLocation
+     * @param clickedLocation New Clicked Cell.
      */
     public void actionAttempt(Location clickedLocation) {
         if (hasGameEnded) return;
@@ -239,16 +269,16 @@ public class Game implements Serializable {
     }
 
     /**
-     * //TODO:  JAVADOC
+     * Sets the game Selected Location Cell.
      *
-     * @param location
+     * @param location Location of the new Selected Cell.
      */
     private void setSelectedLocation(Location location) {
         selectedLocation = location;
     }
 
     /**
-     * //TODO: JAVADOC
+     * Returns the Selected Location of the Game.
      *
      * @return
      */
@@ -258,13 +288,19 @@ public class Game implements Serializable {
 
 
     /**
-     * @return next string in log (returns null if empty.
+     * Returns the next String on the Queue.
+     *
+     * @return Next string in log (returns null if empty).
      */
-
     public String getNextLog() {
         return logQueue.poll();
     }
 
+    /**
+     * Returns true if the log has a queued String.
+     *
+     * @return
+     */
     public boolean logHasNext() {
         return !logQueue.isEmpty();
     }
@@ -335,6 +371,12 @@ public class Game implements Serializable {
         return false;
     }
 
+    /**
+     * Returns true if the opposite Player has lost.
+     *
+     * @param currentPlayer Current Player.
+     * @return True if the opposite Player has lost, False if not.
+     */
     private boolean hasEverybodyElseLost(Player currentPlayer) {
         if (player1.equals(currentPlayer)) {
             return hasPlayerLost(player2);
@@ -345,10 +387,21 @@ public class Game implements Serializable {
         return false;
     }
 
+    /**
+     * Returns True if the specified Player has lost.
+     *
+     * @param player Player to check if lost.
+     * @return True if the Player has lost, false if not.
+     */
     private boolean hasPlayerLost(Player player) {
         return (!player.getProductionBuilding().getOwner().equals(player));
     }
 
+    /**
+     * Returns True if the Holy Grail is in a Player's Castle.
+     *
+     * @return True if the Holy Grail is in a Player's Castle, false if not.
+     */
     private boolean isHolyGrailSecure() {
         if (world.isUnitOnLocation(activePlayer.getProductionBuilding().getLocation())) {
             Unit selectedUnit = world.getUnitAt(activePlayer.getProductionBuilding().getLocation());
