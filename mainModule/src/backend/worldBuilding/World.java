@@ -53,8 +53,8 @@ public class World implements Serializable {
         Random random = new Random();
         int holyGrailPosition = random.nextInt(holyGrailPossibleCells.size());
         holyGrailPossibleCells.get(holyGrailPosition).addHolyGrail();
-        //TODO: para la presentacion:
-        System.out.println(holyGrailPossibleCells.get(holyGrailPosition).getLocation());
+        //para la presentacion:
+        //System.out.println(holyGrailPossibleCells.get(holyGrailPosition).getLocation());
     }
 
     /**
@@ -205,7 +205,7 @@ public class World implements Serializable {
      * @return
      */
     private Terrain loadTerrain(Location location) {
-        return new Grass();
+            return new Grass();
     }
 
     /**

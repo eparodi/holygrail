@@ -21,7 +21,7 @@ public class Archer extends Unit implements Serializable {
      * @param owner    Player who owns the archer.
      */
     public Archer(World world, Location location, Player owner) {
-        super(new Attack(1, 6, 1), new Defense(1, 4, 2), 10, 4, 2, world, location, owner, 3, 5);
+        super(new Attack(1, 6, 1), new Defense(1, 4, 2), 10, 6, 2, world, location, owner, 5, 3);
     }
 
     @Override

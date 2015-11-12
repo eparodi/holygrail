@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Queue;
 
 public class Log {
-    private Queue<String> log = new ArrayDeque<>();
+    private Queue<String> log = new ArrayDeque<String>();
     private static Log singleInstance = new Log();
 
     private Log() {
