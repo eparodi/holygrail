@@ -39,10 +39,6 @@ public class Main extends Application {
         launch(args);
     }
 
-    public static Integer getLogSize() {
-        return LOG_SIZE;
-    }
-
     public static Scene loadGameUI(final GameController gameController) {
         Pane root = new FlowPane();
 

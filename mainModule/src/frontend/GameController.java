@@ -26,7 +26,8 @@ public class GameController {
     private Integer worldWidth;
     private Integer canvasHeight;
     private Integer canvasWidth;
-    private Integer logHeight;
+    private Integer logHeight=7;
+    private boolean hasGameFinished=false;
 
     private Game game;
 
@@ -58,20 +59,20 @@ public class GameController {
             log.append(" " + Log.getInstance().printLog() + " ");
         }
         if (log.length() != 0) {
-            graphicsContext.clearRect(0, graphicsContext.getCanvas().getHeight() - Main.getLogSize(),
-                    graphicsContext.getCanvas().getWidth(), Main.getLogSize());
+            graphicsContext.clearRect(0, graphicsContext.getCanvas().getHeight() - cellHeight/2,
+                    graphicsContext.getCanvas().getWidth(), cellHeight/2);
             Location printLogLocation = gridLocationToDrawLocation(new Location(0, worldHeight));
             graphicsContext.setFill(Color.BLACK);
-            graphicsContext.fillText(log.toString(), printLogLocation.getX(), printLogLocation.getY() + Main.getLogSize());
+            graphicsContext.fillText(log.toString(), printLogLocation.getX(), printLogLocation.getY() + cellHeight/2);
         }
     }
 
     /**
      * Resets the Cells Size.
      */
-    public void resetCellSize() {
+    private void resetCellSize() {
         cellWidth = (int) (this.canvasWidth / (worldWidth + 0.417d));
-        cellHeight = (int) (this.canvasHeight / (worldHeight * 0.80));
+        cellHeight = (int) ((this.canvasHeight-logHeight) / (worldHeight * 0.80));
     }
 
     /**
@@ -108,7 +109,7 @@ public class GameController {
     public void updateGraphics(GraphicsContext graphicsContext) {
         //clear the canvas
         graphicsContext.clearRect(0, 0, graphicsContext.getCanvas().getWidth(),
-                graphicsContext.getCanvas().getHeight() - Main.getLogSize());
+                graphicsContext.getCanvas().getHeight() - cellHeight/2);
         drawCells(graphicsContext);
 
     }
@@ -118,7 +119,7 @@ public class GameController {
      *
      * @param graphicsContext Graphics Context where the Cells will be drawn.
      */
-    public void drawCells(GraphicsContext graphicsContext) {
+    private void drawCells(GraphicsContext graphicsContext) {
         drawTerrain(graphicsContext);
         drawSelectedCell(graphicsContext);
         drawBuildings(graphicsContext);
@@ -131,7 +132,7 @@ public class GameController {
      *
      * @param graphicsContext Graphics Context where the Terrain will be drawn.
      */
-    public void drawTerrain(GraphicsContext graphicsContext) {
+    private void drawTerrain(GraphicsContext graphicsContext) {
         for (Cell cell : game.getCells()) {
             new TerrainUI(gridLocationToDrawLocation(cell.getLocation()), cell, cellHeight, cellWidth).drawMe(graphicsContext);
         }
@@ -142,7 +143,7 @@ public class GameController {
      *
      * @param graphicsContext Graphics Context where the Buildings will be draw.
      */
-    public void drawBuildings(GraphicsContext graphicsContext) {
+    private void drawBuildings(GraphicsContext graphicsContext) {
         Location drawLocation;
         for (Building building : game.getBuildings()) {
             drawLocation = gridLocationToDrawLocation(building.getLocation());
@@ -156,7 +157,7 @@ public class GameController {
      *
      * @param graphicsContext Graphics Context where the Units will be drawn.
      */
-    public void drawUnits(GraphicsContext graphicsContext) {
+    private void drawUnits(GraphicsContext graphicsContext) {
         Location drawLocation;
         for (Unit unit : game.getUnits()) {
             drawLocation = gridLocationToDrawLocation(unit.getLocation());
@@ -169,7 +170,7 @@ public class GameController {
      *
      * @param graphicsContext Graphics Context where the Selected Cell will be drawn.
      */
-    public void drawSelectedCell(GraphicsContext graphicsContext) {
+    private void drawSelectedCell(GraphicsContext graphicsContext) {
         new SelectedCellUI(gridLocationToDrawLocation(game.getSelectedLocation()), cellHeight, cellWidth).drawMe(graphicsContext);
     }
 
@@ -179,7 +180,7 @@ public class GameController {
      * @param gridLocation Grid based Location on the Cell.
      * @return Pixel based Location.
      */
-    public Location gridLocationToDrawLocation(Location gridLocation) {
+    private Location gridLocationToDrawLocation(Location gridLocation) {
         Location drawLocation = new Location(0, 0);
         if (gridLocation == null) {
             throw new NullArgumentException("null location");
@@ -198,7 +199,7 @@ public class GameController {
      * @param y Y Coordinate.
      * @return Grid Cell Location.
      */
-    public Location drawLocationToGridLocation(Integer x, Integer y) {
+    private Location drawLocationToGridLocation(Integer x, Integer y) {
         Location gridLocation = new Location(0, 0);
 
         Double auxY = Math.floor(y / (((double) 3 / 4) * cellHeight));
@@ -234,26 +235,9 @@ public class GameController {
      * @return Game of a new loaded Map.
      */
     public Game loadNewGame(String path) {
-        Game game = null;
-        try {
-            FileInputStream fileIn = new FileInputStream(path);
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            game = (Game) in.readObject();
-            in.close();
-            fileIn.close();
-        } catch (IOException i) {
-            System.out.println("Game not found or old version");
-        } catch (ClassNotFoundException c) {
-            System.out.println("Game class not found");
-            c.printStackTrace();
-        }
-        if (game != null) {
-            this.game = game;
-            initialize();
-            resetCellSize();
-            game.putHolyGrail(game);
-        }
-        return this.game;
+        Game game = loadGame(path);
+        game.putHolyGrail(game);
+        return game;
     }
 
     /**
@@ -281,6 +265,7 @@ public class GameController {
             initialize();
             resetCellSize();
         }
+        hasGameFinished =false;
         return this.game;
     }
 
@@ -307,12 +292,15 @@ public class GameController {
         if (key.getCode().equals(KeyCode.SPACE)) {
 
             if (game.endTurn()) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Game Message");
-                alert.setHeaderText("Congratulations");
-                alert.setContentText("You have won!, do not try to move any more units please, start new game");
+                if(!hasGameFinished) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Game Message");
+                    alert.setHeaderText("Congratulations");
+                    alert.setContentText("You have won!, do not try to move any more units please, start new game");
 
-                alert.showAndWait();
+                    alert.showAndWait();
+                    hasGameFinished = true;
+                }
             }
         }
         printLog(graphicsContext);

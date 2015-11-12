@@ -132,7 +132,6 @@ public class Game implements Serializable {
      */
     private boolean selectPlayerCastle(Player player) {
         //Searches the castle from the first player and selects the cell where it is located
-        //#Building needs location
         if (!hasCastle(player)) {
             addLog(player + "lost, he has no more buildings");
             return false;
@@ -242,11 +241,8 @@ public class Game implements Serializable {
      *
      * @param attacker attacking unit.
      * @param defender defending unit.
-     * @return True if the unit has attacked.
      */
-    private boolean attackAttempt(Unit attacker, Unit defender) {
-        boolean hasAttacked = false;
-
+    private void attackAttempt(Unit attacker, Unit defender) {
         if (attacker == null) {
             throw new NullArgumentException("null attacker");
         }
@@ -258,7 +254,6 @@ public class Game implements Serializable {
             throw new IllegalStateException("tries to attack own unit");
         }
         attacker.attack(defender);
-        return hasAttacked;
     }
 
     /**
@@ -273,7 +268,7 @@ public class Game implements Serializable {
     /**
      * Returns the Selected Location of the Game.
      *
-     * @return
+     * @return the selected location
      */
     public Location getSelectedLocation() {
         return selectedLocation;
