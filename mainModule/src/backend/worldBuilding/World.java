@@ -36,7 +36,7 @@ public class World implements Serializable {
         initialize(worldWidth, worldHeight, player1, player2);
     }
 
-    private void addGrailToCell(Location player1Castle, Location player2Castle) {
+    public void addGrailToCell(Location player1Castle, Location player2Castle) {
         ArrayList<Cell> holyGrailPossibleCells = new ArrayList<Cell>();
 
         for (Cell cell : cells) {
@@ -53,6 +53,8 @@ public class World implements Serializable {
         Random random = new Random();
         int holyGrailPosition = random.nextInt(holyGrailPossibleCells.size());
         holyGrailPossibleCells.get(holyGrailPosition).addHolyGrail();
+        //TODO: para la presentacion:
+        System.out.println(holyGrailPossibleCells.get(holyGrailPosition).getLocation());
     }
 
     /**
@@ -197,24 +199,6 @@ public class World implements Serializable {
 
     // TODO: Javadoc
     private Terrain loadTerrain(Location location) {
-        if (location.getX() >= 5 && location.getX() < 10 && location.getY() > 3 && location.getY() <= 8
-                || (location.getY() == 3 && (location.getX() == 8 || location.getX() == 9))
-                || (location.getY() == 2 && (location.getX() == 9 || location.getX() == 10))) {
-            return new Water();
-        }
-        if ((location.getY() < 4 && location.getX() > 8)) {
-            return new Forest();
-        }
-        if ((location.getX() == 0 && location.getY() <= 7) || (location.getX() < 6 && location.getY() == 0)
-                || (location.getX() == 1 && location.getY() < 3) || (location.getX() == 1 && (location.getY() == 6 || location.getY() == 7))
-                || (location.getX() > 10 && location.getY() == 10) || (location.getX() == 15 && location.getY() > 3)
-                || (location.getX() >= 10 && location.getY() == 9 && location.getX() != 14 && location.getX() != 13)) {
-            return new Mountain();
-        }
-        if ((location.getX() < 5 && location.getX() >= 0 && location.getY() <= 10 && location.getY() > 5)
-                || (location.getX() == 2 && location.getY() == 6) || (location.getX() == 2 && location.getY() == 7)) {
-            return new Hill();
-        }
         return new Grass();
     }
 
@@ -298,27 +282,20 @@ public class World implements Serializable {
         throw new NoSuchElementException("No building in buildings with that location: " + location);
     }
 
-    //TODO: Javadoc
     private void initialize(Integer worldWidth, Integer worldHeight, Player player1, Player player2) {
         this.worldHeight = worldHeight;
         this.worldWidth = worldWidth;
-
         cells = generateCellCollection();
-        Location player1CastleLocation = new Location(2, 2);
-        Location player2CastleLocation = new Location(14, 9);
-        Location mineLocation = new Location(1, 8);
-        Location mineLocation2 = new Location(14, 0);
-        Location mineLocation3 = new Location(6, 3);
-        Location mineLocation4 = new Location(10, 6);
+
+        Location player1CastleLocation = new Location(0, 5);
+        Location player2CastleLocation = new Location(15, 5);
 
         Castle player1Castle = new Castle(player1, player1CastleLocation);
         Castle player2Castle = new Castle(player2, player2CastleLocation);
+
         buildings.add(player1Castle);
         buildings.add(player2Castle);
-        buildings.add(new Mine(mineLocation));
-        buildings.add(new Mine(mineLocation2));
-        buildings.add(new Mine(mineLocation3));
-        buildings.add(new Mine(mineLocation4));
+
         addGrailToCell(player1CastleLocation, player2CastleLocation);
         player1.addProductionBuilding(player1Castle);
         player2.addProductionBuilding(player2Castle);

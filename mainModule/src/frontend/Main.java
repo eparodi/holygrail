@@ -82,7 +82,7 @@ public class Main extends Application {
         MenuItem menuItemGame1 = new MenuItem("Classic");
         menuItemGame1.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
-                gameController.loadGame("mainModule/src/saves/classic");
+                gameController.loadNewGame("mainModule/src/saves/classic");
                 gameController.updateGraphics(graphicsContext);
             }
         });
@@ -90,7 +90,7 @@ public class Main extends Application {
         MenuItem menuItemGame2 = new MenuItem("Battle for the lake");
         menuItemGame2.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
-                gameController.loadGame("mainModule/src/saves/battle_for_the_lake");
+                gameController.loadNewGame("mainModule/src/saves/battle_for_the_lake");
                 gameController.updateGraphics(graphicsContext);
             }
         });
@@ -99,7 +99,7 @@ public class Main extends Application {
         MenuItem menuItemGame3 = new MenuItem("Treasure Island");
         menuItemGame3.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
-                gameController.loadGame("mainModule/src/saves/treasure_island");
+                gameController.loadNewGame("mainModule/src/saves/treasure_island");
                 gameController.updateGraphics(graphicsContext);
             }
         });
@@ -107,7 +107,7 @@ public class Main extends Application {
         MenuItem menuItemGame4 = new MenuItem("Hidden Castle");
         menuItemGame4.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
-                gameController.loadGame("mainModule/src/saves/hidden_castle");
+                gameController.loadNewGame("mainModule/src/saves/hidden_castle");
                 gameController.updateGraphics(graphicsContext);
             }
         });
@@ -115,7 +115,7 @@ public class Main extends Application {
         MenuItem menuItemGame5 = new MenuItem("King of the hill");
         menuItemGame5.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
-                gameController.loadGame("mainModule/src/saves/king_of_the_hill");
+                gameController.loadNewGame("mainModule/src/saves/king_of_the_hill");
                 gameController.updateGraphics(graphicsContext);
             }
         });

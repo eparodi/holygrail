@@ -149,6 +149,29 @@ public class GameController {
         }
     }
 
+    public Game loadNewGame(String path) {
+        Game game = null;
+        try {
+            FileInputStream fileIn = new FileInputStream(path);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            game = (Game) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (IOException i) {
+            System.out.println("Game not found or old version");
+        } catch (ClassNotFoundException c) {
+            System.out.println("Game class not found");
+            c.printStackTrace();
+        }
+        if (game != null) {
+            this.game = game;
+            initialize();
+            resetCellSize();
+        }
+        game.putHolyGrail(game);
+        return this.game;
+    }
+
     public Game loadGame(String path) {
         Game game = null;
         try {

@@ -18,12 +18,14 @@ import java.util.*;
 public class Game implements Serializable {
     private World world;
     private Location selectedLocation;
-    private Player player1, player2;
+    private Player player1;
+
+    private Player player2;
+
     private Player activePlayer;
     private Queue<String> logQueue;
     private Random random;
     private boolean hasGameEnded = false;
-
     /**
      * Constructs a Game with a World of a specific Width and Height, and 2 players.
      *
@@ -63,6 +65,14 @@ public class Game implements Serializable {
         this.player2 = new Player(player2);
     }
 
+    public Player getPlayer2() {
+        return player2;
+    }
+
+    public Player getPlayer1() {
+        return player1;
+    }
+
     /**
      * Returns the World Height.
      *
@@ -91,6 +101,10 @@ public class Game implements Serializable {
         selectPlayerCastle(activePlayer);
     }
 
+    public void putHolyGrail(Game game){
+        world.addGrailToCell(game.getPlayer1().getProductionBuilding().getLocation(),
+                                    game.getPlayer2().getProductionBuilding().getLocation());
+    }
 
     /**
      * Selects the specified Player's castle.
