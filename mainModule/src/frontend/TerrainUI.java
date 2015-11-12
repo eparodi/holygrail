@@ -7,9 +7,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class TerrainUI {
-    protected Location drawLocation;
-    protected Image image;
-    protected ImageManager imageManager = new ImageManager();
+    private Location drawLocation;
+    private Image image;
+    private ImageManager imageManager = new ImageManager();
 
     public TerrainUI(Location drawLocation, Cell cell, Integer cellHeight, Integer cellWidth) {
 //        super(drawLocation, new Image(imageManager.getTerrainImage(cell.getTerrain()), cellWidth, cellHeight, false, false));

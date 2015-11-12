@@ -127,8 +127,8 @@ public class Main extends Application {
                 Alert rules = new Alert(Alert.AlertType.INFORMATION);
                 rules.setTitle("Game Rules");
                 rules.setHeaderText("GAME RULES");
-                rules.setContentText("Objective: conquer enemy's castle.\n" +
-                        "Secondary Objective: dig, find the Holy Grail, and bring it back to your Castle\n\n" +
+                rules.setContentText("First Objective: Dig around the map, find the Holy Grail, and bring it back to your Castle.\n" +
+                        "Secondary Objective: Conquer enemy's Castle.\n\n" +
                         "CONTROLS:\n" +
                         "A to build an Archer\n" +
                         "R to build a Rider\n" +
@@ -136,10 +136,10 @@ public class Main extends Application {
                         "D to dig with a unit selected\n" +
                         "Space Bar to change player turn\n" +
                         "Left Click to select a cell and interact with units.\n\n" +
-                        "OTHER IMPORTANT STUFF:\n" +
+                        "IMPORTANT:\n" +
+                        "Green bar over units represent their actual life.\n" +
                         "Blue bar over units represent their action points(AP). AP are used to move, attack and dig." +
-                        "AP is restored after each turn\n\n" +
-                        "Green bar over units represent their actual life.\n");
+                        "AP is restored after each turn.\n\n");
 
                 rules.showAndWait();
             }

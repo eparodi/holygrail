@@ -15,13 +15,13 @@ import javafx.scene.paint.Color;
 import java.io.*;
 
 public class GameController {
-    Integer cellHeight;
-    Integer cellWidth;
-    Integer worldHeight;
-    Integer worldWidth;
-    Integer canvasHeight;
-    Integer canvasWidth;
-    Game game;
+    private Integer cellHeight;
+    private Integer cellWidth;
+    private Integer worldHeight;
+    private Integer worldWidth;
+    private Integer canvasHeight;
+    private Integer canvasWidth;
+    private Game game;
 
     //    /**
 //     * @param cellHeight    The height of the cell in pixels

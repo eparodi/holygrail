@@ -6,8 +6,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class SelectedCellUI {
-    protected Location drawLocation;
-    protected Image image;
+    private Location drawLocation;
+    private Image image;
 
     /**
      * @param drawLocation Entity screen coordinates

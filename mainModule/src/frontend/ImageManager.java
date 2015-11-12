@@ -13,7 +13,7 @@ import backend.units.Unit;
 import java.util.HashMap;
 
 public class ImageManager {
-    HashMap<Class, String> images;
+    private HashMap<Class, String> images;
 
     public ImageManager() {
         this.images = new HashMap<Class, String>();

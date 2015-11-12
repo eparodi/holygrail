@@ -10,7 +10,7 @@ public class BuildingUI {
     private Location drawLocation;
     private ImageManager imageManager = new ImageManager();
     private Image buildingImage;
-    Image flagImage;
+    private Image flagImage;
 
     public BuildingUI(Location drawLocation, Building building, Integer cellHeight, Integer cellWidth) {
         if (drawLocation == null) throw new NullArgumentException("null drawLocation");
