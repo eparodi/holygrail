@@ -26,10 +26,18 @@ public class UnitUI {
      * @param cellWidth Width of the Cell in pixels.
      */
     public UnitUI(Location drawLocation, Unit unit, Integer cellHeight, Integer cellWidth) {
-        if (drawLocation == null) throw new NullArgumentException("null drawLocation");
-        if (unit == null) throw new NullArgumentException("null unit");
-        if (cellHeight == null) throw new NullArgumentException("null cellHeight");
-        if (cellWidth == null) throw new NullArgumentException("null cellWidth");
+        if (drawLocation == null) {
+            throw new NullArgumentException("null drawLocation");
+        }
+        if (unit == null) {
+            throw new NullArgumentException("null unit");
+        }
+        if (cellHeight == null) {
+            throw new NullArgumentException("null cellHeight");
+        }
+        if (cellWidth == null) {
+            throw new NullArgumentException("null cellWidth");
+        }
 
         this.drawLocation = drawLocation;
         unitImage = new Image(imageManager.getUnitImage(unit), cellWidth, cellHeight, false, false);
@@ -45,7 +53,9 @@ public class UnitUI {
      * @param graphicsContext Graphic Context where the Image will be drawn.
      */
     public void drawMe(GraphicsContext graphicsContext) {
-        if (graphicsContext == null) throw new NullArgumentException("null graphics context");
+        if (graphicsContext == null) {
+            throw new NullArgumentException("null graphics context");
+        }
 
         graphicsContext.drawImage(markerImage, drawLocation.getX(), drawLocation.getY());
         graphicsContext.drawImage(unitImage, drawLocation.getX(), drawLocation.getY());

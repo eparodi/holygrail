@@ -12,7 +12,9 @@ public abstract class Entity implements Serializable {
     protected Location location;
 
     public Entity(Location newLoc) {
-        if (newLoc == null) throw new NullArgumentException("Entity has to have a location");
+        if (newLoc == null) {
+            throw new NullArgumentException("Entity has to have a location");
+        }
         this.location = newLoc;
     }
 

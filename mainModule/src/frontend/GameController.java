@@ -116,7 +116,9 @@ public class GameController {
 
     public Location gridLocationToDrawLocation(Location gridLocation) {
         Location drawLocation = new Location(0, 0);
-        if (gridLocation == null) throw new NullArgumentException("null location");
+        if (gridLocation == null) {
+            throw new NullArgumentException("null location");
+        }
         drawLocation.setX(gridLocation.getY() % 2 == 0 ? gridLocation.getX() * cellWidth :
                 gridLocation.getX() * cellWidth + cellWidth / 2); // Depende de fila par/impar
         drawLocation.setY(gridLocation.getY() * (cellHeight - cellHeight / 4));
