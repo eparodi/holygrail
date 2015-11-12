@@ -21,7 +21,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
     private static Integer LOG_SIZE = 30;
-
+    
     public void start(Stage primaryStage) throws Exception {
 
         final Game game = new Game(16, 11);
